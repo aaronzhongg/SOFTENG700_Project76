@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nz.ac.auckland.nihi.trainer.views.FontableTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:textSize="18sp" />

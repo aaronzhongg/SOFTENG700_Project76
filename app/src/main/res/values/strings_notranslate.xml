@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- Preferences - Keys -->
+    <string name="pref_name_key">user_name</string>
+    <string name="pref_email_key">email</string>
+    <string name="pref_dob_key">date_of_birth</string>
+    <string name="pref_height_key">height</string>
+    <string name="pref_weight_key">weight</string>
+    <string name="pref_max_hr_key">max_heart_rate</string>
+    <string name="pref_rest_hr_key">resting_heart_rate</string>
+    <string name="pref_gender_key">gender</string>
+    <string name="pref_blood_lactate_key">blood_lactate_data</string>
+    <string name="pref_prop_hrr_key">blood_lactate_prop_hrr</string>
+    <string name="pref_password_key">password</string>
+    <string name="pref_username_key">username</string>
+    <string name="pref_uid_key">uid</string>
+    <string name="pref_surrogatename_key">surrogatename</string>
+    <string name="pref_host_key">host</string>
+    <string name="pref_port_key">port</string>
+    
+    <!-- Preferences - Defaults -->
+    <string name="pref_name_default">[not set]</string>
+    <string name="pref_email_default">[not set]</string>
+    <string name="pref_height_default">0</string>
+    <string name="pref_weight_default">0</string>
+    <string name="pref_max_hr_default">0</string>
+    <string name="pref_rest_hr_default">0</string>
+    <string name="pref_gender_default">Male</string>
+    <string name="pref_blood_lactate_default"></string>
+    <string name="pref_prop_hrr_default"></string>
+    <string name="pref_password_default">[not set]</string>
+    <string name="pref_uid_default">12345</string>
+    <string name="pref_surrogatename_default">nihi-trainer</string>
+    <string name="pref_host_default">10.0.0.10</string>
+    <string name="pref_port_default">10000</string>
+    
+	<!-- Placeholders (replaced by real data at runtime) -->
+	<string name="placeholder_large_day">Wednesday</string>
+	<string name="placeholder_number_twodigit">99</string>
+	<string name="placeholder_number_threedigit">999</string>
+	<string name="placeholder_number_fourdigit">9999</string>
+	<string name="placeholder_notification_text">Resting for a short time will ease your angina. Take a break for two minutes and then get back into it. You\'re doing really well.</string>
+	<string name="placeholder_duration">99:99:99</string>
+	<string name="placeholder_date">Saturday 99th December</string>
+	<string name="placeholder_goaltype">[Goal Type]</string>
+	<string name="placeholder_units">[Units]</string>
+	<string name="placeholder_percentage">50%</string>
+	<string name="placeholder_weeklygoals">Goals for Monday XXth - Sunday YYth</string>
+    <string name="placeholder_distance">99.99 km</string>
+    <string name="placeholder_energy">999 kJ</string>
+    <string name="placeholder_speed">99.99 km/h</string>
+    <string name="placeholder_heartrate">999 bpm</string>
+    <string name="placeholder_hrr">99 %HRR</string>
+    
+	<!-- Application Config -->
+    <string name="app_name">REMOTE-CR</string>
+    <string name="db_name">nihiTrainerData.db</string>
+	<string name="prefs_filename">app_preferences</string>
+	<string name="static_maps_api_key">AIzaSyBdUhCECVMr9IHzfRFNzLKxy83LC7z7Jxc</string>
+</resources>

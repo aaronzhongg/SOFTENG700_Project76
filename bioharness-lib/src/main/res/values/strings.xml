@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- Device list screen -->
+    <string name="btdevices_label_paireddevices">PAIRED DEVICES</string>
+    <string name="btdevices_label_newdevices">OTHER AVAILABLE DEVICES</string>
+    <string name="btdevices_button_scan">Scan for devices</string>
+    <string name="btdevices_none_paired">No devices have been paired</string>
+    <string name="btdevices_none_found">No devices found</string>
+    <string name="btdevices_scanning">Scanning for devices…</string>
+    <string name="btdevices_select_device">Select the Bioharness from the list.</string>
+    
+    <!-- Bioharness Service -->
+    <string name="bioharness_disconnected">Disconnected from Bioharness</string>
+    <string name="bioharness_disconnected_short">Disconnected</string>
+    <string name="bioharness_connecting">Connecting to Bioharness</string>
+    <string name="bioharness_connecting_short">Connecting…</string>
+    <string name="bioharness_connected">Connected to Bioharness</string>
+    <string name="bioharness_connected_short">Connected</string>
+    <string name="bioharness_disconnect">Disconnect from Bioharness</string>
+    <string name="bioharness_connect">Connect to Bioharness</string>
+    <string name="bioharness_notification_status">Bioharness Status</string>
+    
+<!--     <string name="fmtDeviceConnection">Connected to %1$s</string> -->
+    
+    <!-- Preferences -->
+    <string name="prefs_filename">app_preferences</string>
+    <string name="pref_bhaddress_key">bioharness_address</string>
+</resources>

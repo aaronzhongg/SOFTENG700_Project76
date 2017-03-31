@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/RootLayoutStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:id="@+id/lblWeek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/placeholder_weeklygoals"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ListView
+        android:id="@+id/lstGoals"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/lblWeek" >
+    </ListView>
+
+    <nz.ac.auckland.nihi.trainer.views.FontableButton
+        android:id="@+id/btnAddGoal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/goalscreen_button_addgoal" />
+
+    <View
+        android:id="@+id/spacer1"
+        style="@style/DividerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nihi_thin_divider_size"
+        android:layout_above="@id/btnAddGoal" >
+    </View>
+
+</RelativeLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pnlLargeStats"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <View
+        android:id="@+id/divHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent" />
+
+    <View
+        android:id="@+id/divVertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="0dp"
+        android:background="@android:color/transparent" />
+
+    <nz.ac.auckland.nihi.trainer.views.LargeWorkoutStatTileView
+        android:id="@+id/topLeftTile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/divHorizontal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/divVertical"
+        android:background="@drawable/primary_button_background" />
+
+    <nz.ac.auckland.nihi.trainer.views.LargeWorkoutStatTileView
+        android:id="@+id/topRightTile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/divHorizontal"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/divVertical"
+        android:background="@drawable/primary_button_background" />
+
+    <nz.ac.auckland.nihi.trainer.views.LargeWorkoutStatTileView
+        android:id="@+id/bottomLeftTile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/divHorizontal"
+        android:layout_toLeftOf="@+id/divVertical"
+        android:background="@drawable/primary_button_background" />
+
+    <nz.ac.auckland.nihi.trainer.views.LargeWorkoutStatTileView
+        android:id="@+id/bottomRightTile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/divHorizontal"
+        android:layout_toRightOf="@+id/divVertical"
+        android:background="@drawable/primary_button_background" />
+
+</RelativeLayout>

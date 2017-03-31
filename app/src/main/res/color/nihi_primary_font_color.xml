@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- This changes between different font colors depending on whether we're enabled or disabled. -->
+
+    <item android:state_enabled="true" android:color="@color/nihi_font_color_enabled"/>
+    <item android:state_enabled="false" android:color="@color/nihi_font_color_disabled"/>
+
+</selector>

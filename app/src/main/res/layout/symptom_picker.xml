@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/DialogRootLayoutStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/pnlTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/black" >
+
+        <ImageView
+            android:id="@+id/iconCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/nihi_ic_review_calendar" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtSymptomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iconCalendar"
+            android:layout_alignTop="@id/iconCalendar"
+            android:layout_toRightOf="@+id/iconCalendar"
+            android:gravity="center_vertical"
+            android:text="@string/symptompicker_label_selectsymptom"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageView
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+    </RelativeLayout>
+
+    <View
+        style="@style/DividerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nihi_thick_divider_size" >
+    </View>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/pnlBottomButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:weightSum="2" >
+
+            <nz.ac.auckland.nihi.trainer.views.FontableButton
+                android:id="@+id/btnOk"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/symptompicker_button_add" />
+
+            <!-- <View -->
+            <!-- android:layout_width="2dp" -->
+            <!-- android:layout_height="match_parent" -->
+            <!-- android:background="@color/holo_blue_dark" > -->
+            <!-- </View> -->
+
+            <nz.ac.auckland.nihi.trainer.views.FontableButton
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cancel" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/spacer1"
+            style="@style/DividerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nihi_thin_divider_size"
+            android:layout_above="@id/pnlBottomButtons" >
+        </View>
+
+        <Spinner
+            android:id="@+id/spinnerSeverity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/spacer1" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/spinnerSeverity"
+            android:text="@string/symptompicker_label_severity"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Spinner
+            android:id="@+id/spinnerSymptom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView2" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/spinnerSymptom"
+            android:text="@string/symptompicker_label_newsymptom"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <View
+            android:id="@+id/spacer2"
+            style="@style/DividerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nihi_thick_divider_size"
+            android:layout_above="@id/textView1" >
+        </View>
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/symptompicker_label_priorsymptoms"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ListView
+            android:id="@+id/lstPriorSymptoms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/spacer2"
+            android:layout_below="@id/textView3" >
+        </ListView>
+    </RelativeLayout>
+
+</LinearLayout>

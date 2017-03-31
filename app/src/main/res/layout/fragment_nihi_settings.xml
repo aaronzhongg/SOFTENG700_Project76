@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settingsscreen_label_personaldetails"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <View
+        style="@style/DividerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nihi_thick_divider_size" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_name_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/not_set"
+        android:inputType="textCapWords" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_dob_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <DatePicker
+        android:id="@+id/pckDOB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:calendarViewShown="false" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_gender_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <nz.ac.auckland.nihi.trainer.views.FontableRadioButton
+            android:id="@+id/rdoMale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gender_male" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableRadioButton
+            android:id="@+id/rdoFemale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gender_female" />
+    </RadioGroup>
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_email_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/not_set"
+        android:inputType="textEmailAddress" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_height_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtHeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/not_set"
+        android:inputType="number" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_weight_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/not_set"
+        android:inputType="number" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_rest_hr_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtRestingHR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/not_set"
+        android:inputType="number" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_max_hr_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtMaxHR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/not_set"
+        android:inputType="number" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_blood_lactate_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/settingsscreen_label_bloodlactatewarning"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <LinearLayout
+        android:id="@+id/pnlBloodLactate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/pnlBloodLactateHeaders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="100" >
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                style="@style/GreyedOutTextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="20"
+                android:text="@string/stats_unit_hrr"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                style="@style/GreyedOutTextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="70"
+                android:text="@string/settingsscreen_label_bloodlactateconcentration"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pnlAddBloodLactate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="100" >
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtNoBloodLactate"
+                style="@style/GreyedOutTextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="90"
+                android:text="@string/placeholder_novalue"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableButton
+                android:id="@+id/btnAddBloodLactate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="+"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </LinearLayout>
+    </LinearLayout>
+
+<nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settingsscreen_label_logfiles"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <View
+        style="@style/DividerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nihi_thick_divider_size" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100" >
+
+
+        <nz.ac.auckland.nihi.trainer.views.FontableButton
+            android:id="@+id/btnEmailLogs"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:text="@string/settingsscreen_button_emaillogs" />
+
+        <!-- <View
+            style="@style/DividerStyle"
+            android:layout_width="@dimen/nihi_thick_divider_size"
+            android:layout_height="match_parent" />  -->
+
+        <nz.ac.auckland.nihi.trainer.views.FontableButton
+            android:id="@+id/btnClearLogs"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:text="@string/settingsscreen_button_clearlogs" />
+    </LinearLayout>
+    
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settingsscreen_label_logindetails"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <View
+        style="@style/DividerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nihi_thick_divider_size" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="70"
+            android:orientation="vertical" >
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pref_username_label"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:id="@+id/txtUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="@string/not_set"
+                android:inputType="textNoSuggestions" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pref_password_label"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:id="@+id/txtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="@string/not_set"
+                android:inputType="textPassword" />
+        </LinearLayout>
+
+        <nz.ac.auckland.nihi.trainer.views.FontableButton
+            android:id="@+id/btnSwitchUser"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="30"
+            android:text="@string/settingsscreen_button_switchuser" />
+    </LinearLayout>
+
+    
+
+</LinearLayout>

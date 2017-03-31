@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="100" >
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:id="@+id/txtNotification"
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:layout_weight="100"
+        android:text="@string/placeholder_notification_text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lparen"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="italic" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:id="@+id/txtTime"
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="@string/placeholder_duration"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="italic" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rparen"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="italic" />
+
+</LinearLayout>

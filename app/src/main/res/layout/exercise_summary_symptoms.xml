@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pnlSymptoms"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:id="@+id/txtBlank"
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="@string/placeholder_novalue"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/pnlAngina"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="vertical" >
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtTitleAngina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/symptom_angina"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
+
+    <!-- <View -->
+    <!-- android:id="@+id/separator1" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="1dp" -->
+    <!-- android:layout_marginBottom="8dp" -->
+    <!-- android:layout_marginTop="8dp" -->
+    <!-- android:background="@drawable/horizontal_line" /> -->
+
+    <LinearLayout
+        android:id="@+id/pnlDyspnoea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="vertical" >
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtTitleDyspnoea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/symptom_dyspnoea"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
+
+    <!-- <View -->
+    <!-- android:id="@+id/separator2" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="1dp" -->
+    <!-- android:layout_marginBottom="8dp" -->
+    <!-- android:layout_marginTop="8dp" -->
+    <!-- android:background="@drawable/horizontal_line" /> -->
+
+    <LinearLayout
+        android:id="@+id/pnlSyncope"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="vertical" >
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtTitleSyncope"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/symptom_syncope"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
+
+</LinearLayout>

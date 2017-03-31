@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settingsscreen_label_odinsettings"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <View
+        style="@style/DividerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nihi_thick_divider_size" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_uid_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtUserID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/not_set"
+        android:inputType="number" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_username_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/not_set"
+        android:inputType="textNoSuggestions" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_password_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/not_set"
+        android:inputType="textVisiblePassword" />
+
+    <!-- <nz.ac.auckland.nihi.trainer.views.FontableTextView -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:text="@string/title_pref_host" -->
+    <!-- android:textAppearance="?android:attr/textAppearanceSmall" /> -->
+
+
+    <!-- <EditText -->
+    <!-- android:id="@+id/txtHost" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:inputType="textNoSuggestions" /> -->
+
+
+    <!-- <nz.ac.auckland.nihi.trainer.views.FontableTextView -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:text="@string/title_pref_port" -->
+    <!-- android:textAppearance="?android:attr/textAppearanceSmall" /> -->
+
+
+    <!-- <EditText -->
+    <!-- android:id="@+id/txtPort" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:inputType="number" /> -->
+
+
+    <!-- <nz.ac.auckland.nihi.trainer.views.FontableTextView -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:text="@string/title_pref_username" -->
+    <!-- android:textAppearance="?android:attr/textAppearanceSmall" /> -->
+
+
+    <!-- <EditText -->
+    <!-- android:id="@+id/txtSurrogateName" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:inputType="textNoSuggestions" /> -->
+
+</LinearLayout>

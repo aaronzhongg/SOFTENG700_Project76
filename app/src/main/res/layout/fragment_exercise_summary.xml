@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res/nz.ac.auckland.nihi.trainer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <!-- Stats -->
+
+        <nz.ac.auckland.nihi.trainer.views.ExpandablePanel2
+            android:id="@+id/pnlStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:panelCollapsed="false" >
+
+            <nz.ac.auckland.nihi.trainer.views.SmallExerciseSummaryStatsView
+                android:id="@id/collapsedView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <nz.ac.auckland.nihi.trainer.views.LargeExerciseSummaryStatsView
+                android:id="@id/expandedView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@id/btnCollapse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/my_button_background"
+                android:gravity="right"
+                android:paddingBottom="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/cpanel_button_more" />
+        </nz.ac.auckland.nihi.trainer.views.ExpandablePanel2>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nihi_thin_divider_size"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/horizontal_line" />
+
+        <!-- Symptoms -->
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtTitleSymptoms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="@string/summaryscreen_label_symptoms"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <nz.ac.auckland.nihi.trainer.views.SymptomsView
+            android:id="@+id/symptomsView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nihi_thin_divider_size"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/horizontal_line" />
+
+        <!-- Notifications -->
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtTitleNotifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="@string/summaryscreen_label_notifications"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <!-- <View -->
+        <!-- style="@style/DividerStyle" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="@dimen/nihi_thick_divider_size" -->
+        <!-- android:layout_marginBottom="8dp" -->
+        <!-- android:layout_marginTop="6dp" /> -->
+
+        <nz.ac.auckland.nihi.trainer.views.NotificationsView
+            android:id="@+id/notificationsView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
+    </LinearLayout>
+
+    <!-- Map -->
+
+    <LinearLayout
+        android:id="@+id/pnlMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nihi_thin_divider_size"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/horizontal_line" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtTitleMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="@string/summaryscreen_label_map"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <!-- <View -->
+        <!-- android:id="@+id/separatorAboveMap" -->
+        <!-- style="@style/DividerStyle" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="@dimen/nihi_thick_divider_size" -->
+        <!-- android:layout_marginBottom="8dp" -->
+        <!-- android:layout_marginTop="6dp" /> -->
+
+        <ProgressBar
+            android:id="@+id/prgLoadThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/imgMap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:scaleType="centerInside" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+            android:id="@+id/btnSaveToFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/nihi_ic_review_nonfavorite"
+            android:textOff="@string/summaryscreen_button_addtofavorites"
+            android:textOn="@string/summaryscreen_button_removefromfavorites" />
+    </LinearLayout>
+
+</LinearLayout>

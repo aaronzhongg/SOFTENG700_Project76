@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imgMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerInside" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/routescreen_label_createdby" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtCreatedBy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:text="@string/placeholder_novalue" />
+    </LinearLayout>
+
+    <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+        android:id="@+id/btnToggleFavourites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/nihi_ic_review_nonfavorite"
+        android:textOff="@string/summaryscreen_button_addtofavorites"
+        android:textOn="@string/summaryscreen_button_removefromfavorites" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableButton
+        android:id="@+id/btnStartWorkout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/nihi_ic_home_workout"
+        android:text="@string/routescreen_button_startworkout" />
+
+</LinearLayout>

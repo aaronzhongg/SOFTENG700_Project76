@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:drawable="@drawable/nihi_background_2">
+    </item>
+    <item>
+        <shape android:shape="rectangle" >
+            <stroke
+                android:width="@dimen/nihi_thick_divider_size"
+                android:color="@color/holo_blue_dark" />
+
+            <solid android:color="@color/transparent" />
+        </shape>
+    </item>
+
+</layer-list>

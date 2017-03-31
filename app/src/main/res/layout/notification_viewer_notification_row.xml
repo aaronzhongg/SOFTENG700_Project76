@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableRow"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageButton
+        android:id="@+id/btnSpeak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/primary_button_background"
+        android:padding="8dp"
+        android:src="@drawable/nihi_ic_speech" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:id="@+id/txtRcvdAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/notificationdialog_label_receivedat"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:id="@+id/txtLParen"
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@id/txtRcvdAt"
+        android:text="@string/lparen"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="italic" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:id="@+id/txtTime"
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@id/txtLParen"
+        android:text="@string/placeholder_duration"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="italic" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:id="@+id/txtRParen"
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@id/txtTime"
+        android:text="@string/rparen"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="italic" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:id="@+id/txtDash"
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtRcvdAt"
+        android:layout_gravity="center_vertical"
+        android:text="- "
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:id="@+id/txtNotification"
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtRcvdAt"
+        android:layout_gravity="center_vertical"
+        android:layout_toLeftOf="@id/btnSpeak"
+        android:layout_toRightOf="@id/txtDash"
+        android:text="@string/placeholder_notification_text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</RelativeLayout>

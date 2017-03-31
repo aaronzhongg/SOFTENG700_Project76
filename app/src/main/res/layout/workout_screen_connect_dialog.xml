@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:indeterminateOnly="true" />
+
+    <ImageView
+        android:id="@+id/imgOdin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/progressBar"
+        android:src="@drawable/ic_connecting" />
+
+    <ImageView
+        android:id="@+id/imgBioharness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/progressBar"
+        android:src="@drawable/ic_bioharness_connecting" />
+
+<!--     <nz.ac.auckland.nihi.trainer.views.FontableTextView -->
+<!--         android:id="@+id/lblConnecting" -->
+<!--         android:layout_width="wrap_content" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:layout_below="@id/progressBar" -->
+<!--         android:layout_centerHorizontal="true" -->
+<!--         android:text="Connecting..." /> -->
+
+</RelativeLayout>

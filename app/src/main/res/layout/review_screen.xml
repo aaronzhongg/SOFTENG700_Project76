@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    style="@style/RootLayoutStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical"
+    android:orientation="vertical"
+    tools:context=".ReviewActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:orientation="vertical" >
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtThisMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="8dp"
+            android:text="@string/summaryscreen_label_thismonth"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pgrMonthly"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp" >
+        </android.support.v4.view.ViewPager>
+
+        <!-- <View -->
+        <!-- style="@style/DividerStyle" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="@dimen/nihi_thick_divider_size" /> -->
+    </LinearLayout>
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:id="@+id/txtDailyTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="6dp"
+        android:text="@string/summaryscreen_label_today"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold" />
+
+    <View
+        style="@style/DividerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nihi_thick_divider_size"
+        android:layout_marginBottom="6dp"
+        android:layout_marginTop="6dp" />
+
+    <!-- android:background="@drawable/img_background" -->
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp" >
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>

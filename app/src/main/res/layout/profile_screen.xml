@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/RootLayoutStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:id="@+id/scroller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <fragment
+                android:id="@+id/fragment_nihiPrefs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                class="nz.ac.auckland.nihi.trainer.fragments.NihiPreferencesFragment" />
+
+<!--             <fragment -->
+<!--                 android:id="@+id/fragment_odinPrefs" -->
+<!--                 android:layout_width="match_parent" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 class="nz.ac.auckland.cs.odin.android.api.fragments.OdinPreferencesFragment" /> -->
+
+            <View
+                style="@style/DividerStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nihi_thick_divider_size" />
+
+            <LinearLayout
+                android:id="@+id/pnlButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2" >
+
+                <nz.ac.auckland.nihi.trainer.views.FontableButton
+                    android:id="@+id/btnOk"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/ok" />
+
+                <nz.ac.auckland.nihi.trainer.views.FontableButton
+                    android:id="@+id/btnCancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cancel" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

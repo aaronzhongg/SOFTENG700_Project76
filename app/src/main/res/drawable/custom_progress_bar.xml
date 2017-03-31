@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- Define the background properties like color etc -->
+    <item android:id="@android:id/background">
+        <shape>
+            <gradient
+                android:angle="270"
+                android:centerColor="@color/nihi_divider_color"
+                android:centerY="1.0"
+                android:endColor="@color/nihi_divider_color"
+                android:startColor="@color/nihi_button_background_color" />
+        </shape>
+    </item>
+
+    <!-- Define the progress properties like start color, end color etc -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <gradient
+                    android:angle="270"
+                    android:centerColor="@color/holo_blue_dark"
+                    android:centerY="1.0"
+                    android:endColor="@color/holo_blue_bright"
+                    android:startColor="@color/holo_blue_dark" />
+            </shape>
+        </clip>
+    </item>
+
+    <!-- Define the progress properties like start color, end color etc -->
+    <item>
+        <shape>
+            <stroke
+                android:width="2dp"
+                android:color="@color/nihi_divider_color" />
+        </shape>
+    </item>
+
+</layer-list>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/imgRouteThumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp" />
+
+    <ProgressBar
+        android:id="@+id/prgThumbnailLoading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/imgRouteThumbnail" >
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtTitleRouteLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/routescreen_label_length"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtRouteLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtTitleRouteLength"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/txtTitleRouteLength"
+            android:text="@string/placeholder_number_threedigit"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            style="@style/GreyedOutTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/txtTitleRouteLength"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/txtRouteLength"
+            android:text="@string/unit_kilometers"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtTitleDistanceToRoute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/txtTitleRouteLength"
+            android:text="@string/routescreen_label_distancetoroute"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtDistanceToRoute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtTitleDistanceToRoute"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/txtTitleDistanceToRoute"
+            android:text="@string/placeholder_number_threedigit"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            style="@style/GreyedOutTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/txtTitleDistanceToRoute"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/txtDistanceToRoute"
+            android:text="@string/unit_kilometers"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </RelativeLayout>
+
+</RelativeLayout>

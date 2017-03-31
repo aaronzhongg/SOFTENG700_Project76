@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/DialogRootLayoutStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".activities.DatePickerActivity" >
+
+    <RelativeLayout
+        android:id="@+id/pnlTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/black" >
+
+        <ImageView
+            android:id="@+id/iconCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/nihi_ic_workout_freeworkout" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtSymptomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iconCalendar"
+            android:layout_alignTop="@id/iconCalendar"
+            android:layout_toRightOf="@+id/iconCalendar"
+            android:gravity="center_vertical"
+            android:text="@string/goaldialog_label_selectgoal"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageView
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:orientation="vertical" >
+
+        <View
+            style="@style/DividerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nihi_thick_divider_size" >
+        </View>
+
+        <ScrollView
+            android:id="@+id/scroller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                    android:id="@+id/btnFreeWorkout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/nihi_ic_workout_freeworkout"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="2dp"
+                    android:textOff="@string/goaldialog_label_freeworkout"
+                    android:textOn="@string/goaldialog_label_freeworkout" />
+
+                <View
+                    style="@style/DividerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/nihi_thin_divider_size" >
+                </View>
+
+                <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                    android:id="@+id/btnDurationGoal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/nihi_ic_review_duration"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="2dp"
+                    android:textOff="@string/goaldialog_label_durationgoal"
+                    android:textOn="@string/goaldialog_label_durationgoal" />
+
+                <RelativeLayout
+                    android:id="@+id/pnlDurationGoal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <RelativeLayout
+                        android:id="@+id/pnlDurationGoal_Spinners"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true" >
+
+                        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                            android:id="@+id/txtHH"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/pckDurationHours"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignRight="@+id/pckDurationHours"
+                            android:layout_marginTop="2dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/unit_hours" />
+
+                        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                            android:id="@+id/txtMM"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/pckDurationMinutes"
+                            android:layout_alignRight="@+id/pckDurationMinutes"
+                            android:layout_alignTop="@+id/txtHH"
+                            android:gravity="center_horizontal"
+                            android:text="@string/unit_minutes" />
+
+                        <nz.ac.auckland.nihi.trainer.views.MyNumberPicker
+                            android:id="@+id/pckDurationHours"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@+id/txtHH"
+                            max="24"
+                            min="0" />
+
+                        <nz.ac.auckland.nihi.trainer.views.MyNumberPicker
+                            android:id="@+id/pckDurationMinutes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/pckDurationHours"
+                            android:layout_toRightOf="@+id/pckDurationHours"
+                            max="59"
+                            min="0" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/pnlDurationGoal_Spinners"
+                        android:weightSum="2" >
+
+                        <nz.ac.auckland.nihi.trainer.views.FontableButton
+                            android:id="@+id/btnDurationOk"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/ok" />
+
+                        <!-- <View -->
+                        <!-- android:layout_width="1dp" -->
+                        <!-- android:layout_height="match_parent" -->
+                        <!-- android:layout_marginBottom="6dp" -->
+                        <!-- android:layout_marginTop="6dp" -->
+                        <!-- android:background="@android:color/darker_gray" /> -->
+
+                        <nz.ac.auckland.nihi.trainer.views.FontableButton
+                            android:id="@+id/btnDurationCancel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/cancel" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/nihi_thin_divider_size" >
+                </View>
+
+                <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                    android:id="@+id/btnDistanceGoal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/nihi_ic_review_distance"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="2dp"
+                    android:textOff="@string/goaldialog_label_distancegoal"
+                    android:textOn="@string/goaldialog_label_distancegoal" />
+
+                <RelativeLayout
+                    android:id="@+id/pnlDistanceGoal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <RelativeLayout
+                        android:id="@+id/pnlDistanceGoal_Spinners"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true" >
+
+                        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                            android:id="@+id/txtMeters"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/pckDistance"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignRight="@+id/pckDistance"
+                            android:layout_marginTop="2dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/unit_kilometers" />
+
+                        <nz.ac.auckland.nihi.trainer.views.MyNumberPicker
+                            android:id="@+id/pckDistance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@+id/txtMeters"
+                            max="200"
+                            min="0" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/pnlDistanceGoal_Spinners"
+                        android:weightSum="2" >
+
+                        <nz.ac.auckland.nihi.trainer.views.FontableButton
+                            android:id="@+id/btnDistanceOk"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/ok" />
+
+                        <!-- <View -->
+                        <!-- android:layout_width="1dp" -->
+                        <!-- android:layout_height="match_parent" -->
+                        <!-- android:layout_marginBottom="6dp" -->
+                        <!-- android:layout_marginTop="6dp" -->
+                        <!-- android:background="@android:color/darker_gray" /> -->
+
+                        <nz.ac.auckland.nihi.trainer.views.FontableButton
+                            android:id="@+id/btnDistanceCancel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/cancel" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/nihi_thin_divider_size" >
+                </View>
+
+                <!-- <nz.ac.auckland.nihi.trainer.views.FontableToggleButton -->
+                <!-- android:id="@+id/btnIntensityGoal" -->
+                <!-- android:layout_width="match_parent" -->
+                <!-- android:layout_height="wrap_content" -->
+                <!-- android:drawableLeft="@drawable/nihi_ic_review_hr" -->
+                <!-- android:paddingBottom="2dp" -->
+                <!-- android:paddingLeft="8dp" -->
+                <!-- android:paddingRight="8dp" -->
+                <!-- android:paddingTop="2dp" -->
+                <!-- android:textOff="@string/descr_intensitygoal" -->
+                <!-- android:textOn="@string/descr_intensitygoal" /> -->
+
+
+                <!-- <RelativeLayout -->
+                <!-- android:id="@+id/pnlIntensityGoal" -->
+                <!-- android:layout_width="match_parent" -->
+                <!-- android:layout_height="wrap_content" -->
+                <!-- android:orientation="vertical" -->
+                <!-- android:visibility="gone" > -->
+
+
+                <!-- <RelativeLayout -->
+                <!-- android:id="@+id/pnlIntensityGoal_Spinners" -->
+                <!-- android:layout_width="wrap_content" -->
+                <!-- android:layout_height="wrap_content" -->
+                <!-- android:layout_alignParentTop="true" -->
+                <!-- android:layout_centerHorizontal="true" > -->
+
+
+                <!-- <nz.ac.auckland.nihi.trainer.views.FontableTextView -->
+                <!-- android:id="@+id/txtPHRR" -->
+                <!-- android:layout_width="wrap_content" -->
+                <!-- android:layout_height="wrap_content" -->
+                <!-- android:layout_alignLeft="@+id/pckIntensity" -->
+                <!-- android:layout_alignParentTop="true" -->
+                <!-- android:layout_alignRight="@+id/pckIntensity" -->
+                <!-- android:layout_marginTop="2dp" -->
+                <!-- android:gravity="center_horizontal" -->
+                <!-- android:text="%HRR" /> -->
+
+
+                <!-- <nz.ac.auckland.nihi.trainer.views.MyNumberPicker -->
+                <!-- android:id="@+id/pckIntensity" -->
+                <!-- android:layout_width="wrap_content" -->
+                <!-- android:layout_height="wrap_content" -->
+                <!-- android:layout_alignParentLeft="true" -->
+                <!-- android:layout_below="@+id/txtPHRR" -->
+                <!-- max="100" -->
+                <!-- min="0" -->
+                <!-- value="50" /> -->
+                <!-- </RelativeLayout> -->
+
+
+                <!-- <LinearLayout -->
+                <!-- android:layout_width="match_parent" -->
+                <!-- android:layout_height="wrap_content" -->
+                <!-- android:layout_alignParentLeft="true" -->
+                <!-- android:layout_below="@+id/pnlIntensityGoal_Spinners" -->
+                <!-- android:weightSum="2" > -->
+
+
+                <!-- <nz.ac.auckland.nihi.trainer.views.FontableButton -->
+                <!-- android:id="@+id/btnIntensityOk" -->
+                <!-- android:layout_width="match_parent" -->
+                <!-- android:layout_height="wrap_content" -->
+                <!-- android:layout_weight="1" -->
+                <!-- android:text="@string/ok" /> -->
+
+
+                <!-- <View -->
+                <!-- android:layout_width="1dp" -->
+                <!-- android:layout_height="match_parent" -->
+                <!-- android:layout_marginBottom="6dp" -->
+                <!-- android:layout_marginTop="6dp" -->
+                <!-- android:background="@android:color/darker_gray" /> -->
+
+
+                <!-- <nz.ac.auckland.nihi.trainer.views.FontableButton -->
+                <!-- android:id="@+id/btnIntensityCancel" -->
+                <!-- android:layout_width="match_parent" -->
+                <!-- android:layout_height="wrap_content" -->
+                <!-- android:layout_weight="1" -->
+                <!-- android:text="@string/cancel" /> -->
+                <!-- </LinearLayout> -->
+                <!-- </RelativeLayout> -->
+
+
+                <!-- <View -->
+                <!-- style="@style/DividerStyle" -->
+                <!-- android:layout_width="match_parent" -->
+                <!-- android:layout_height="@dimen/nihi_thin_divider_size" > -->
+                <!-- </View> -->
+
+                <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                    android:id="@+id/btnTrainingImpulseGoal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/nihi_ic_review_energy"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="2dp"
+                    android:textOff="@string/goaldialog_label_loadgoal"
+                    android:textOn="@string/goaldialog_label_loadgoal" />
+
+                <RelativeLayout
+                    android:id="@+id/pnlTrainingImpulseGoal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <RelativeLayout
+                        android:id="@+id/pnlTrainingImpulseGoal_Textbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true" >
+
+                        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                            android:id="@+id/txtkJ"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="2dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/goaldialog_label_load" />
+
+                        <!-- <EditText -->
+                        <!-- android:id="@+id/txtTrainingImpulse" -->
+                        <!-- android:layout_width="match_parent" -->
+                        <!-- android:layout_height="wrap_content" -->
+                        <!-- android:layout_alignParentTop="true" -->
+                        <!-- android:layout_toRightOf="@id/txtkJ" -->
+                        <!-- android:inputType="numberDecimal" /> -->
+
+                        <nz.ac.auckland.nihi.trainer.views.MyNumberPicker
+                            android:id="@+id/pckTrainingImpulse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@+id/txtkJ"
+                            max="70"
+                            min="0"
+                            value="10" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/pnlTrainingImpulseGoal_Textbox"
+                        android:weightSum="2" >
+
+                        <nz.ac.auckland.nihi.trainer.views.FontableButton
+                            android:id="@+id/btnImpulseOk"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/ok" />
+
+                        <!-- <View -->
+                        <!-- android:layout_width="1dp" -->
+                        <!-- android:layout_height="match_parent" -->
+                        <!-- android:layout_marginBottom="6dp" -->
+                        <!-- android:layout_marginTop="6dp" -->
+                        <!-- android:background="@android:color/darker_gray" /> -->
+
+                        <nz.ac.auckland.nihi.trainer.views.FontableButton
+                            android:id="@+id/btnImpulseCancel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/cancel" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/nihi_thin_divider_size" >
+                </View>
+
+                <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                    android:id="@+id/btnFollowRoute"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/nihi_ic_home_routes"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="2dp"
+                    android:textOff="@string/goaldialog_label_routegoal"
+                    android:textOn="@string/goaldialog_label_routegoal" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

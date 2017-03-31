@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5" >
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/stats_descr_duration"
+            android:src="@drawable/nihi_ic_review_duration" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/stats_descr_distance"
+            android:src="@drawable/nihi_ic_review_distance" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/stats_descr_speed"
+            android:src="@drawable/nihi_ic_review_speed" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/stats_descr_heartrate"
+            android:src="@drawable/nihi_ic_review_hr" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/stats_descr_load"
+            android:src="@drawable/nihi_ic_review_energy" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="100" >
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:gravity="center"
+            android:text="@string/placeholder_duration"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtDistance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="13"
+            android:gravity="center_vertical|right"
+            android:text="@string/placeholder_number_fourdigit"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtUnitDistance"
+            style="@style/GreyedOutTextViewStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="top|left"
+            android:text="@string/stats_unit_distance"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="@dimen/tiny_text_size" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtAvgSpeed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="12"
+            android:gravity="center_vertical|right"
+            android:text="@string/placeholder_number_fourdigit"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtUnitSpeed"
+            style="@style/GreyedOutTextViewStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:gravity="top|left"
+            android:text="@string/stats_unit_speed"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="@dimen/tiny_text_size" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtAvgHR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="13"
+            android:gravity="center_vertical|right"
+            android:text="@string/placeholder_number_fourdigit"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtUnitHeartRate"
+            style="@style/GreyedOutTextViewStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="top|left"
+            android:text="@string/stats_unit_heartrate"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="@dimen/tiny_text_size" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtCumulativeImpulse"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:gravity="center"
+            android:text="@string/placeholder_number_fourdigit"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <!-- <nz.ac.auckland.nihi.trainer.views.FontableTextView -->
+        <!-- android:id="@+id/txtUnitEnergy" -->
+        <!-- style="@style/GreyedOutTextViewStyle" -->
+        <!-- android:layout_width="0dp" -->
+        <!-- android:layout_height="match_parent" -->
+        <!-- android:layout_weight="7" -->
+        <!-- android:gravity="top|left" -->
+        <!-- android:text="@string/unit_energy" -->
+        <!-- android:textAppearance="?android:attr/textAppearanceSmall" -->
+        <!-- android:textSize="@dimen/tiny_text_size" /> -->
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,75 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Style for most buttons in the app. -->
+    <style name="PrimaryButtonStyle" parent="@android:style/Widget.Holo.Button">
+        <item name="font">zeroes_three.ttf</item>
+        <item name="android:background">@drawable/primary_button_background</item>
+        <item name="android:textColor">@color/nihi_primary_font_color</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="RadioButtonStyle" parent="@android:style/Widget.Holo.CompoundButton.RadioButton">
+        <item name="font">zeroes_three.ttf</item>
+        <item name="android:textColor">@color/nihi_primary_font_color</item>
+    </style>
+
+    <!-- Style for most TextViews in the app. -->
+    <style name="PrimaryTextViewStyle" parent="@android:style/Widget.Holo.TextView">
+        <item name="font">zeroes_three.ttf</item>
+        <item name="android:textColor">@color/nihi_primary_font_color</item>
+    </style>
+
+    <!-- Style for "greyed-out" or "disabled" TextViews in the app. -->
+    <style name="GreyedOutTextViewStyle" parent="@style/PrimaryTextViewStyle">
+        <item name="android:textColor">@color/nihi_font_color_disabled</item>
+    </style>
+
+    <!-- Style for the root element of a Layout (shows the background image). -->
+    <style name="RootLayoutStyle">
+        <item name="android:background">@drawable/nihi_background_1</item>
+    </style>
+
+    <style name="DialogRootLayoutStyle" parent="@style/RootLayoutStyle">
+        <item name="android:background">@drawable/nihi_dialog_background</item>
+    </style>
+
+    <!-- Style for the Action Bar. -->
+    <style name="ActionBarStyle" parent="@android:style/Widget.Holo.ActionBar.Solid">
+        <item name="font">zeroes_three.ttf</item>
+        <item name="android:background">@drawable/nihi_action_bar_background_1</item>
+        <item name="android:textColor">@color/nihi_font_color_enabled</item>
+    </style>
+
+    <!-- Style for horizontal / vertical dividers. -->
+    <style name="DividerStyle">
+        <item name="android:background">@color/nihi_divider_color</item>
+        <!-- <item name="android:height">@dimen/nihi_divider_thickness</item> -->
+    </style>
+
+    <style name="AppBaseTheme" parent="@android:style/Theme.Holo"></style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:buttonStyle">@style/PrimaryButtonStyle</item>
+        <item name="android:buttonStyleToggle">@style/PrimaryButtonStyle</item>
+        <item name="android:textViewStyle">@style/PrimaryTextViewStyle</item>
+        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+        <item name="android:radioButtonStyle">@style/RadioButtonStyle</item>
+    </style>
+
+    <style name="AppDialogTheme" parent="@android:style/Theme.Holo.Dialog.NoActionBar">
+        <item name="android:buttonStyle">@style/PrimaryButtonStyle</item>
+        <item name="android:buttonStyleToggle">@style/PrimaryButtonStyle</item>
+        <item name="android:textViewStyle">@style/PrimaryTextViewStyle</item>
+        <item name="android:radioButtonStyle">@style/RadioButtonStyle</item>
+    </style>
+
+    <!-- <style name="AppDialogTheme" parent="@style/AppTheme" /> -->
+
+</resources>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/DialogRootLayoutStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".activities.DatePickerActivity" >
+
+    <RelativeLayout
+        android:id="@+id/pnlTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/black" >
+
+        <ImageView
+            android:id="@+id/iconCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/nihi_ic_workout_freeworkout" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtSymptomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iconCalendar"
+            android:layout_alignTop="@id/iconCalendar"
+            android:layout_toRightOf="@+id/iconCalendar"
+            android:gravity="center_vertical"
+            android:text="@string/tilepicker_label_selectinfo"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="?android:colorForegroundInverse" />
+
+        <ImageView
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:orientation="vertical" >
+
+        <View
+            style="@style/DividerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nihi_thick_divider_size" >
+        </View>
+
+        <!-- <ListView -->
+        <!-- android:id="@+id/lstDays" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:alpha="@fraction/alpha_lighter" -->
+        <!-- android:background="@android:color/background_light" > -->
+        <!-- </ListView> -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                android:id="@+id/btnHeartRate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/nihi_ic_review_hr"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="2dp"
+                android:tag="HeartRate"
+                android:textOff="@string/stats_descr_heartrate_long"
+                android:textOn="@string/stats_descr_heartrate_long" />
+
+            <View
+                style="@style/DividerStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nihi_thin_divider_size" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                android:id="@+id/btnPercentHeartRate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/nihi_ic_review_hr"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="2dp"
+                android:tag="PercentHeartRate"
+                android:textOff="@string/stats_descr_hrr_long"
+                android:textOn="@string/stats_descr_hrr_long" />
+
+            <View
+                style="@style/DividerStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nihi_thin_divider_size" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                android:id="@+id/btnAvgHeartRate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/nihi_ic_review_hr"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="2dp"
+                android:tag="AvgHeartRate"
+                android:textOff="@string/stats_descr_avgheartrate_long"
+                android:textOn="@string/stats_descr_avgheartrate_long" />
+
+            <View
+                style="@style/DividerStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nihi_thin_divider_size" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                android:id="@+id/btnAvgPercentHeartRate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/nihi_ic_review_hr"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="2dp"
+                android:tag="AvgPercentHeartRate"
+                android:textOff="@string/stats_descr_avghrr_long"
+                android:textOn="@string/stats_descr_avghrr_long" />
+
+            <View
+                style="@style/DividerStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nihi_thin_divider_size" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                android:id="@+id/btnSpeed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/nihi_ic_review_speed"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="2dp"
+                android:tag="Speed"
+                android:textOff="@string/stats_descr_speed_long"
+                android:textOn="@string/stats_descr_speed_long" />
+
+            <View
+                style="@style/DividerStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nihi_thin_divider_size" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                android:id="@+id/btnAvgSpeed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/nihi_ic_review_speed"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="2dp"
+                android:tag="AvgSpeed"
+                android:textOff="@string/stats_descr_avgspeed_long"
+                android:textOn="@string/stats_descr_avgspeed_long" />
+
+            <View
+                style="@style/DividerStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nihi_thin_divider_size" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                android:id="@+id/btnDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/nihi_ic_review_distance"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="2dp"
+                android:tag="Distance"
+                android:textOff="@string/stats_descr_distance_long"
+                android:textOn="@string/stats_descr_distance_long" />
+
+            <View
+                style="@style/DividerStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nihi_thin_divider_size" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableToggleButton
+                android:id="@+id/btnCumulativeTrainingImpulse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/nihi_ic_review_energy"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="2dp"
+                android:tag="TrainingLoad"
+                android:textOff="@string/stats_descr_load_long"
+                android:textOn="@string/stats_descr_load_long" />
+
+<!--             <View -->
+<!--                 style="@style/DividerStyle" -->
+<!--                 android:layout_width="match_parent" -->
+<!--                 android:layout_height="@dimen/nihi_thin_divider_size" /> -->
+
+<!--             <nz.ac.auckland.nihi.trainer.views.FontableToggleButton -->
+<!--                 android:id="@+id/btnCurrentTrainingImpulse" -->
+<!--                 android:layout_width="match_parent" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:drawableLeft="@drawable/nihi_ic_review_energy" -->
+<!--                 android:paddingBottom="2dp" -->
+<!--                 android:paddingLeft="8dp" -->
+<!--                 android:paddingRight="8dp" -->
+<!--                 android:paddingTop="2dp" -->
+<!--                 android:tag="CurrentTrainingImpulse" -->
+<!--                 android:textOff="@string/descr_current_ti_long" -->
+<!--                 android:textOn="@string/descr_current_ti_long" /> -->
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

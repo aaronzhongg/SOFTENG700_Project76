@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/DialogRootLayoutStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/pnlTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/black" >
+
+        <ImageView
+            android:id="@+id/iconCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/nihi_ic_review_calendar" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableTextView
+            android:id="@+id/txtSymptomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iconCalendar"
+            android:layout_alignTop="@id/iconCalendar"
+            android:layout_toRightOf="@+id/iconCalendar"
+            android:gravity="center_vertical"
+            android:text="@string/notificationdialog_label_notifications"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageView
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+    </RelativeLayout>
+
+    <View
+        style="@style/DividerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nihi_thick_divider_size" >
+    </View>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:orientation="vertical" >
+
+        <nz.ac.auckland.nihi.trainer.views.FontableButton
+            android:id="@+id/btnOk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:text="@string/ok" />
+
+        <View
+            android:id="@+id/spacer1"
+            style="@style/DividerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nihi_thin_divider_size"
+            android:layout_above="@id/btnOk" >
+        </View>
+
+        <ListView
+            android:id="@+id/lstNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/spacer1"
+            android:layout_alignParentTop="true" >
+        </ListView>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- Duration -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <!-- Icon -->
+
+        <ImageView
+            android:id="@+id/imgDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:contentDescription="@string/stats_descr_duration"
+            android:src="@drawable/nihi_ic_review_duration" />
+
+        <!-- Text -->
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/imgDuration" >
+
+            <!-- Title -->
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtTitleDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/stats_descr_duration"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <!-- Values -->
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/txtTitleDuration"
+                android:layout_below="@+id/txtTitleDuration"
+                android:text="@string/placeholder_duration"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/separator1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nihi_thin_divider_size"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/horizontal_line" />
+
+    <!-- Distance -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <!-- Icon -->
+
+        <ImageView
+            android:id="@+id/imgDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:contentDescription="@string/stats_descr_distance"
+            android:src="@drawable/nihi_ic_review_distance" />
+
+        <!-- Text -->
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/imgDistance" >
+
+            <!-- Title -->
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtTitleDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/stats_descr_distance"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <!-- Values -->
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/txtTitleDistance"
+                android:layout_below="@+id/txtTitleDistance"
+                android:text="@string/placeholder_number_fourdigit"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtUnitDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtDistance"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtDistance"
+                android:text="@string/stats_unit_distance"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/separator2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nihi_thin_divider_size"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/horizontal_line" />
+
+    <!-- Load -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <!-- Icon -->
+
+        <ImageView
+            android:id="@+id/imgEnergy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:contentDescription="@string/stats_descr_load"
+            android:src="@drawable/nihi_ic_review_energy" />
+
+        <!-- Text -->
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/imgEnergy" >
+
+            <!-- Title -->
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtTitleCumulativeImpulse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/stats_descr_load"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <!-- Values -->
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtCumulativeImpulse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/txtTitleCumulativeImpulse"
+                android:layout_below="@+id/txtTitleCumulativeImpulse"
+                android:text="@string/placeholder_number_fourdigit"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <!-- <nz.ac.auckland.nihi.trainer.views.FontableTextView -->
+            <!-- android:id="@+id/txtUnitEnergy" -->
+            <!-- android:layout_width="wrap_content" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_alignBaseline="@+id/txtEnergy" -->
+            <!-- android:layout_marginLeft="4dp" -->
+            <!-- android:layout_toRightOf="@+id/txtEnergy" -->
+            <!-- android:text="@string/unit_energy" -->
+            <!-- android:textAppearance="?android:attr/textAppearanceSmall" /> -->
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/separator3"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nihi_thin_divider_size"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/horizontal_line" />
+
+    <!-- Speed -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <!-- Icon -->
+
+        <ImageView
+            android:id="@+id/imgSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:contentDescription="@string/stats_descr_speed"
+            android:src="@drawable/nihi_ic_review_speed" />
+
+        <!-- Text -->
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/imgSpeed" >
+
+            <!-- Title -->
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtTitleSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/stats_descr_speed"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <!-- Values -->
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtDescrMinSpeed"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/txtTitleSpeed"
+                android:layout_below="@+id/txtTitleSpeed"
+                android:gravity="right"
+                android:text="@string/min_colon"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtMinSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtDescrMinSpeed"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtDescrMinSpeed"
+                android:text="@string/placeholder_number_fourdigit"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtUnitMinSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtMinSpeed"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtMinSpeed"
+                android:text="@string/stats_unit_speed"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtDescrAvgSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/txtDescrMinSpeed"
+                android:layout_alignRight="@+id/txtDescrMinSpeed"
+                android:layout_below="@+id/txtDescrMinSpeed"
+                android:gravity="right"
+                android:text="@string/avg_colon"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtAvgSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtDescrAvgSpeed"
+                android:layout_alignBottom="@+id/txtDescrAvgSpeed"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtDescrAvgSpeed"
+                android:text="@string/placeholder_number_fourdigit"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtUnitAvgSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtAvgSpeed"
+                android:layout_alignBottom="@+id/txtAvgSpeed"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtAvgSpeed"
+                android:text="@string/stats_unit_speed"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtDescrMaxSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/txtDescrAvgSpeed"
+                android:layout_alignRight="@+id/txtDescrMinSpeed"
+                android:layout_below="@+id/txtDescrAvgSpeed"
+                android:gravity="right"
+                android:text="@string/max_colon"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtMaxSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtDescrMaxSpeed"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtDescrMaxSpeed"
+                android:text="@string/placeholder_number_fourdigit"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtUnitMaxSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtMaxSpeed"
+                android:layout_alignBottom="@+id/txtMaxSpeed"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtMaxSpeed"
+                android:text="@string/stats_unit_speed"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/separator4"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nihi_thin_divider_size"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/horizontal_line" />
+
+    <!-- Heart Rate -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <!-- Icon -->
+
+        <ImageView
+            android:id="@+id/imgHeartRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:contentDescription="@string/stats_descr_heartrate"
+            android:src="@drawable/nihi_ic_review_hr" />
+
+        <!-- Text -->
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/imgHeartRate" >
+
+            <!-- Title -->
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtTitleHeartRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/stats_descr_heartrate"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <!-- Values -->
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtDescrMinHR"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/txtTitleHeartRate"
+                android:layout_below="@+id/txtTitleHeartRate"
+                android:gravity="right"
+                android:text="@string/min_colon"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtMinHR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtDescrMinHR"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtDescrMinHR"
+                android:text="@string/placeholder_number_fourdigit"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtUnitMinHR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtMinHR"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtMinHR"
+                android:text="@string/stats_unit_heartrate"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtMinHRPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtUnitMinHR"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/txtUnitMinHR"
+                android:text="@string/placeholder_number_fourdigit"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtUnitMinHRPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtMinHRPercent"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtMinHRPercent"
+                android:text="@string/stats_unit_hrr"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtDescrAvgHR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/txtTitleHeartRate"
+                android:layout_alignRight="@+id/txtDescrMinHR"
+                android:layout_below="@+id/txtDescrMinHR"
+                android:gravity="right"
+                android:text="@string/avg_colon"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtAvgHR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtDescrAvgHR"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtDescrAvgHR"
+                android:text="@string/placeholder_number_fourdigit"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtUnitAvgHR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtAvgHR"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtAvgHR"
+                android:text="@string/stats_unit_heartrate"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtAvgHRPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtUnitAvgHR"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/txtUnitAvgHR"
+                android:text="@string/placeholder_number_fourdigit"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtUnitAvgHRPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtAvgHRPercent"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtAvgHRPercent"
+                android:text="@string/stats_unit_hrr"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtDescrMaxHR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/txtTitleHeartRate"
+                android:layout_alignRight="@+id/txtDescrMinHR"
+                android:layout_below="@+id/txtDescrAvgHR"
+                android:gravity="right"
+                android:text="@string/max_colon"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtMaxHR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtDescrMaxHR"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtDescrMaxHR"
+                android:text="@string/placeholder_number_fourdigit"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtUnitMaxHR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtMaxHR"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtMaxHR"
+                android:text="@string/stats_unit_heartrate"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtMaxHRPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtUnitMaxHR"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/txtUnitMaxHR"
+                android:text="@string/placeholder_number_fourdigit"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/txtUnitMaxHRPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtMaxHRPercent"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/txtMaxHRPercent"
+                android:text="@string/stats_unit_hrr"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

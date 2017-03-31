@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp" >
+
+        <ImageView
+            android:id="@+id/imgGoalIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/nihi_ic_review_duration" />
+
+        <LinearLayout
+            android:id="@+id/pnlGoalType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/imgGoalIcon"
+            android:orientation="horizontal"
+            android:weightSum="100" >
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/lblGoalType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/placeholder_goaltype"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text=":"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/lblGoalTarget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:text="@string/placeholder_number_twodigit"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/lblGoalUnit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="100"
+                android:text="@string/placeholder_units"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ImageView
+                android:id="@+id/btnRemoveGoal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pnlGoalType"
+            android:layout_toRightOf="@id/imgGoalIcon" >
+
+            <ProgressBar
+                android:id="@+id/prgGoalProgress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:indeterminate="false"
+                android:indeterminateOnly="false"
+                android:max="100"
+                android:progress="50"
+                android:progressDrawable="@drawable/custom_progress_bar" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableTextView
+                android:id="@+id/lblGoalProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/placeholder_percentage"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </FrameLayout>
+    </RelativeLayout>
+
+</FrameLayout>

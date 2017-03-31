@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_select_date"
+        android:icon="@drawable/nihi_ic_review_calendar"
+        android:showAsAction="always"
+        android:title="@string/datepicker_selectdate"/>
+    
+<!--     <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings"/> -->
+        
+<!--         <item  -->
+<!--             android:id="@+id/action_synchronize_data" -->
+<!--             android:title="Synchronize with Odin" -->
+<!--             android:showAsAction="never"/> -->
+
+</menu>

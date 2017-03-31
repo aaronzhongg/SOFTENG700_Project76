@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pnlBloodLactateRow"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="100" >
+
+    <EditText
+        android:id="@+id/txtPropHRR"
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="20"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/txtBloodLactate"
+        style="@style/GreyedOutTextViewStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="70"
+        android:inputType="numberDecimal" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableButton
+        android:id="@+id/btnRemoveBloodLactate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:text="-"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</LinearLayout>

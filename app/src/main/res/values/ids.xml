@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="collapsedView" type="id" />
+    <item name="expandedView" type="id" />
+    <item name="btnCollapse" type="id" />
+</resources>
