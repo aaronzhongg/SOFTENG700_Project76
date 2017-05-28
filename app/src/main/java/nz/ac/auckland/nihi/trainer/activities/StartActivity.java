@@ -41,7 +41,7 @@ public class StartActivity extends FragmentActivity implements SelectHostDialogF
 		super.onCreate(savedInstanceState);
 
 		// Move the log file to a proper location.
-		Logger.setupLogFileLocation(this);
+		//Logger.setupLogFileLocation(this);
 
 		// Define the database.
 		DatabaseManager.getInstance().defineDatabase(this, string.db_name, integer.db_version, NihiDBHelper.class,

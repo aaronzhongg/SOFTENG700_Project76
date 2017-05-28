@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/REMOTE-android-client.iml" filepath="$PROJECT_DIR$/REMOTE-android-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/bioharness-lib/bioharness-lib.iml" filepath="$PROJECT_DIR$/bioharness-lib/bioharness-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/odin2-android/odin2-android.iml" filepath="$PROJECT_DIR$/odin2-android/odin2-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/remote-android-client.iml" filepath="$PROJECT_DIR$/remote-android-client.iml" />
     </modules>
   </component>
 </project>

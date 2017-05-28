@@ -128,7 +128,7 @@ public class NihiPreferencesFragment extends Fragment {
 
 		// Button hookups
 		root.findViewById(id.btnSwitchUser).setOnClickListener(btnSwitchUserClickListener);
-		root.findViewById(id.btnEmailLogs).setOnClickListener(btnEmailLogsClickListener);
+		//root.findViewById(id.btnEmailLogs).setOnClickListener(btnEmailLogsClickListener);
 		root.findViewById(id.btnClearLogs).setOnClickListener(btnClearLogsClickListener);
 
 		return root;
@@ -137,54 +137,54 @@ public class NihiPreferencesFragment extends Fragment {
 	/**
 	 * When the "Email Logs" button is clicked, email the logs. Present a confirmation dialog first.
 	 */
-	private final View.OnClickListener btnEmailLogsClickListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			builder.setTitle(string.settingsscreen_dialog_emaillogs)
-					.setMessage(string.settingsscreen_dialog_emaillogs_message)
-					.setPositiveButton(string.yes, new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-
-							// Actually email the logs
-							try {
-								File logFileArchive = Logger.archiveLogFiles(getActivity());
-
-								if (logFileArchive == null) {
-									Toast.makeText(getActivity(), string.settingsscreen_toast_nologfiles,
-											Toast.LENGTH_SHORT).show();
-								}
-
-								else {
-									String emailAddress = "amea020@aucklanduni.ac.nz";
-									String subject = "Log files for REMOTE-CR User "
-											+ OdinPreferences.UserName.getStringValue(getActivity(),
-													"[Unknown Username]");
-									String message = "";
-
-									Uri fileUri = Uri.fromFile(logFileArchive);
-
-									Intent emailIntent = new Intent(Intent.ACTION_SEND);
-									emailIntent.setType("message/rfc822");
-									emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { emailAddress });
-									emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-									emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-									emailIntent.putExtra(Intent.EXTRA_TEXT, message);
-
-									String chooserTitle = getString(string.settingsscreen_chooser_emaillogs);
-									startActivity(Intent.createChooser(emailIntent, chooserTitle));
-								}
-							} catch (IOException ex) {
-								logger.error("Can't archive logs: " + ex.getMessage(), ex);
-							}
-
-						}
-					}).setNegativeButton(string.no, null).setCancelable(true).show();
-		}
-	};
+//	private final View.OnClickListener btnEmailLogsClickListener = new View.OnClickListener() {
+//
+//		@Override
+//		public void onClick(View v) {
+//			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//			builder.setTitle(string.settingsscreen_dialog_emaillogs)
+//					.setMessage(string.settingsscreen_dialog_emaillogs_message)
+//					.setPositiveButton(string.yes, new DialogInterface.OnClickListener() {
+//
+//						@Override
+//						public void onClick(DialogInterface dialog, int which) {
+//
+//							// Actually email the logs
+//							try {
+//								File logFileArchive = Logger.archiveLogFiles(getActivity());
+//
+//								if (logFileArchive == null) {
+//									Toast.makeText(getActivity(), string.settingsscreen_toast_nologfiles,
+//											Toast.LENGTH_SHORT).show();
+//								}
+//
+//								else {
+//									String emailAddress = "amea020@aucklanduni.ac.nz";
+//									String subject = "Log files for REMOTE-CR User "
+//											+ OdinPreferences.UserName.getStringValue(getActivity(),
+//													"[Unknown Username]");
+//									String message = "";
+//
+//									Uri fileUri = Uri.fromFile(logFileArchive);
+//
+//									Intent emailIntent = new Intent(Intent.ACTION_SEND);
+//									emailIntent.setType("message/rfc822");
+//									emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { emailAddress });
+//									emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+//									emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+//									emailIntent.putExtra(Intent.EXTRA_TEXT, message);
+//
+//									String chooserTitle = getString(string.settingsscreen_chooser_emaillogs);
+//									startActivity(Intent.createChooser(emailIntent, chooserTitle));
+//								}
+//							} catch (IOException ex) {
+//								logger.error("Can't archive logs: " + ex.getMessage(), ex);
+//							}
+//
+//						}
+//					}).setNegativeButton(string.no, null).setCancelable(true).show();
+//		}
+//	};
 
 	/**
 	 * When the "Clear Logs" button is clicked, clear the logs. Present a confirmation dialog first.
@@ -201,7 +201,7 @@ public class NihiPreferencesFragment extends Fragment {
 						public void onClick(DialogInterface dialog, int which) {
 
 							// Actually clear the logs
-							Logger.clearAllLogs(getActivity());
+							//Logger.clearAllLogs(getActivity());
 
 							Toast.makeText(getActivity(), string.settingsscreen_toast_logscleared, Toast.LENGTH_SHORT)
 									.show();

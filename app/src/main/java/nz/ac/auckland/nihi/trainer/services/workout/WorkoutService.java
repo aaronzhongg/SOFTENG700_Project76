@@ -251,7 +251,7 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 		} catch (SQLException e) {
 			// Won't happen, we can ignore this.
 			logger.error("endWorkout(): " + e.getMessage(), e);
-			Logger.flushLogOnShutdown();
+			//Logger.flushLogOnShutdown();
 			throw new RuntimeException(e);
 		}
 
