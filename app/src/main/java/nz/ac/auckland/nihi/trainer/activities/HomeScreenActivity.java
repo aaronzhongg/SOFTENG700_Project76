@@ -201,7 +201,8 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 			if (alreadyLoggedIn) {
 				// If they need to enter profile info, go to the profile screen now.
 				if (profileScreenRequired()) {
-					forceProfileScreen();
+					// TODO: REMOVE ODIN SERVICE - Remove profile screen (entering user details)
+//					forceProfileScreen();
 				}
 			}
 
@@ -342,7 +343,8 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 		if (success) {
 			// If they need to enter profile info, go to the profile screen now.
 			if (profileScreenRequired()) {
-				forceProfileScreen();
+				// TODO: REMOVE ODIN SERVICE - Profile screen (adding user details)
+//				forceProfileScreen();
 			}
 		}
 
