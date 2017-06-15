@@ -20,7 +20,8 @@ public interface WorkoutServiceStatus {
 
 	boolean isConnectedToGPS();
 
-	EndpointConnectionStatus getOdinConnectivityStatus();
+	//	TODO: REMOVE ODIN CONNECTION
+//	EndpointConnectionStatus getOdinConnectivityStatus();
 
 	boolean isMonitoring();
 

@@ -63,19 +63,21 @@ public class StartActivity extends FragmentActivity implements SelectHostDialogF
 		// Otherwise, check that we've defined a HostName and Port. If so, start the home screen activity. If not, show
 		// a dialog to pick one.
 		else {
-			OdinPreferences.SurrogateName.setValue(this, "nihi-trainer");
+			//	TODO: REMOVE ODIN CONNECTION
+//			OdinPreferences.SurrogateName.setValue(this, "nihi-trainer");
 			logger.debug("onCreate(): Not running on test harness.");
 
+			//	TODO: REMOVE ODIN CONNECTION
 			// If we need to pick a host, start the dialog for that
-			if (OdinPreferences.HostName.getStringValue(this, null) == null) {
-				SelectHostDialogFragment frag = new SelectHostDialogFragment();
-				frag.show(getSupportFragmentManager(), "SelectHostDialog");
-			}
+//			if (OdinPreferences.HostName.getStringValue(this, null) == null) {
+//				SelectHostDialogFragment frag = new SelectHostDialogFragment();
+//				frag.show(getSupportFragmentManager(), "SelectHostDialog");
+//			}
 
 			// Otherwise we're good to go.
-			else {
+//			else {
 				startHomeScreenActivity();
-			}
+//			}
 		}
 
 		// if (!TestHarnessUtils.isTestHarness()) {
