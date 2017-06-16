@@ -79,11 +79,11 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/nihi_ic_home_review"
+                android:drawableTop="@drawable/nihi_ic_home_review"
                 android:paddingBottom="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:paddingTop="8dp"
+                android:paddingTop="25dp"
                 android:text="@string/homescreen_button_review" />
 
             <nz.ac.auckland.nihi.trainer.views.FontableButton
@@ -95,11 +95,11 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/nihi_ic_home_goals"
+                android:drawableTop="@drawable/nihi_ic_home_goals"
                 android:paddingBottom="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:paddingTop="8dp"
+                android:paddingTop="25dp"
                 android:text="@string/homescreen_button_goals" />
 
         </LinearLayout>
@@ -119,11 +119,11 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/nihi_ic_home_routes"
+                android:drawableTop="@drawable/nihi_ic_home_routes"
                 android:paddingBottom="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:paddingTop="8dp"
+                android:paddingTop="25dp"
                 android:text="@string/homescreen_button_routes" />
 
             <nz.ac.auckland.nihi.trainer.views.FontableButton
@@ -135,11 +135,11 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/nihi_ic_home_profile"
+                android:drawableTop="@drawable/nihi_ic_home_profile"
                 android:paddingBottom="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:paddingTop="8dp"
+                android:paddingTop="25dp"
                 android:text="@string/homescreen_button_profile" />
 
         </LinearLayout>
