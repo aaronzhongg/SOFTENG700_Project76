@@ -1,32 +1,26 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/RelativeLayout1"
     style="@style/RootLayoutStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeScreenActivity" >
+    tools:context=".HomeScreenActivity">
 
     <!-- xmlns:app="http://schemas.android.com/apk/res/nz.ac.auckland.nihi.trainer" -->
 
+
     <LinearLayout
         android:id="@+id/LinearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:orientation="vertical" >
-
-        <nz.ac.auckland.nihi.trainer.views.FontableButton
-            android:id="@+id/btnReview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/nihi_ic_home_review"
-            android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/homescreen_button_review" />
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <!-- <View -->
         <!-- android:layout_width="match_parent" -->
@@ -35,16 +29,12 @@
         <!-- android:layout_marginRight="6dp" -->
         <!-- android:background="@android:color/darker_gray" /> -->
 
-        <nz.ac.auckland.nihi.trainer.views.FontableButton
-            android:id="@+id/btnRoutes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/nihi_ic_home_routes"
-            android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/homescreen_button_routes" />
+        <!-- <View -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="1dp" -->
+        <!-- android:layout_marginLeft="6dp" -->
+        <!-- android:layout_marginRight="6dp" -->
+        <!-- android:background="@android:color/darker_gray" /> -->
 
         <!-- <View -->
         <!-- android:layout_width="match_parent" -->
@@ -53,54 +43,12 @@
         <!-- android:layout_marginRight="6dp" -->
         <!-- android:background="@android:color/darker_gray" /> -->
 
-        <nz.ac.auckland.nihi.trainer.views.FontableButton
-            android:id="@+id/btnFriends"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/nihi_ic_home_friends"
-            android:enabled="false"
-            android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/homescreen_button_friends"
-            android:visibility="gone" />
-
         <!-- <View -->
         <!-- android:layout_width="match_parent" -->
         <!-- android:layout_height="1dp" -->
         <!-- android:layout_marginLeft="6dp" -->
         <!-- android:layout_marginRight="6dp" -->
         <!-- android:background="@android:color/darker_gray" /> -->
-
-        <nz.ac.auckland.nihi.trainer.views.FontableButton
-            android:id="@+id/btnProfile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/nihi_ic_home_profile"
-            android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/homescreen_button_profile" />
-
-        <!-- <View -->
-        <!-- android:layout_width="match_parent" -->
-        <!-- android:layout_height="1dp" -->
-        <!-- android:layout_marginLeft="6dp" -->
-        <!-- android:layout_marginRight="6dp" -->
-        <!-- android:background="@android:color/darker_gray" /> -->
-
-        <nz.ac.auckland.nihi.trainer.views.FontableButton
-            android:id="@+id/btnGoals"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/nihi_ic_home_goals"
-            android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/homescreen_button_goals" />
 
         <!-- <View -->
         <!-- android:layout_width="match_parent" -->
@@ -116,25 +64,130 @@
         <!-- android:layout_marginTop="50dp" -->
         <!-- android:background="@android:color/darker_gray" /> -->
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <nz.ac.auckland.nihi.trainer.views.FontableButton
+                android:id="@+id/btnReview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/nihi_ic_home_review"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/homescreen_button_review" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableButton
+                android:id="@+id/btnGoals"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/nihi_ic_home_goals"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/homescreen_button_goals" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <nz.ac.auckland.nihi.trainer.views.FontableButton
+                android:id="@+id/btnRoutes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/nihi_ic_home_routes"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/homescreen_button_routes" />
+
+            <nz.ac.auckland.nihi.trainer.views.FontableButton
+                android:id="@+id/btnProfile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/nihi_ic_home_profile"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/homescreen_button_profile" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <nz.ac.auckland.nihi.trainer.views.FontableButton
+                android:id="@+id/btnWorkout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/nihi_ic_home_workout"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/homescreen_button_workout" />
+        </LinearLayout>
+
         <nz.ac.auckland.nihi.trainer.views.FontableButton
-            android:id="@+id/btnWorkout"
+            android:id="@+id/btnFriends"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/nihi_ic_home_workout"
+            android:drawableLeft="@drawable/nihi_ic_home_friends"
+            android:enabled="false"
             android:paddingBottom="8dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingTop="8dp"
-            android:text="@string/homescreen_button_workout" />
+            android:text="@string/homescreen_button_friends"
+            android:visibility="gone" />
+
     </LinearLayout>
 
     <nz.ac.auckland.nihi.trainer.views.FontableTextView
         android:id="@+id/txtTestHarness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/LinearLayout1"
         android:layout_centerHorizontal="true"
         android:text="@string/homescreen_label_testharness"
         android:visibility="gone" />
 
-</RelativeLayout>
+</LinearLayout>
