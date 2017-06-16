@@ -830,8 +830,10 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 		}
 
 		// If we're not fully connected to both Odin and the Bioharness, show the connection dialog.
-		if (status == null || status.getBioharnessConnectivityStatus() != BHConnectivityStatus.CONNECTED
-				|| status.getOdinConnectivityStatus() != EndpointConnectionStatus.CONNECTED) {
+		if (status == null || status.getBioharnessConnectivityStatus() != BHConnectivityStatus.CONNECTED) {
+			//	TODO: REMOVE ODIN CONNECTION
+//				|| status.getOdinConnectivityStatus() != EndpointConnectionStatus.CONNECTED) {
+
 
 			if (this.connectionDialog == null) {
 				this.connectionDialog = new ConnectionProgressDialogFragment();
@@ -846,7 +848,8 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 
 			if (status != null) {
 				this.connectionDialog.setBioharnessConnectionStatus(status.getBioharnessConnectivityStatus());
-				this.connectionDialog.setOdinConnectionStatus(status.getOdinConnectivityStatus());
+				//	TODO: REMOVE ODIN CONNECTION
+//				this.connectionDialog.setOdinConnectionStatus(status.getOdinConnectivityStatus());
 			} else {
 				this.connectionDialog.setBioharnessConnectionStatus(BHConnectivityStatus.DISCONNECTED);
 				this.connectionDialog.setOdinConnectionStatus(EndpointConnectionStatus.DISCONNECTED);

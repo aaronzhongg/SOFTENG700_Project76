@@ -16,7 +16,7 @@ public interface IWorkoutService {
 
 	ExerciseSessionData getCurrentSession();
 
-	void retryOdinConnection();
+//	void retryOdinConnection();
 
 	void retryBioharnessConnection();
 

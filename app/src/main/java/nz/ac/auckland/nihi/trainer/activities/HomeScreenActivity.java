@@ -212,21 +212,25 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 		// test harness script if we are in test mode).
 		else if (!isLoggingIn) {
 
-			// Check if someone's logged in previously.
-			boolean alreadyLoggedIn = OdinPreferences.UserName.getStringValue(this, null) != null;
+			//	TODO: REMOVE ODIN CONNECTION - remove login
+//			// Check if someone's logged in previously.
+//			boolean alreadyLoggedIn = OdinPreferences.UserName.getStringValue(this, null) != null;
+			boolean alreadyLoggedIn = true;
 
 			// If they have...
 			if (alreadyLoggedIn) {
 				// If they need to enter profile info, go to the profile screen now.
 				if (profileScreenRequired()) {
-					forceProfileScreen();
+					// TODO: REMOVE ODIN SERVICE - Remove profile screen (entering user details)
+//					forceProfileScreen();
 				}
 			}
 
+			//	TODO: REMOVE ODIN CONNECTION
 			// If they haven't, bring up the login dialog.
-			else {
-				showLoginDialog();
-			}
+//			else {
+//				showLoginDialog();
+//			}
 
 		}
 	}
@@ -247,15 +251,15 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	// ************************************************************************************************************
 	// Odin / Login handler methods
 	// ************************************************************************************************************
-
-	/**
-	 * Shows the login dialog.
-	 */
-	private void showLoginDialog() {
-		isLoggingIn = true;
-		LoginDialogFragment dialog = new LoginDialogFragment();
-		dialog.show(getSupportFragmentManager(), "LoginDialog");
-	}
+//	TODO: REMOVE ODIN CONNECTION - Remove login
+//	/**
+//	 * Shows the login dialog.
+//	 */
+//	private void showLoginDialog() {
+//		isLoggingIn = true;
+//		LoginDialogFragment dialog = new LoginDialogFragment();
+//		dialog.show(getSupportFragmentManager(), "LoginDialog");
+//	}
 
 	/**
 	 * Called when the user has finished with the login dialog. If they have cancelled, then exit. If not, then begin
@@ -266,25 +270,25 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	 */
 	public void onFinishLoginFragment(LoginDialogFragment dialog, boolean cancelled) {
 
-		if (cancelled) {
-			finish();
-		} else {
-
-			// Save variables
-			long id = OdinIDUtils.generateID(dialog.getUserName());
-			OdinPreferences.UserID.setValue(this, id);
-			String username = dialog.getUserName();
-			OdinPreferences.UserName.setValue(this, username);
-			String password = dialog.getPassword();
-			OdinPreferences.Password.setValue(this, password);
-
-			// Attempt to synchronize.
-			// DownloadAllDataTask downloadTask = new DownloadAllDataTask(this, getOdinService(), getDbHelper()
-			// .getSectionHelper(NihiDBHelper.class), this, true);
-			// downloadTask.execute();
-			beginOdinConnect();
-
-		}
+//		if (cancelled) {
+//			finish();
+//		} else {
+//
+//			// Save variables
+//			long id = OdinIDUtils.generateID(dialog.getUserName());
+//			OdinPreferences.UserID.setValue(this, id);
+//			String username = dialog.getUserName();
+//			OdinPreferences.UserName.setValue(this, username);
+//			String password = dialog.getPassword();
+//			OdinPreferences.Password.setValue(this, password);
+//
+//			// Attempt to synchronize.
+//			// DownloadAllDataTask downloadTask = new DownloadAllDataTask(this, getOdinService(), getDbHelper()
+//			// .getSectionHelper(NihiDBHelper.class), this, true);
+//			// downloadTask.execute();
+//			beginOdinConnect();
+//
+//		}
 
 	}
 
@@ -315,22 +319,23 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	 * Called when we try to connect to Odin, but can't due to incorrect login details. Prompts the user to enter their
 	 * login details again.
 	 */
-	@Override
-	protected void odinLoginFailed() {
-		isLoggingIn = false;
-		OdinPreferences.UserID.clearValue(this);
-		OdinPreferences.UserName.clearValue(this);
-		OdinPreferences.Password.clearValue(this);
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setCancelable(false).setTitle(string.homescreen_dialog_invalidlogin)
-				.setMessage(string.homescreen_dialog_invalidlogin_message)
-				.setPositiveButton(string.ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						showLoginDialog();
-					}
-				}).show();
-	}
+	//	TODO: REMOVE ODIN CONNECTION - remove login
+//	@Override
+//	protected void odinLoginFailed() {
+//		isLoggingIn = false;
+//		OdinPreferences.UserID.clearValue(this);
+//		OdinPreferences.UserName.clearValue(this);
+//		OdinPreferences.Password.clearValue(this);
+//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//		builder.setCancelable(false).setTitle(string.homescreen_dialog_invalidlogin)
+//				.setMessage(string.homescreen_dialog_invalidlogin_message)
+//				.setPositiveButton(string.ok, new DialogInterface.OnClickListener() {
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						showLoginDialog();
+//					}
+//				}).show();
+//	}
 
 	/**
 	 * Called when we try to connect to Odin, and succeed. Here we will download all user data and save it to the local
@@ -358,7 +363,8 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 		if (success) {
 			// If they need to enter profile info, go to the profile screen now.
 			if (profileScreenRequired()) {
-				forceProfileScreen();
+				// TODO: REMOVE ODIN SERVICE - Profile screen (adding user details)
+//				forceProfileScreen();
 			}
 		}
 
