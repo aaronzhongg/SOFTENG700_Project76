@@ -39,6 +39,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
             logger.info("onCreate(): Creating Database tables.");
+            //For testing, drop tables first
+            TableUtils.dropTable(connectionSource, Route.class, true);
+            TableUtils.dropTable(connectionSource, RouteCoordinate.class, true);
+
             TableUtils.createTableIfNotExists(connectionSource, Route.class);
             TableUtils.createTableIfNotExists(connectionSource, RouteCoordinate.class);
         } catch (SQLException e) {
@@ -78,6 +82,21 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 throw new RuntimeException(e);
             }
             onCreate(db, connectionSource);
+        }
+    }
+
+    public void ResetDB(){
+        try {
+            logger.info("onCreate(): Creating Database tables.");
+            //For testing, drop tables first
+            TableUtils.dropTable(connectionSource, Route.class, true);
+            TableUtils.dropTable(connectionSource, RouteCoordinate.class, true);
+
+            TableUtils.createTableIfNotExists(connectionSource, Route.class);
+            TableUtils.createTableIfNotExists(connectionSource, RouteCoordinate.class);
+        } catch (SQLException e) {
+            logger.error("onCreate(): Can't create Database tables.", e);
+            throw new RuntimeException(e);
         }
     }
 

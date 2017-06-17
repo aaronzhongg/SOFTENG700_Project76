@@ -503,7 +503,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	/**
 	 * The {@link ServiceConnection} that allows us to bind to the {@link WorkoutService Workout} service. When a
 	 * service connection is obtained, obtain a reference to the service interface and set its listener to our internal
-	 * {@link WorkoutActivity#workoutServiceListener} object. Then, hookup the UI to the service's sesison object, and
+	 *  WorkoutActivity#workoutServiceListener} object. Then, hookup the UI to the service's sesison object, and
 	 * set the state of the UI to match.
 	 */
 	private final ServiceConnection workoutServiceConn = new ServiceConnection() {
@@ -795,7 +795,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	 * 
 	 * UPDATE: This also controls whether the timer is running! YAY!
 	 * 
-	 * @param newState
+	 *
 	 */
 	private void setUIState(WorkoutServiceStatus status) {
 

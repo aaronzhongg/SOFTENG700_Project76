@@ -18,7 +18,8 @@ public class DummyRouteCreator {
 
     public static Route createDummyRoute(Dao<Route, Integer> routeDAO, String testRouteImagePath) throws SQLException {
         Route route = new Route();
-        route.setName("route_" + UUID.randomUUID().toString());
+        route.setUserId(1);
+        route.setName("route_test");
         route.setThumbnailFileName(testRouteImagePath);
         route.setFavorite(false);
         route.setCreatorName("alex");

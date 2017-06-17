@@ -17,6 +17,7 @@ import nz.ac.auckland.nihi.trainer.R.drawable;
 import nz.ac.auckland.nihi.trainer.R.id;
 import nz.ac.auckland.nihi.trainer.R.layout;
 import nz.ac.auckland.nihi.trainer.R.string;
+import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.services.location.DummyGPSServiceImpl;
@@ -50,6 +51,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.odin.android.services.LocalBinder;
 
@@ -83,7 +85,7 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 	private LocalBinder<IGPSService> gpsService;
 
 	// The helper allowing us to access the database.
-	private LocalDatabaseHelper dbHelper;
+	private DatabaseHelper dbHelper;
 
 	// The UI element that displays routes to the user.
 	private ExpandableListView lstRoutes;
@@ -397,7 +399,7 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 			route.setFavorite(isChecked);
 
 			try {
-				getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO().update(route);
+				getDbHelper().getRoutesDAO().update(route);
 			} catch (SQLException e) {
 				logger.error(e);
 				throw new RuntimeException(e);
@@ -444,7 +446,7 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 
 		try {
 			List<Route> routes = null;
-			Dao<Route, String> routeDao = getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO();
+			Dao<Route, Integer> routeDao = getDbHelper().getRoutesDAO();
 
 			// Load the subset of routes to display
 			switch (viewing) {
@@ -664,7 +666,7 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 		 */
 		private void generateThumbnail(Context context, Route route, ImageView imageView, View progressBar) {
 			try {
-				Dao<Route, String> routeDao = getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO();
+				Dao<Route, Integer> routeDao = getDbHelper().getRoutesDAO();
 
 				RouteThumbnailLoaderTask loadTask = new RouteThumbnailLoaderTask(context, route, routeDao, imageView,
 						progressBar);
@@ -726,9 +728,9 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 	/**
 	 * Lazily creates the {@link #dbHelper} if required, then returns it.
 	 */
-	private LocalDatabaseHelper getDbHelper() {
+	private DatabaseHelper getDbHelper() {
 		if (dbHelper == null) {
-			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(this);
+			dbHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
 		}
 		return dbHelper;
 	}

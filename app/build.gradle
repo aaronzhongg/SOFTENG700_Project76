@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    mavenCentral()
+}
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
@@ -33,5 +36,11 @@ dependencies {
     compile project(':odin2-android')
     compile project(':bioharness-lib')
     compile 'com.google.android.gms:play-services:10.0.1'
+
+    compile 'org.kie:kie-api:6.1.0.Final'
+    compile 'org.drools:drools-core:6.1.0.Final'
+    compile 'org.drools:drools-compiler:6.1.0.Final'
+    compile files('libs/drools-android-6.5.0.Final.jar')
+    compile files('libs/janino-3.0.7.jar')
     // compile 'com.google.android.gms:play-services-maps:10.0.1'
 }

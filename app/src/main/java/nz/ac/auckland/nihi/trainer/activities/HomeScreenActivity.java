@@ -135,15 +135,15 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 			//startDailyDownloadTask();
 
 			//For testing the db
-			TextView tv = new TextView(this);
-			tv.setMovementMethod(new ScrollingMovementMethod());
+			//TextView tv = new TextView(this);
+			//tv.setMovementMethod(new ScrollingMovementMethod());
 			try {
-				loadRoutesToDB("onCreate", tv);
+				loadRoutesToDB("onCreate");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			//For testing db, remove the textview and setContentView otherwise
-			setContentView(tv);
+			//setContentView(tv);
 
 		}
 	}
@@ -517,19 +517,20 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 		return dbHelper;
 	}
 
-	private void loadRoutesToDB(String action, TextView tv) throws SQLException {
+	private void loadRoutesToDB(String action) throws SQLException {
+		getHelper().ResetDB();
 		Dao<Route, Integer> routeDao = getHelper().getRoutesDAO();
 		List<Route> routes = routeDao.queryForAll();
 		if(routes.size() == 0){
 			Route newRoute = DummyRouteCreator.createDummyRoute(routeDao,"testmapimage.png");
-			tv.setText(newRoute.toString());
+			//tv.setText(newRoute.toString());
 		}else{
 			StringBuilder sb = new StringBuilder();
 			for (Route r : routes){
 				sb.append(r.toString());
 				sb.append("\n");
 			}
-			tv.setText(sb.toString());
+			//tv.setText(sb.toString());
 		}
 
 	}
