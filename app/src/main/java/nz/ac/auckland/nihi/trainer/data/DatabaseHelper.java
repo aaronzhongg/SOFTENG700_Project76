@@ -21,7 +21,7 @@ import nz.ac.auckland.nihi.trainer.R;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final Logger logger = Logger.getLogger(DatabaseHelper.class);
 
-    private Dao<Route, Integer> routesDAO;
+    private Dao<Route, String> routesDAO;
 
     // name of the database file for your application -- change to something appropriate for your app
     private static final String DATABASE_NAME = "routes.db";
@@ -100,7 +100,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public Dao<Route, Integer> getRoutesDAO() throws SQLException {
+    public Dao<Route, String> getRoutesDAO() throws SQLException {
         if (routesDAO == null) {
             routesDAO = getDao(Route.class);
         }

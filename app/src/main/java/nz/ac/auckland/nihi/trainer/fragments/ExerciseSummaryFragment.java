@@ -238,7 +238,7 @@ public class ExerciseSummaryFragment extends Fragment {
 			pnlMap.setVisibility(View.GONE);
 		} else {
 			try {
-				Dao<Route, Integer> routeDao = getDbHelper().getRoutesDAO();
+				Dao<Route, String> routeDao = getDbHelper().getRoutesDAO();
 				routeDao.refresh(summary.getFollowedRoute());
 				// String fileName = summary.getFollowedRoute().getThumbnailFileName();
 				//

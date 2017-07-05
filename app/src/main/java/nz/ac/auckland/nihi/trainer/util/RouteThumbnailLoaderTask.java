@@ -22,10 +22,10 @@ public class RouteThumbnailLoaderTask extends AsyncTask<Void, Void, Bitmap> {
 	private final View loadingProgressBar;
 	private final ImageView thumbnailView;
 	private final Route route;
-	private final Dao<Route, Integer> routeDao;
+	private final Dao<Route, String> routeDao;
 	private final Context context;
 
-	public RouteThumbnailLoaderTask(Context context, Route route, Dao<Route, Integer> routeDao, ImageView thumbnailView,
+	public RouteThumbnailLoaderTask(Context context, Route route, Dao<Route, String> routeDao, ImageView thumbnailView,
 			View loadingProgressBar) {
 		this.loadingProgressBar = loadingProgressBar;
 		this.thumbnailView = thumbnailView;

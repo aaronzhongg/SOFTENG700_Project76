@@ -519,7 +519,7 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 
 	private void loadRoutesToDB(String action) throws SQLException {
 		getHelper().ResetDB();
-		Dao<Route, Integer> routeDao = getHelper().getRoutesDAO();
+		Dao<Route, String> routeDao = getHelper().getRoutesDAO();
 		List<Route> routes = routeDao.queryForAll();
 		if(routes.size() == 0){
 			Route newRoute = DummyRouteCreator.createDummyRoute(routeDao,"testmapimage.png");

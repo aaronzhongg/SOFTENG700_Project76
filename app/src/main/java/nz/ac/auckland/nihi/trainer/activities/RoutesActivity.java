@@ -12,6 +12,7 @@ import nz.ac.auckland.cs.odin.android.api.services.IOdinService;
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUtils;
 import nz.ac.auckland.cs.ormlite.DatabaseManager;
 import nz.ac.auckland.cs.ormlite.LocalDatabaseHelper;
+import nz.ac.auckland.nihi.trainer.R;
 import nz.ac.auckland.nihi.trainer.R.anim;
 import nz.ac.auckland.nihi.trainer.R.drawable;
 import nz.ac.auckland.nihi.trainer.R.id;
@@ -39,6 +40,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +53,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.odin.android.services.LocalBinder;
@@ -61,7 +69,7 @@ import com.odin.android.services.LocalBinder;
  * @author Andrew Meads
  * 
  */
-public class RoutesActivity extends Activity implements GPSServiceListener {
+public class RoutesActivity extends FragmentActivity implements GPSServiceListener{
 
 	// ************************************************************************************************************
 	// Instance Variables
@@ -160,6 +168,14 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 
 		super.onDestroy();
 	}
+
+	//Google Maps Integration
+//    @Override
+//    public void onMapReady(GoogleMap map) {
+//        map.addMarker(new MarkerOptions()
+//                .position(new LatLng(0, 0))
+//                .title("Marker"));
+//    }
 
 	// @Override
 	// public boolean onCreateOptionsMenu(Menu menu) {
@@ -446,7 +462,7 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 
 		try {
 			List<Route> routes = null;
-			Dao<Route, Integer> routeDao = getDbHelper().getRoutesDAO();
+			Dao<Route, String> routeDao = getDbHelper().getRoutesDAO();
 
 			// Load the subset of routes to display
 			switch (viewing) {
@@ -666,7 +682,7 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 		 */
 		private void generateThumbnail(Context context, Route route, ImageView imageView, View progressBar) {
 			try {
-				Dao<Route, Integer> routeDao = getDbHelper().getRoutesDAO();
+				Dao<Route, String> routeDao = getDbHelper().getRoutesDAO();
 
 				RouteThumbnailLoaderTask loadTask = new RouteThumbnailLoaderTask(context, route, routeDao, imageView,
 						progressBar);

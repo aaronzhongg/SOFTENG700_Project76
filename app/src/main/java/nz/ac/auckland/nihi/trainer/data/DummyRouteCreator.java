@@ -16,7 +16,7 @@ public class DummyRouteCreator {
             -36.854076373106125, 174.7584056854248, -36.8537673180227, 174.75733280181885, -36.853320902918384,
             174.75759029388428 };
 
-    public static Route createDummyRoute(Dao<Route, Integer> routeDAO, String testRouteImagePath) throws SQLException {
+    public static Route createDummyRoute(Dao<Route, String> routeDAO, String testRouteImagePath) throws SQLException {
         Route route = new Route();
         route.setUserId(1);
         route.setName("route_test");

@@ -9,12 +9,12 @@ import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUICont
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUtils;
 import nz.ac.auckland.cs.odin.interconnect.common.EndpointConnectionStatus;
 import nz.ac.auckland.cs.ormlite.DatabaseManager;
-import nz.ac.auckland.cs.ormlite.LocalDatabaseHelper;
 import nz.ac.auckland.nihi.trainer.R.anim;
 import nz.ac.auckland.nihi.trainer.R.drawable;
 import nz.ac.auckland.nihi.trainer.R.id;
 import nz.ac.auckland.nihi.trainer.R.layout;
 import nz.ac.auckland.nihi.trainer.R.string;
+import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
 import nz.ac.auckland.nihi.trainer.data.Route;
@@ -73,6 +73,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.odin.android.bioharness.BHConnectivityStatus;
 import com.odin.android.bioharness.prefs.BioharnessDescription;
 import com.odin.android.bioharness.prefs.BioharnessPreferences;
@@ -126,7 +127,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	private Handler timerUpdateHandler;
 
 	// The database helper, required to load Route data.
-	private LocalDatabaseHelper dbHelper;
+	private DatabaseHelper dbHelper;
 
 	// The map marker that shows the user's current location.
 	private Marker userMapMarker;
@@ -153,10 +154,9 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	 * 
 	 * @return
 	 */
-	private LocalDatabaseHelper getDbHelper() {
+	private DatabaseHelper getDbHelper() {
 		if (dbHelper == null) {
-			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(this);
-		}
+			dbHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);		}
 		return dbHelper;
 	}
 
@@ -975,7 +975,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	private void showRoutePolyline(String routeId) {
 		try {
 
-			Route route = getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO().queryForId(routeId);
+			Route route = getDbHelper().getRoutesDAO().queryForId(routeId);
 			showRoutePolyline(route);
 
 		} catch (SQLException e) {
