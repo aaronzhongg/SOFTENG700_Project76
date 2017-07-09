@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import nz.ac.auckland.nihi.trainer.data.Route;
 
 /**
  * Created by alex on 6/14/2017.
@@ -32,19 +33,21 @@ public class DummyRouteCreator {
     public static List<Route> createDummyRoutes(Dao<Route, String> routeDAO, String testRouteImagePath) throws SQLException {
         List<Route> routes = new ArrayList<Route>();
         routes.add(createRoute(1, DUMMY_COORDINATES_UOA, "UoA route", testRouteImagePath, routeDAO, 4200, 50));
-        routes.add(createRoute(1, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route", testRouteImagePath, routeDAO, 2300, 30));
-        routes.add(createRoute(1, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route + elevation", testRouteImagePath, routeDAO, 2300, 70));
-        routes.add(createRoute(1, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route", testRouteImagePath, routeDAO, 6000, 95));
-        routes.add(createRoute(1, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route - elevation", testRouteImagePath, routeDAO, 6000, 35));
+        routes.add(createRoute(2, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route", testRouteImagePath, routeDAO, 2300, 30));
+        routes.add(createRoute(3, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route + elevation", testRouteImagePath, routeDAO, 2300, 70));
+        routes.add(createRoute(4, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route", testRouteImagePath, routeDAO, 6000, 95));
+        routes.add(createRoute(5, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route - elevation", testRouteImagePath, routeDAO, 6000, 35));
         return routes;
     }
 
-    private static Route createRoute(long id, double[] coordinates, String name , String testRouteImagePath,
+    private static nz.ac.auckland.nihi.trainer.data.Route createRoute(long id, double[] coordinates, String name , String testRouteImagePath,
                                     Dao<Route, String> routeDAO, double length, double elevation) throws SQLException {
         Route route = new Route();
         route.setUserId(id);
         route.setName(name);
-        route.setThumbnailFileName(testRouteImagePath);
+
+        //route.setThumbnailFileName(testRouteImagePath);
+
         route.setFavorite(false);
         route.setCreatorName("alex");
 

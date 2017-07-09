@@ -49,6 +49,7 @@ public class Route {
     public void setLength(double length){
         this.length = length; //why is this not a thing
     }
+
     public void setElevation(double elevation){
         this.elevation = elevation;
     }
@@ -122,5 +123,13 @@ public class Route {
     @Override
     public String toString(){
         return this.name + ", " + this.creatorName;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public double getElevation() {
+        return elevation;
     }
 }

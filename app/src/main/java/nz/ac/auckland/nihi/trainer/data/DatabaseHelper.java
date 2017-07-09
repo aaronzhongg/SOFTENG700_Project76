@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import java.sql.SQLException;
 
 import nz.ac.auckland.nihi.trainer.R;
+import nz.ac.auckland.nihi.trainer.data.Route;
 
 /**
  * Created by alex on 6/13/2017.
@@ -21,7 +22,7 @@ import nz.ac.auckland.nihi.trainer.R;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final Logger logger = Logger.getLogger(DatabaseHelper.class);
 
-    private Dao<Route, String> routesDAO;
+    private Dao<nz.ac.auckland.nihi.trainer.data.Route, String> routesDAO;
 
     // name of the database file for your application -- change to something appropriate for your app
     private static final String DATABASE_NAME = "routes.db";
@@ -40,11 +41,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             logger.info("onCreate(): Creating Database tables.");
             //For testing, drop tables first
-            TableUtils.dropTable(connectionSource, Route.class, true);
-            TableUtils.dropTable(connectionSource, RouteCoordinate.class, true);
+            //TableUtils.dropTable(connectionSource, Route.class, true);
+            //TableUtils.dropTable(connectionSource, RouteCoordinate.class, true);
 
-            TableUtils.createTableIfNotExists(connectionSource, Route.class);
-            TableUtils.createTableIfNotExists(connectionSource, RouteCoordinate.class);
+            TableUtils.createTable(connectionSource, Route.class);
+            TableUtils.createTable(connectionSource, RouteCoordinate.class);
         } catch (SQLException e) {
             logger.error("onCreate(): Can't create Database tables.", e);
             throw new RuntimeException(e);
