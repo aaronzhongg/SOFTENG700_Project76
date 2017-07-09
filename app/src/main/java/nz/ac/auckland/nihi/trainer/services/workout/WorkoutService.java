@@ -596,6 +596,7 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	 */
 	@Override
 	public void onConnectedToBioharness() {
+		logger.info("WE CONNECTED WITH THE HARNESS");
 		connectingToBioharness = false;
 		uiHandler.obtainMessage(MSG_STATUS_CHANGE, WorkoutServiceStatusChangeType.BioharnessStatus).sendToTarget();
 

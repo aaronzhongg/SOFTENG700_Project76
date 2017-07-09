@@ -23,6 +23,12 @@ public class Route {
     @DatabaseField(canBeNull = false)
     private boolean isFavorite;
 
+    @DatabaseField(canBeNull = false)
+    private double length;
+
+    @DatabaseField(canBeNull = false)
+    private double elevation;
+
     @DatabaseField(canBeNull = true)
     private String thumbnailFileName;
 
@@ -38,6 +44,13 @@ public class Route {
 
     public Route(){
 
+    }
+
+    public void setLength(double length){
+        this.length = length; //why is this not a thing
+    }
+    public void setElevation(double elevation){
+        this.elevation = elevation;
     }
 
     public String getId() {

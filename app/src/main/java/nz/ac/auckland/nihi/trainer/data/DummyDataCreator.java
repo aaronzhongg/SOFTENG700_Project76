@@ -24,6 +24,7 @@ import android.graphics.BitmapFactory;
 
 import com.j256.ormlite.dao.Dao;
 
+//TODO Remove this
 public class DummyDataCreator {
 
 	public static final int NUM_DUMMY_DATA = 52;

@@ -73,9 +73,12 @@
         <!-- <meta-data -->
         <!-- android:name="com.google.android.maps.v2.API_KEY" -->
         <!-- android:value="AIzaSyA_10tRyY8O_nAYCpIhIaSXyD87Az_kk_8" /> -->
+        <!--<meta-data-->
+            <!--android:name="com.google.android.maps.v2.API_KEY"-->
+            <!--android:value="AIzaSyA8cUHJ8SzsG8GPN682nmujVqV0cFKVZUE" />-->
         <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyA8cUHJ8SzsG8GPN682nmujVqV0cFKVZUE" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD-RFVYAqL0qBLQC920nzZHYY2wAYGxYsc "/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

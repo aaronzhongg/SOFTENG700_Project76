@@ -171,6 +171,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 		super.onCreate(savedInstanceState);
 		timerUpdateHandler = new Handler(this.timerUpdateHandlerCallback);
 
+		logger.info("testing");
 		// Create the user interface and set its inital properties.
 		buildUI();
 		setUIState(null);
@@ -690,6 +691,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 				if (session != null) {
 					btnStopWorkout.setText(AndroidTextUtils.getRelativeTimeStringMillis(session
 							.getElapsedTimeInMillis()));
+					//logger.info("Heart rate is: " + session.getHeartRate());
 					return true;
 				}
 			}
