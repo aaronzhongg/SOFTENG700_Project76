@@ -148,6 +148,7 @@
 	<string name="routescreen_tab_all">All</string>
 	<string name="routescreen_tab_favorites">Favorites</string>
 	<string name="routescreen_tab_nearby">Nearby</string>
+	<string name="routescreen_tab_sortbylength">Sort By Length</string>
 	
 	<!-- Location Service -->
 	<string name="locationservice_toast_connected">Connected to location services</string>

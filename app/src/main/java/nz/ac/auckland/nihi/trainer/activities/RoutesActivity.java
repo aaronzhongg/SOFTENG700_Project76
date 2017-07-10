@@ -119,6 +119,9 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 	// True if in selection mode, false otherwise.
 	private boolean isSelectionMode;
 
+	//True if is ascending for length of route
+	private boolean isAscending = true;
+
 	// ************************************************************************************************************
 
 	// ************************************************************************************************************
@@ -147,6 +150,9 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 		View btnNearby = findViewById(id.btnNearby);
 		btnNearby.setTag(Viewing.Nearby);
 		btnNearby.setOnClickListener(viewButtonClickListener);
+		View btnSortByLength = findViewById(id.btnSortByLength);
+		btnSortByLength.setTag(Viewing.SortByLength);
+		btnSortByLength.setOnClickListener(viewButtonClickListener);
 
 		if (TestHarnessUtils.isTestHarness()) {
 			bindService(new Intent(this, DummyGPSServiceImpl.class), gpsConn, BIND_AUTO_CREATE);
@@ -396,10 +402,10 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 
 		@Override
 		public void onClick(View v) {
-			if (v.getTag() != viewing) {
-				viewing = (Viewing) v.getTag();
-				populateListView();
-			}
+			//if (v.getTag() != viewing) {
+			viewing = (Viewing) v.getTag();
+			populateListView();
+			//}
 		}
 	};
 
@@ -467,9 +473,10 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 			// Load the subset of routes to display
 			switch (viewing) {
 			case Nearby:
-				findViewById(id.underlineNearby).setVisibility(View.VISIBLE);
-				findViewById(id.underlineAll).setVisibility(View.INVISIBLE);
-				findViewById(id.underlineFavorites).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineNearby).setVisibility(View.VISIBLE);
+//				findViewById(id.underlineAll).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineFavorites).setVisibility(View.INVISIBLE);
+
 				// TODO If possible, formulate a min / max lat / lng. Rather than getting everything and filtering by
 				// distance.
 				// TODO This has the potential to be heinously slow.
@@ -500,17 +507,31 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 				break;
 
 			case Favorites:
-				findViewById(id.underlineNearby).setVisibility(View.INVISIBLE);
-				findViewById(id.underlineAll).setVisibility(View.INVISIBLE);
-				findViewById(id.underlineFavorites).setVisibility(View.VISIBLE);
+//				findViewById(id.underlineNearby).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineAll).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineFavorites).setVisibility(View.VISIBLE);
 				routes = routeDao.queryBuilder().where().eq("isFavorite", true).query();
 				break;
 
 			case All:
-				findViewById(id.underlineNearby).setVisibility(View.INVISIBLE);
-				findViewById(id.underlineAll).setVisibility(View.VISIBLE);
-				findViewById(id.underlineFavorites).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineNearby).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineAll).setVisibility(View.VISIBLE);
+//				findViewById(id.underlineFavorites).setVisibility(View.INVISIBLE);
 				routes = routeDao.queryForAll();
+				break;
+			case SortByLength:
+//				findViewById(id.underlineNearby).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineAll).setVisibility(View.VISIBLE);
+//				findViewById(id.underlineFavorites).setVisibility(View.INVISIBLE);
+				routes = routeDao.queryForAll();
+				if(isAscending){
+					Collections.sort(routes);
+					isAscending = false;
+				}else{
+					Collections.sort(routes, Collections.<Route>reverseOrder());
+					isAscending = true;
+				}
+
 				break;
 			}
 
@@ -653,8 +674,10 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 
 				DecimalFormat formatter = new DecimalFormat("#.##");
 				TextView txtLength = (TextView) root.findViewById(id.txtRouteLength);
-				double routeLength = LocationUtils.getRouteLengthInMeters(route);
-				txtLength.setText(formatter.format(routeLength / 1000.0));
+				//Instead of querying the API simply use the route's length
+				//double routeLength = LocationUtils.getRouteLengthInMeters(route);
+
+				txtLength.setText(formatter.format(route.getLength() / 1000.0));
 
 				// Distance-to-route text box.
 				TextView txtDistance = (TextView) root.findViewById(id.txtDistanceToRoute);
@@ -765,7 +788,7 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 	 * Enumerates the possible kinds of routes the user is currently viewing
 	 */
 	private enum Viewing {
-		All, Favorites, Nearby;
+		All, Favorites, Nearby, SortByLength;
 	}
 	// ************************************************************************************************************
 }
