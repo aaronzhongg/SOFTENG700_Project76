@@ -10,16 +10,12 @@ import java.util.List;
 
 import nz.ac.auckland.cs.odin.android.api.services.IOdinService;
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUtils;
-import nz.ac.auckland.cs.ormlite.DatabaseManager;
-import nz.ac.auckland.cs.ormlite.LocalDatabaseHelper;
-import nz.ac.auckland.nihi.trainer.R;
 import nz.ac.auckland.nihi.trainer.R.anim;
 import nz.ac.auckland.nihi.trainer.R.drawable;
 import nz.ac.auckland.nihi.trainer.R.id;
 import nz.ac.auckland.nihi.trainer.R.layout;
 import nz.ac.auckland.nihi.trainer.R.string;
 import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
-import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.services.location.DummyGPSServiceImpl;
 import nz.ac.auckland.nihi.trainer.services.location.GPSServiceImpl;
@@ -30,7 +26,6 @@ import nz.ac.auckland.nihi.trainer.util.RouteThumbnailLoaderTask;
 
 import org.apache.log4j.Logger;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -53,12 +48,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.odin.android.services.LocalBinder;
@@ -159,7 +148,10 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 		} else {
 			bindService(new Intent(this, GPSServiceImpl.class), gpsConn, BIND_AUTO_CREATE);
 		}
+
 	}
+
+
 
 	/**
 	 * When we finish the activity, unbind from the GPS service.
@@ -175,13 +167,7 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 		super.onDestroy();
 	}
 
-	//Google Maps Integration
-//    @Override
-//    public void onMapReady(GoogleMap map) {
-//        map.addMarker(new MarkerOptions()
-//                .position(new LatLng(0, 0))
-//                .title("Marker"));
-//    }
+
 
 	// @Override
 	// public boolean onCreateOptionsMenu(Menu menu) {
@@ -531,7 +517,6 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 					Collections.sort(routes, Collections.<Route>reverseOrder());
 					isAscending = true;
 				}
-
 				break;
 			}
 
