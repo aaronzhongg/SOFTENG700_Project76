@@ -483,16 +483,22 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 
 		// Notify the service that the workout should cease
 		ExerciseSummary summary = workoutService.getService().endWorkout();
-
-		// Display workout summary activity or finish activity, depending on value of variable.
-		if (finishOnStop) {
-			finish();
-			overridePendingTransition(anim.push_right_in, anim.push_right_out);
-		} else {
-			Intent summaryIntent = new Intent(this, ReviewActivity.class);
-			summaryIntent.putExtra(ReviewActivity.EXTRA_SUMMARY_ID, summary.getId());
-			startActivity(summaryIntent);
+		//Back to route select for now
+		finish();
+		Intent routeIntent = new Intent(getApplicationContext(), RoutesActivity.class);
+		if (routeIntent != null) {
+			startActivity(routeIntent);
+			overridePendingTransition(anim.push_left_in, anim.push_left_out);
 		}
+		// TODO: Implement this bit with our app -> Display workout summary activity or finish activity, depending on value of variable.
+//		if (finishOnStop) {
+//			finish();
+//			overridePendingTransition(anim.push_right_in, anim.push_right_out);
+//		} else {
+//			Intent summaryIntent = new Intent(this, ReviewActivity.class);
+//			summaryIntent.putExtra(ReviewActivity.EXTRA_SUMMARY_ID, summary.getId());
+//			startActivity(summaryIntent);
+//		}
 	}
 
 	// ************************************************************************************************************

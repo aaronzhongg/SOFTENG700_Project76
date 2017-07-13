@@ -37,6 +37,7 @@ import nz.ac.auckland.nihi.trainer.messaging.MessageData;
 import nz.ac.auckland.nihi.trainer.messaging.QuestionData;
 import nz.ac.auckland.nihi.trainer.prefs.NihiPreferences;
 import nz.ac.auckland.nihi.trainer.rules.ExampleRules;
+import nz.ac.auckland.nihi.trainer.rules.RulesUtils;
 import nz.ac.auckland.nihi.trainer.services.location.DummyGPSServiceImpl;
 import nz.ac.auckland.nihi.trainer.services.location.GPSServiceImpl;
 import nz.ac.auckland.nihi.trainer.services.location.GPSServiceListener;
@@ -137,13 +138,15 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	private boolean ttsEnabled = true;
 
 	//rule engine
-	private RulesEngine rulesEngine = aNewRulesEngine()
-			.withSkipOnFirstAppliedRule(true)
-			.withSilentMode(true)
-			.build();;
-	private Rules rules = new Rules();
-	private Facts facts = new Facts();
-	private ExampleRules exampleRule = new ExampleRules();
+//	private RulesEngine rulesEngine = aNewRulesEngine()
+//			.withSkipOnFirstAppliedRule(true)
+//			.withSilentMode(true)
+//			.build();;
+//	private Rules rules = new Rules();
+//	private Facts facts = new Facts();
+//	private ExampleRules exampleRule = new ExampleRules();
+	private RulesUtils heartRateRulesUtils;
+	private RulesUtils speedRulesUtils;
 	private static String feedback = "";
 
 	// ************************************************************************************************************
@@ -214,13 +217,14 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	@Override
 	public ExerciseSessionData startWorkout(ExerciseSessionGoal goal) {
 
-		Runnable ttsRunnable = new Runnable() {
-			public void run() {
-				speak(feedback);
-			}
-		};
-		ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
-		exec.scheduleAtFixedRate(ttsRunnable , 0, 1, TimeUnit.MINUTES);
+		//TODO do timing of feedback via rules instead of runnables
+//		Runnable ttsRunnable = new Runnable() {
+//			public void run() {
+//				speak(feedback);
+//			}
+//		};
+//		ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
+//		exec.scheduleAtFixedRate(ttsRunnable , 0, 1, TimeUnit.MINUTES);
 
 		// Verify that we're not currently in a monitoring session
 		if (currentSession.isMonitoring()) {
@@ -696,11 +700,14 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 		// Add HR data to session
 		this.currentSession.addHeartRateData(newData);
 
-		//Do some tts
-		rules.register(exampleRule);
-		logger.info(newData.getHeartRate());
-		facts.put("heartRate", newData.getHeartRate());
-		rulesEngine.fire(rules, facts);
+		//TODO: example rule implementation
+//		rules.register(exampleRule);
+//		logger.info(newData.getHeartRate());
+//		facts.put("heartRate", newData.getHeartRate());
+//		rulesEngine.fire(rules, facts);
+
+		heartRateRulesUtils.fireTimedHeartrateRules(newData.getHeartRate(), this.currentSession.getElapsedTimeInMillis());
+		speedRulesUtils.fireTimedSpeedRules(this.currentSession.getCurrentSpeed(), this.currentSession.getElapsedTimeInMillis());
 
 		// logger.debug("onReceiveSummaryData(): before sendVitalSignData(newData)");
 
@@ -810,6 +817,9 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 				}
 			});
 		}
+
+		heartRateRulesUtils = new RulesUtils(30000, this.tts);
+		speedRulesUtils = new RulesUtils(15000, this.tts);
 
 		// Bind to the Odin, Bluetooth and GPS services
 		bindService(bioharnessServiceIntent, bioharnessConn, BIND_AUTO_CREATE);
