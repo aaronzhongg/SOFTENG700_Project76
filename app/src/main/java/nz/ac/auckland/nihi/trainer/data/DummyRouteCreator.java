@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import nz.ac.auckland.nihi.trainer.data.Route;
@@ -30,6 +31,15 @@ public class DummyRouteCreator {
             -36.895739, 174.931772, -36.899420, 174.929031, -36.898812, 174.927110, -36.896950, 174.928035, -36.895534, 174.925744
     };
 
+    private static final double[] DUMMY_COORDINATES_NAVIGATION_TEST = new double[]{
+            -36.8964414,174.9265492, -36.897630100000008,174.9300025, -36.8984667,174.9295522, -36.897630100000008,174.9300025
+    };
+
+    private static final String[] DUMMY_NAVIGATION_TEST_INSTRUCTIONS = new String[]{
+            "Head southeast on Howe St toward Wellington St", "Turn right onto Moore St Destination will be on the right",
+            "Head northeast on Moore St toward Abercrombie St", "Turn left onto Howe St Destination will be on the left"
+    };
+
     public static List<Route> createDummyRoutes(Dao<Route, String> routeDAO, String testRouteImagePath) throws SQLException {
         List<Route> routes = new ArrayList<Route>();
         routes.add(createRoute(1, DUMMY_COORDINATES_UOA, "UoA route", testRouteImagePath, routeDAO, 4200, 50));
@@ -37,6 +47,15 @@ public class DummyRouteCreator {
         routes.add(createRoute(3, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route + elevation", testRouteImagePath, routeDAO, 2300, 70));
         routes.add(createRoute(4, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route", testRouteImagePath, routeDAO, 6000, 95));
         routes.add(createRoute(5, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route - elevation", testRouteImagePath, routeDAO, 6000, 35));
+
+        Route navTest = createRoute(6, DUMMY_COORDINATES_NAVIGATION_TEST, "Navigation Test", testRouteImagePath, routeDAO, 870, 39);
+        Iterator<RouteCoordinate> itr = navTest.getGpsCoordinates().iterator();
+        int i = 0;
+        while(itr.hasNext()){
+            RouteCoordinate r = itr.next();
+            r.setInstruction(DUMMY_NAVIGATION_TEST_INSTRUCTIONS[i]);
+            i++;
+        }
         return routes;
     }
 
