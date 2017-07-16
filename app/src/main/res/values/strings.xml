@@ -277,4 +277,13 @@
 
 	<!-- Running Coach -->
 	<string name="routes_generator">Route Generator</string>
+	<string name="rg_name_hint">Enter a route name</string>
+	<string name="rg_distance_hint">Enter a route distance</string>
+	<string name="rg_elevation_hint">Enter a route elevation gain</string>
+
+	<string name="rg_name_label">Route name</string>
+	<string name="rg_distance_label">Route distance</string>
+	<string name="rg_elevation_label">Route elevation</string>
+
+	<string name="rg_button_label">Generate</string>
 </resources>
