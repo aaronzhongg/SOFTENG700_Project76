@@ -33,6 +33,11 @@
         <item name="android:background">@color/rc_background</item>
     </style>
 
+    <!-- Style for the root element of a Layout (shows the background image). -->
+    <style name="RouteLayoutStyle">
+        <item name="android:background">@color/rc_primary_color</item>
+    </style>
+
     <style name="DialogRootLayoutStyle" parent="@style/RootLayoutStyle">
         <item name="android:background">@drawable/nihi_dialog_background</item>
     </style>
