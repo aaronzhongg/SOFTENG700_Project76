@@ -2,6 +2,9 @@ package nz.ac.auckland.nihi.trainer.services.workout;
 
 import java.sql.SQLException;
 import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import nz.ac.auckland.cs.android.utils.NotificationUtils;
 import nz.ac.auckland.cs.odin.android.api.MessageHandler;
@@ -33,6 +36,8 @@ import nz.ac.auckland.nihi.trainer.messaging.ECGDataResponse;
 import nz.ac.auckland.nihi.trainer.messaging.MessageData;
 import nz.ac.auckland.nihi.trainer.messaging.QuestionData;
 import nz.ac.auckland.nihi.trainer.prefs.NihiPreferences;
+import nz.ac.auckland.nihi.trainer.rules.ExampleRules;
+import nz.ac.auckland.nihi.trainer.rules.RulesUtils;
 import nz.ac.auckland.nihi.trainer.services.location.DummyGPSServiceImpl;
 import nz.ac.auckland.nihi.trainer.services.location.GPSServiceImpl;
 import nz.ac.auckland.nihi.trainer.services.location.GPSServiceListener;
@@ -43,6 +48,10 @@ import nz.ac.auckland.nihi.trainer.services.workout.WorkoutServiceListener.Worko
 import nz.ac.auckland.nihi.trainer.util.AndroidTextUtils;
 
 import org.apache.log4j.Logger;
+import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
+import org.jeasy.rules.api.Rules;
+import org.jeasy.rules.api.RulesEngine;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -68,6 +77,8 @@ import com.odin.android.bioharness.service.IBioHarnessService;
 import com.odin.android.bioharness.service.IBioHarnessService.IBioHarnessServiceListener;
 import com.odin.android.bioharness.service.dummy.DummyBioHarnessServiceImpl;
 import com.odin.android.services.LocalBinder;
+
+import static org.jeasy.rules.core.RulesEngineBuilder.aNewRulesEngine;
 
 /**
  * Yet another version of the workout service.
@@ -124,7 +135,19 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	private TextToSpeech tts;
 
 	// True if tts initialization is complete, false otherwise.
-	private boolean ttsEnabled;
+	private boolean ttsEnabled = true;
+
+	//rule engine
+//	private RulesEngine rulesEngine = aNewRulesEngine()
+//			.withSkipOnFirstAppliedRule(true)
+//			.withSilentMode(true)
+//			.build();;
+//	private Rules rules = new Rules();
+//	private Facts facts = new Facts();
+//	private ExampleRules exampleRule = new ExampleRules();
+	private RulesUtils heartRateRulesUtils;
+	private RulesUtils speedRulesUtils;
+	private static String feedback = "";
 
 	// ************************************************************************************************************
 
@@ -194,6 +217,15 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	@Override
 	public ExerciseSessionData startWorkout(ExerciseSessionGoal goal) {
 
+		//TODO do timing of feedback via rules instead of runnables
+//		Runnable ttsRunnable = new Runnable() {
+//			public void run() {
+//				speak(feedback);
+//			}
+//		};
+//		ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
+//		exec.scheduleAtFixedRate(ttsRunnable , 0, 1, TimeUnit.MINUTES);
+
 		// Verify that we're not currently in a monitoring session
 		if (currentSession.isMonitoring()) {
 			throw new UnsupportedOperationException(
@@ -243,21 +275,21 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 		clearNotificationTrayIcon();
 		NotificationUtils.clearNotification(this, NOTIFICATION_REACH_GOAL);
 
-		// Create the summary
+//		// Create the summary
 		ExerciseSummary summary = null;
-		try {
-			// Create summary, save to DB.
-			Dao<ExerciseSummary, String> summaryDao = getDbHelper().getSectionHelper(NihiDBHelper.class)
-					.getExerciseSummaryDAO();
-			Dao<Route, String> routeDao = getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO();
-			summary = currentSession.generateSummary(OdinPreferences.UserID.getLongValue(this, -1L),
-					NihiPreferences.Name.getStringValue(this, "Unknown"), summaryDao, routeDao);
-		} catch (SQLException e) {
-			// Won't happen, we can ignore this.
-			logger.error("endWorkout(): " + e.getMessage(), e);
-			//Logger.flushLogOnShutdown();
-			throw new RuntimeException(e);
-		}
+//		try {
+//			// Create summary, save to DB.
+//			Dao<ExerciseSummary, String> summaryDao = getDbHelper().getSectionHelper(NihiDBHelper.class)
+//					.getExerciseSummaryDAO();
+//			Dao<Route, String> routeDao = getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO();
+//			summary = currentSession.generateSummary(OdinPreferences.UserID.getLongValue(this, -1L),
+//					NihiPreferences.Name.getStringValue(this, "Unknown"), summaryDao, routeDao);
+//		} catch (SQLException e) {
+//			// Won't happen, we can ignore this.
+//			logger.error("endWorkout(): " + e.getMessage(), e);
+//			//Logger.flushLogOnShutdown();
+//			throw new RuntimeException(e);
+//		}
 
 		//	TODO: REMOVE ODIN CONNECTION - SEND SESSION SUMMARY TO ODIN
 		// Notify Odin that we're done.
@@ -596,6 +628,7 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	 */
 	@Override
 	public void onConnectedToBioharness() {
+		logger.info("WE CONNECTED WITH THE HARNESS");
 		connectingToBioharness = false;
 		uiHandler.obtainMessage(MSG_STATUS_CHANGE, WorkoutServiceStatusChangeType.BioharnessStatus).sendToTarget();
 
@@ -666,6 +699,15 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 
 		// Add HR data to session
 		this.currentSession.addHeartRateData(newData);
+
+		//TODO: example rule implementation
+//		rules.register(exampleRule);
+//		logger.info(newData.getHeartRate());
+//		facts.put("heartRate", newData.getHeartRate());
+//		rulesEngine.fire(rules, facts);
+
+		heartRateRulesUtils.fireTimedHeartrateRules(newData.getHeartRate(), this.currentSession.getElapsedTimeInMillis());
+		speedRulesUtils.fireTimedSpeedRules(this.currentSession.getCurrentSpeed(), this.currentSession.getElapsedTimeInMillis());
 
 		// logger.debug("onReceiveSummaryData(): before sendVitalSignData(newData)");
 
@@ -769,8 +811,15 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 
 		// Initialize text-to-speech
 		if (!TestHarnessUtils.isTestHarness()) {
-			this.tts = new TextToSpeech(this, this.ttsOnInitListener);
+			this.tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+				@Override
+				public void onInit(int status) {
+				}
+			});
 		}
+
+		heartRateRulesUtils = new RulesUtils(30000, this.tts);
+		speedRulesUtils = new RulesUtils(15000, this.tts);
 
 		// Bind to the Odin, Bluetooth and GPS services
 		bindService(bioharnessServiceIntent, bioharnessConn, BIND_AUTO_CREATE);
@@ -931,9 +980,7 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	 * @param text
 	 */
 	private void speak(String text) {
-		if (ttsEnabled) {
 			this.tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-		}
 	}
 
 	private final TextToSpeech.OnInitListener ttsOnInitListener = new TextToSpeech.OnInitListener() {
@@ -973,6 +1020,12 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(this);
 		}
 		return dbHelper;
+	}
+	public static String getFeedback(){
+		return feedback;
+	}
+	public static void setFeedback(String f){
+		feedback = f;
 	}
 
 	// ************************************************************************************************************

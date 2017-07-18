@@ -1,6 +1,8 @@
 package nz.ac.auckland.nihi.trainer.activities;
 
+import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.List;
 
 import nz.ac.auckland.cs.odin.android.api.activities.OdinFragmentActivity;
 import nz.ac.auckland.cs.odin.android.api.prefs.OdinPreferences;
@@ -13,7 +15,10 @@ import nz.ac.auckland.nihi.trainer.R;
 import nz.ac.auckland.nihi.trainer.R.anim;
 import nz.ac.auckland.nihi.trainer.R.id;
 import nz.ac.auckland.nihi.trainer.R.string;
+import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
+import nz.ac.auckland.nihi.trainer.data.DummyRouteCreator;
 import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
+import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.fragments.LoginDialogFragment;
 import nz.ac.auckland.nihi.trainer.fragments.LoginDialogFragment.LoginDialogFragmentListener;
 import nz.ac.auckland.nihi.trainer.prefs.NihiPreferences;
@@ -33,11 +38,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
 
 /**
  * Landing screen activity for the NIHI trainer app. Facilitates navigation to other areas of the app.
@@ -73,7 +82,7 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	/**
 	 * The helper allowing us to access the database.
 	 */
-	private LocalDatabaseHelper dbHelper;
+	private DatabaseHelper dbHelper = null;
 
 	// ************************************************************************************************************
 
@@ -92,6 +101,17 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
+		dbHelper = getHelper();
+		dbHelper.close();
+		while (dbHelper.isOpen() == true)  {   // maybe you dont want to use while
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		this.deleteDatabase("routes.db");
+		dbHelper = null;
 		if (TestHarnessUtils.isTestHarness() || checkBluetoothAvailable()) {
 
 			super.onCreate(savedInstanceState);
@@ -123,7 +143,19 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 			btnWorkout = (Button) findViewById(id.btnWorkout);
 			btnWorkout.setOnClickListener(buttonClickListener);
 
-			startDailyDownloadTask();
+			//startDailyDownloadTask();
+
+			//For testing the db
+			//TextView tv = new TextView(this);
+			//tv.setMovementMethod(new ScrollingMovementMethod());
+			try {
+//				loadRoutesToDB("onCreate", tv);
+				loadRoutesToDB("onCreate");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			//For testing db, remove the textview and setContentView otherwise
+			//setContentView(tv);
 
 		}
 	}
@@ -324,10 +356,10 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	@Override
 	protected void odinLoginSuccess() {
 
-		DownloadAllDataTask downloadTask = new DownloadAllDataTask(this, getOdinService(), getDbHelper()
-				.getSectionHelper(NihiDBHelper.class), this, true);
-
-		downloadTask.execute();
+//		DownloadAllDataTask downloadTask = new DownloadAllDataTask(this, getOdinService(), getDbHelper()
+//				.getSectionHelper(NihiDBHelper.class), this, true);
+//
+//		downloadTask.execute();
 
 	}
 
@@ -478,16 +510,59 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	}
 
 	/**
-	 * Lazily creates the {@link #dbHelper} if required, then returns it.
-	 * 
-	 * @return
+	 * Destroy the helper when finished
 	 */
-	private LocalDatabaseHelper getDbHelper() {
+	@Override
+	protected void onDestroy(){
+		super.onDestroy();
+		if(dbHelper != null){
+			OpenHelperManager.releaseHelper();
+			dbHelper = null;
+		}
+	}
+
+	//Make a database helper
+	private DatabaseHelper getHelper() {
 		if (dbHelper == null) {
-			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(this);
+			dbHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
 		}
 		return dbHelper;
 	}
+
+	private void loadRoutesToDB(String action) throws SQLException {
+		getHelper().getWritableDatabase();
+		Dao<Route, String> routeDao = getHelper().getRoutesDAO();
+		List<Route> routes = routeDao.queryForAll();
+		if(routes.size() == 0){
+			List<Route> newRoutes = DummyRouteCreator.createDummyRoutes(routeDao,"testmapimage.png");
+			StringBuilder sb = new StringBuilder();
+			for (Route r : newRoutes){
+				sb.append(r.toString());
+				sb.append("\n");
+			}
+			//tv.setText(sb.toString());
+		}else{
+			StringBuilder sb = new StringBuilder();
+			for (Route r : routes){
+				sb.append(r.toString());
+				sb.append("\n");
+			}
+			//tv.setText(sb.toString());
+		}
+
+	}
+
+//	/**
+//	 * Lazily creates the {@link #dbHelper} if required, then returns it.
+//	 *
+//	 * @return
+//	 */
+//	private LocalDatabaseHelper getDbHelper() {
+//		if (dbHelper == null) {
+//			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(this);
+//		}
+//		return dbHelper;
+//	}
 
 	// ************************************************************************************************************
 

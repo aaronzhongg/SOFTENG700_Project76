@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    mavenCentral()
+}
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
@@ -10,6 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -24,14 +28,23 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    testCompile 'junit:junit:4.12'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-math3
+    compile project(':odin2-android')
+    compile project(':bioharness-lib')
+
+    compile group: 'org.jeasy', name: 'easy-rules-core', version: '3.0.0'
+
+//    compile 'org.kie:kie-api:6.1.0.Final'
+//    compile 'org.drools:drools-core:6.1.0.Final'
+//    compile 'org.drools:drools-compiler:6.1.0.Final'
+//    compile files('libs/drools-android-6.5.0.Final.jar')
+//    compile files('libs/janino-3.0.7.jar')
+    // compile 'com.google.android.gms:play-services-maps:10.0.1'
+    compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'org.apache.commons:commons-math3:3.2'
     compile 'nz.ac.auckland.cs.odin:odin2-core-api:1.0-SNAPSHOT'
     compile 'nz.ac.auckland.nihi.remote:remote-shared-components:1.0-SNAPSHOT'
-    compile project(':odin2-android')
-    compile project(':bioharness-lib')
     compile 'com.google.android.gms:play-services:10.0.1'
-    // compile 'com.google.android.gms:play-services-maps:10.0.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
 }

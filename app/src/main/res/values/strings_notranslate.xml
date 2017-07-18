@@ -57,5 +57,5 @@
     <string name="app_name">Running Coach</string>
     <string name="db_name">nihiTrainerData.db</string>
 	<string name="prefs_filename">app_preferences</string>
-	<string name="static_maps_api_key">AIzaSyBdUhCECVMr9IHzfRFNzLKxy83LC7z7Jxc</string>
+	<string name="static_maps_api_key">AIzaSyCShgQSh2-qPXrw2rS7l6_RTwc7bCnRXQM</string>
 </resources>

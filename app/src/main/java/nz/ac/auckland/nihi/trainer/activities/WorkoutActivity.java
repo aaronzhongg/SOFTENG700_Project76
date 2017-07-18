@@ -9,12 +9,12 @@ import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUICont
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUtils;
 import nz.ac.auckland.cs.odin.interconnect.common.EndpointConnectionStatus;
 import nz.ac.auckland.cs.ormlite.DatabaseManager;
-import nz.ac.auckland.cs.ormlite.LocalDatabaseHelper;
 import nz.ac.auckland.nihi.trainer.R.anim;
 import nz.ac.auckland.nihi.trainer.R.drawable;
 import nz.ac.auckland.nihi.trainer.R.id;
 import nz.ac.auckland.nihi.trainer.R.layout;
 import nz.ac.auckland.nihi.trainer.R.string;
+import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
 import nz.ac.auckland.nihi.trainer.data.Route;
@@ -73,6 +73,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.odin.android.bioharness.BHConnectivityStatus;
 import com.odin.android.bioharness.prefs.BioharnessDescription;
 import com.odin.android.bioharness.prefs.BioharnessPreferences;
@@ -126,7 +127,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	private Handler timerUpdateHandler;
 
 	// The database helper, required to load Route data.
-	private LocalDatabaseHelper dbHelper;
+	private DatabaseHelper dbHelper;
 
 	// The map marker that shows the user's current location.
 	private Marker userMapMarker;
@@ -153,10 +154,9 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	 * 
 	 * @return
 	 */
-	private LocalDatabaseHelper getDbHelper() {
+	private DatabaseHelper getDbHelper() {
 		if (dbHelper == null) {
-			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(this);
-		}
+			dbHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);		}
 		return dbHelper;
 	}
 
@@ -171,6 +171,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 		super.onCreate(savedInstanceState);
 		timerUpdateHandler = new Handler(this.timerUpdateHandlerCallback);
 
+		logger.info("testing");
 		// Create the user interface and set its inital properties.
 		buildUI();
 		setUIState(null);
@@ -482,16 +483,22 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 
 		// Notify the service that the workout should cease
 		ExerciseSummary summary = workoutService.getService().endWorkout();
-
-		// Display workout summary activity or finish activity, depending on value of variable.
-		if (finishOnStop) {
-			finish();
-			overridePendingTransition(anim.push_right_in, anim.push_right_out);
-		} else {
-			Intent summaryIntent = new Intent(this, ReviewActivity.class);
-			summaryIntent.putExtra(ReviewActivity.EXTRA_SUMMARY_ID, summary.getId());
-			startActivity(summaryIntent);
+		//Back to route select for now
+		finish();
+		Intent routeIntent = new Intent(getApplicationContext(), RoutesActivity.class);
+		if (routeIntent != null) {
+			startActivity(routeIntent);
+			overridePendingTransition(anim.push_left_in, anim.push_left_out);
 		}
+		// TODO: Implement this bit with our app -> Display workout summary activity or finish activity, depending on value of variable.
+//		if (finishOnStop) {
+//			finish();
+//			overridePendingTransition(anim.push_right_in, anim.push_right_out);
+//		} else {
+//			Intent summaryIntent = new Intent(this, ReviewActivity.class);
+//			summaryIntent.putExtra(ReviewActivity.EXTRA_SUMMARY_ID, summary.getId());
+//			startActivity(summaryIntent);
+//		}
 	}
 
 	// ************************************************************************************************************
@@ -503,7 +510,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	/**
 	 * The {@link ServiceConnection} that allows us to bind to the {@link WorkoutService Workout} service. When a
 	 * service connection is obtained, obtain a reference to the service interface and set its listener to our internal
-	 * {@link WorkoutActivity#workoutServiceListener} object. Then, hookup the UI to the service's sesison object, and
+	 *  WorkoutActivity#workoutServiceListener} object. Then, hookup the UI to the service's sesison object, and
 	 * set the state of the UI to match.
 	 */
 	private final ServiceConnection workoutServiceConn = new ServiceConnection() {
@@ -690,6 +697,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 				if (session != null) {
 					btnStopWorkout.setText(AndroidTextUtils.getRelativeTimeStringMillis(session
 							.getElapsedTimeInMillis()));
+					//logger.info("Heart rate is: " + session.getHeartRate());
 					return true;
 				}
 			}
@@ -795,7 +803,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	 * 
 	 * UPDATE: This also controls whether the timer is running! YAY!
 	 * 
-	 * @param newState
+	 *
 	 */
 	private void setUIState(WorkoutServiceStatus status) {
 
@@ -975,7 +983,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	private void showRoutePolyline(String routeId) {
 		try {
 
-			Route route = getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO().queryForId(routeId);
+			Route route = getDbHelper().getRoutesDAO().queryForId(routeId);
 			showRoutePolyline(route);
 
 		} catch (SQLException e) {

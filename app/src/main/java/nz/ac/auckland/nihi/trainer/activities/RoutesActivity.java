@@ -10,14 +10,13 @@ import java.util.List;
 
 import nz.ac.auckland.cs.odin.android.api.services.IOdinService;
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUtils;
-import nz.ac.auckland.cs.ormlite.DatabaseManager;
-import nz.ac.auckland.cs.ormlite.LocalDatabaseHelper;
+import nz.ac.auckland.nihi.trainer.R;
 import nz.ac.auckland.nihi.trainer.R.anim;
 import nz.ac.auckland.nihi.trainer.R.drawable;
 import nz.ac.auckland.nihi.trainer.R.id;
 import nz.ac.auckland.nihi.trainer.R.layout;
 import nz.ac.auckland.nihi.trainer.R.string;
-import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
+import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.services.location.DummyGPSServiceImpl;
 import nz.ac.auckland.nihi.trainer.services.location.GPSServiceImpl;
@@ -28,7 +27,6 @@ import nz.ac.auckland.nihi.trainer.util.RouteThumbnailLoaderTask;
 
 import org.apache.log4j.Logger;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -38,7 +36,11 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -50,6 +52,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.odin.android.services.LocalBinder;
 
@@ -59,7 +62,7 @@ import com.odin.android.services.LocalBinder;
  * @author Andrew Meads
  * 
  */
-public class RoutesActivity extends Activity implements GPSServiceListener {
+public class RoutesActivity extends FragmentActivity implements GPSServiceListener{
 
 	// ************************************************************************************************************
 	// Instance Variables
@@ -83,7 +86,7 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 	private LocalBinder<IGPSService> gpsService;
 
 	// The helper allowing us to access the database.
-	private LocalDatabaseHelper dbHelper;
+	private DatabaseHelper dbHelper;
 
 	// The UI element that displays routes to the user.
 	private ExpandableListView lstRoutes;
@@ -108,6 +111,9 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 
 	// True if in selection mode, false otherwise.
 	private boolean isSelectionMode;
+
+	//True if is ascending for length of route
+	private boolean isAscending = true;
 
 	// ************************************************************************************************************
 
@@ -137,13 +143,21 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 		View btnNearby = findViewById(id.btnNearby);
 		btnNearby.setTag(Viewing.Nearby);
 		btnNearby.setOnClickListener(viewButtonClickListener);
+		View btnSortByLength = findViewById(id.btnSortByLength);
+		btnSortByLength.setTag(Viewing.SortByLength);
+		btnSortByLength.setOnClickListener(viewButtonClickListener);
 
 		if (TestHarnessUtils.isTestHarness()) {
 			bindService(new Intent(this, DummyGPSServiceImpl.class), gpsConn, BIND_AUTO_CREATE);
 		} else {
 			bindService(new Intent(this, GPSServiceImpl.class), gpsConn, BIND_AUTO_CREATE);
 		}
+
+
+
 	}
+
+
 
 	/**
 	 * When we finish the activity, unbind from the GPS service.
@@ -159,12 +173,29 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 		super.onDestroy();
 	}
 
-	// @Override
-	// public boolean onCreateOptionsMenu(Menu menu) {
-	// MenuInflater inf = new MenuInflater(this);
-	// inf.inflate(R.menu.routes_screen, menu);
-	// return true;
-	// }
+
+
+	 @Override
+	 public boolean onCreateOptionsMenu(Menu menu) {
+	 MenuInflater inf = new MenuInflater(this);
+	 inf.inflate(R.menu.routes_generator, menu);
+	 return super.onCreateOptionsMenu(menu);
+	 }
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case id.action_generate_route:
+				Intent intent = new Intent(this, RouteGeneratorActivity.class);
+				startActivity(intent);
+				return true;
+			default:
+				// If we got here, the user's action was not recognized.
+				// Invoke the superclass to handle it.
+				return super.onOptionsItemSelected(item);
+
+		}
+	}
 
 	// ************************************************************************************************************
 
@@ -378,10 +409,10 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 
 		@Override
 		public void onClick(View v) {
-			if (v.getTag() != viewing) {
-				viewing = (Viewing) v.getTag();
-				populateListView();
-			}
+			//if (v.getTag() != viewing) {
+			viewing = (Viewing) v.getTag();
+			populateListView();
+			//}
 		}
 	};
 
@@ -397,7 +428,7 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 			route.setFavorite(isChecked);
 
 			try {
-				getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO().update(route);
+				getDbHelper().getRoutesDAO().update(route);
 			} catch (SQLException e) {
 				logger.error(e);
 				throw new RuntimeException(e);
@@ -444,14 +475,15 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 
 		try {
 			List<Route> routes = null;
-			Dao<Route, String> routeDao = getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO();
+			Dao<Route, String> routeDao = getDbHelper().getRoutesDAO();
 
 			// Load the subset of routes to display
 			switch (viewing) {
 			case Nearby:
-				findViewById(id.underlineNearby).setVisibility(View.VISIBLE);
-				findViewById(id.underlineAll).setVisibility(View.INVISIBLE);
-				findViewById(id.underlineFavorites).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineNearby).setVisibility(View.VISIBLE);
+//				findViewById(id.underlineAll).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineFavorites).setVisibility(View.INVISIBLE);
+
 				// TODO If possible, formulate a min / max lat / lng. Rather than getting everything and filtering by
 				// distance.
 				// TODO This has the potential to be heinously slow.
@@ -482,17 +514,30 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 				break;
 
 			case Favorites:
-				findViewById(id.underlineNearby).setVisibility(View.INVISIBLE);
-				findViewById(id.underlineAll).setVisibility(View.INVISIBLE);
-				findViewById(id.underlineFavorites).setVisibility(View.VISIBLE);
+//				findViewById(id.underlineNearby).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineAll).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineFavorites).setVisibility(View.VISIBLE);
 				routes = routeDao.queryBuilder().where().eq("isFavorite", true).query();
 				break;
 
 			case All:
-				findViewById(id.underlineNearby).setVisibility(View.INVISIBLE);
-				findViewById(id.underlineAll).setVisibility(View.VISIBLE);
-				findViewById(id.underlineFavorites).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineNearby).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineAll).setVisibility(View.VISIBLE);
+//				findViewById(id.underlineFavorites).setVisibility(View.INVISIBLE);
 				routes = routeDao.queryForAll();
+				break;
+			case SortByLength:
+//				findViewById(id.underlineNearby).setVisibility(View.INVISIBLE);
+//				findViewById(id.underlineAll).setVisibility(View.VISIBLE);
+//				findViewById(id.underlineFavorites).setVisibility(View.INVISIBLE);
+				routes = routeDao.queryForAll();
+				if(isAscending){
+					Collections.sort(routes);
+					isAscending = false;
+				}else{
+					Collections.sort(routes, Collections.<Route>reverseOrder());
+					isAscending = true;
+				}
 				break;
 			}
 
@@ -635,8 +680,10 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 
 				DecimalFormat formatter = new DecimalFormat("#.##");
 				TextView txtLength = (TextView) root.findViewById(id.txtRouteLength);
-				double routeLength = LocationUtils.getRouteLengthInMeters(route);
-				txtLength.setText(formatter.format(routeLength / 1000.0));
+				//Instead of querying the API simply use the route's length
+				//double routeLength = LocationUtils.getRouteLengthInMeters(route);
+
+				txtLength.setText(formatter.format(route.getLength() / 1000.0));
 
 				// Distance-to-route text box.
 				TextView txtDistance = (TextView) root.findViewById(id.txtDistanceToRoute);
@@ -664,7 +711,7 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 		 */
 		private void generateThumbnail(Context context, Route route, ImageView imageView, View progressBar) {
 			try {
-				Dao<Route, String> routeDao = getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO();
+				Dao<Route, String> routeDao = getDbHelper().getRoutesDAO();
 
 				RouteThumbnailLoaderTask loadTask = new RouteThumbnailLoaderTask(context, route, routeDao, imageView,
 						progressBar);
@@ -726,9 +773,9 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 	/**
 	 * Lazily creates the {@link #dbHelper} if required, then returns it.
 	 */
-	private LocalDatabaseHelper getDbHelper() {
+	private DatabaseHelper getDbHelper() {
 		if (dbHelper == null) {
-			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(this);
+			dbHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
 		}
 		return dbHelper;
 	}
@@ -747,7 +794,7 @@ public class RoutesActivity extends Activity implements GPSServiceListener {
 	 * Enumerates the possible kinds of routes the user is currently viewing
 	 */
 	private enum Viewing {
-		All, Favorites, Nearby;
+		All, Favorites, Nearby, SortByLength;
 	}
 	// ************************************************************************************************************
 }
