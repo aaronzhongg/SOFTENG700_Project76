@@ -82,45 +82,59 @@ public class RouteGeneratorActivity extends FragmentActivity {
         // Call API to generate new route based on the inputs
         @Override
         public void onClick(View view) {
-            final ProgressDialog dialog = new ProgressDialog(RouteGeneratorActivity.this);
-            dialog.setMessage("Generating new route...");
-            dialog.show();
-            AsyncTask.execute(new Runnable() {
-                @Override
-                public void run() {
+            if (!routeName.getText().toString().trim().equals("") && !distanceText.getText().toString().trim().equals("") && !elevationText.getText().toString().trim().equals("")) {
+                final ProgressDialog dialog = new ProgressDialog(RouteGeneratorActivity.this);
+                dialog.setMessage("Generating new route...");
+                dialog.show();
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
 
-                    try {
-
-                        URL url = new URL("https://project76.azurewebsites.net/api/directions/generateroute?inputDistance=" + distanceText.getText().toString() + "&latlng=" + latlng + "&inputElevation=" + elevationText.getText().toString());
-                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                         try {
-                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                            StringBuilder stringBuilder = new StringBuilder();
-                            String line;
-                            while ((line = bufferedReader.readLine()) != null) {
-                                stringBuilder.append(line).append("\n");
+
+                            URL url = new URL("https://project76.azurewebsites.net/api/directions/generateroute?inputDistance=" + distanceText.getText().toString() + "&latlng=" + latlng + "&inputElevation=" + elevationText.getText().toString());
+                            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                            try {
+                                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                                StringBuilder stringBuilder = new StringBuilder();
+                                String line;
+                                while ((line = bufferedReader.readLine()) != null) {
+                                    stringBuilder.append(line).append("\n");
+                                }
+                                bufferedReader.close();
+
+                                String responseJsonString = stringBuilder.toString();
+                                Dao<Route, String> routeDao = getHelper().getRoutesDAO();
+                                GeneratedRouteHelper.createRoute(routeDao.countOf() + 1, responseJsonString, routeName.getText().toString(), routeDao);
+
+                            } finally {
+                                urlConnection.disconnect();
+                                dialog.dismiss();
+                                finish();
                             }
-                            bufferedReader.close();
-
-                            String responseJsonString = stringBuilder.toString();
-                            Dao<Route, String> routeDao = getHelper().getRoutesDAO();
-                            GeneratedRouteHelper.createRoute(6, responseJsonString, routeName.getText().toString(), routeDao);
+                        } catch (Exception e) {
+                            Log.e("ERROR", e.getMessage(), e);
 
                         }
-                        finally{
-                            urlConnection.disconnect();
-                            dialog.dismiss();
-                            finish();
-                        }
-                    }
-                    catch(Exception e) {
-                        Log.e("ERROR", e.getMessage(), e);
 
                     }
 
+                });
+            } else {
+
+                if (routeName.getText().toString().trim().equals(""))
+                {
+                    routeName.setError("Route name is required");
                 }
 
-            });
+                if (elevationText.getText().toString().trim().equals("")) {
+                    elevationText.setError("Elevation amount is required");
+                }
+
+                if (distanceText.getText().toString().trim().equals("")) {
+                    distanceText.setError("Distance amount is required");
+                }
+            }
         }
     };
 

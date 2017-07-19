@@ -157,6 +157,11 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		populateListView();
+	}
 
 
 	/**
