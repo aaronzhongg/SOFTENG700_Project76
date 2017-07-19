@@ -1,6 +1,7 @@
 package nz.ac.auckland.nihi.trainer.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -81,11 +82,15 @@ public class RouteGeneratorActivity extends FragmentActivity {
         // Call API to generate new route based on the inputs
         @Override
         public void onClick(View view) {
+            final ProgressDialog dialog = new ProgressDialog(RouteGeneratorActivity.this);
+            dialog.setMessage("Generating new route...");
+            dialog.show();
             AsyncTask.execute(new Runnable() {
                 @Override
                 public void run() {
 
                     try {
+
                         URL url = new URL("https://project76.azurewebsites.net/api/directions/generateroute?inputDistance=" + distanceText.getText().toString() + "&latlng=" + latlng + "&inputElevation=" + elevationText.getText().toString());
                         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                         try {
@@ -104,6 +109,7 @@ public class RouteGeneratorActivity extends FragmentActivity {
                         }
                         finally{
                             urlConnection.disconnect();
+                            dialog.dismiss();
                             finish();
                         }
                     }
@@ -113,6 +119,7 @@ public class RouteGeneratorActivity extends FragmentActivity {
                     }
 
                 }
+
             });
         }
     };
