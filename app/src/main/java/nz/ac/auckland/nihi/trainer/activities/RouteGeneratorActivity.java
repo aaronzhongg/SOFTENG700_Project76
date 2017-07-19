@@ -1,50 +1,51 @@
 package nz.ac.auckland.nihi.trainer.activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import nz.ac.auckland.nihi.trainer.R;
-import nz.ac.auckland.nihi.trainer.services.location.GPSServiceImpl;
-import nz.ac.auckland.nihi.trainer.util.LocationUtils;
+import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
+import nz.ac.auckland.nihi.trainer.data.GeneratedRouteHelper;
+import nz.ac.auckland.nihi.trainer.data.Route;
 
 public class RouteGeneratorActivity extends FragmentActivity {
+    /**
+     * The helper allowing us to access the database.
+     */
+    private DatabaseHelper dbHelper = null;
+
     Button generateBtn;
     EditText elevationText;
     EditText distanceText;
     String latlng;
+    TextView routeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_generator);
 
+        routeName = (TextView) findViewById(R.id.txtRouteName);
         generateBtn = (Button) findViewById(R.id.newRouteBtn);
         elevationText = (EditText) findViewById(R.id.txtRouteElevation);
         distanceText = (EditText) findViewById(R.id.txtRouteDistance);
@@ -66,6 +67,14 @@ public class RouteGeneratorActivity extends FragmentActivity {
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         latlng = location.getLatitude() + "," + location.getLongitude();
     }
+    //Make a database helper
+    private DatabaseHelper getHelper() {
+        if (dbHelper == null) {
+            dbHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
+        }
+        return dbHelper;
+    }
+
 
     private View.OnClickListener generateButtonClickListener = new View.OnClickListener() {
 
@@ -89,10 +98,13 @@ public class RouteGeneratorActivity extends FragmentActivity {
                             bufferedReader.close();
 
                             String responseJsonString = stringBuilder.toString();
+                            Dao<Route, String> routeDao = getHelper().getRoutesDAO();
+                            GeneratedRouteHelper.createRoute(6, responseJsonString, routeName.getText().toString(), routeDao);
 
                         }
                         finally{
                             urlConnection.disconnect();
+                            finish();
                         }
                     }
                     catch(Exception e) {
@@ -104,4 +116,6 @@ public class RouteGeneratorActivity extends FragmentActivity {
             });
         }
     };
+
+
 }
