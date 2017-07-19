@@ -132,7 +132,7 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	private LocalDatabaseHelper dbHelper;
 
 	// The engine for text-to-speech.
-	private TextToSpeech tts;
+	public static TextToSpeech tts;
 
 	// True if tts initialization is complete, false otherwise.
 	private boolean ttsEnabled = true;
@@ -818,8 +818,8 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 			});
 		}
 
-		heartRateRulesUtils = new RulesUtils(30000, this.tts);
-		speedRulesUtils = new RulesUtils(15000, this.tts);
+		heartRateRulesUtils = new RulesUtils(300000, this.tts);
+		speedRulesUtils = new RulesUtils(150000, this.tts);
 
 		// Bind to the Odin, Bluetooth and GPS services
 		bindService(bioharnessServiceIntent, bioharnessConn, BIND_AUTO_CREATE);

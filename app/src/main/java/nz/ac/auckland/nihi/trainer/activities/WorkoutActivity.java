@@ -2,6 +2,8 @@ package nz.ac.auckland.nihi.trainer.activities;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessService;
@@ -18,6 +20,7 @@ import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
 import nz.ac.auckland.nihi.trainer.data.Route;
+import nz.ac.auckland.nihi.trainer.data.RouteCoordinate;
 import nz.ac.auckland.nihi.trainer.data.Symptom;
 import nz.ac.auckland.nihi.trainer.data.SymptomStrength;
 import nz.ac.auckland.nihi.trainer.data.session.ExerciseSessionData;
@@ -53,6 +56,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
@@ -61,6 +65,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -73,6 +78,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.vision.text.Text;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.odin.android.bioharness.BHConnectivityStatus;
 import com.odin.android.bioharness.prefs.BioharnessDescription;
@@ -147,6 +153,14 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	// The map.
 	private GoogleMap theMap;
 
+	//Current route
+	private Route currentRoute;
+
+	//The next point that the user needs to navigate to
+	private LinkedList<RouteCoordinate> remainingDestinations;
+
+	//TTS
+
 	// ************************************************************************************************************
 
 	/**
@@ -175,6 +189,14 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 		// Create the user interface and set its inital properties.
 		buildUI();
 		setUIState(null);
+
+		//enable tts
+//		this.tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+//			@Override
+//			public void onInit(int status) {
+//			}
+//		});
+
 
 		// If Bluetooth is enabled, or if this is the test harness, start the workout service.
 		if (TestHarnessUtils.isTestHarness() || BluetoothAdapter.getDefaultAdapter().isEnabled()) {
@@ -549,6 +571,12 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 					changeGoal(new FreeWorkoutGoal());
 				} else {
 					changeGoal(new RouteGoal(routeId));
+					try {
+						currentRoute = dbHelper.getRoutesDAO().queryForId(routeId);
+						remainingDestinations = new LinkedList<RouteCoordinate>(currentRoute.getGpsCoordinates());
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
 
 			}
@@ -561,6 +589,21 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	@Override
 	public void locationChanged(Location newLocation) {
 		showOnMap(newLocation);
+		giveNavigationInstructions(newLocation);
+	}
+
+	private void giveNavigationInstructions(Location location){
+		RouteCoordinate currentDestination = remainingDestinations.getFirst();
+		//Check if within a certain radius of this destination
+		double distance = LocationUtils.distanceBetweenCoordinates(location.getLatitude(), currentDestination.getLatitude(),
+				location.getLongitude(), currentDestination.getLongitude());
+		//if it's close enough, give the requite instruction
+		if(distance <= 105){
+			WorkoutService.tts.speak(currentDestination.getInstruction(), TextToSpeech.QUEUE_ADD, null);
+			remainingDestinations.removeFirst();
+		}else{
+			//WorkoutService.tts.speak("Distance is:" + distance, TextToSpeech.QUEUE_ADD, null);
+		}
 	}
 
 	/**

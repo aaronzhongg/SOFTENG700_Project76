@@ -42,25 +42,26 @@ public class DummyRouteCreator {
 
     public static List<Route> createDummyRoutes(Dao<Route, String> routeDAO, String testRouteImagePath) throws SQLException {
         List<Route> routes = new ArrayList<Route>();
-        routes.add(createRoute(1, DUMMY_COORDINATES_UOA, "UoA route", testRouteImagePath, routeDAO, 4200, 50));
-        routes.add(createRoute(2, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route", testRouteImagePath, routeDAO, 2300, 30));
-        routes.add(createRoute(3, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route + elevation", testRouteImagePath, routeDAO, 2300, 70));
-        routes.add(createRoute(4, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route", testRouteImagePath, routeDAO, 6000, 95));
-        routes.add(createRoute(5, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route - elevation", testRouteImagePath, routeDAO, 6000, 35));
-
-        Route navTest = createRoute(6, DUMMY_COORDINATES_NAVIGATION_TEST, "Navigation Test", testRouteImagePath, routeDAO, 870, 39);
-        Iterator<RouteCoordinate> itr = navTest.getGpsCoordinates().iterator();
-        int i = 0;
-        while(itr.hasNext()){
-            RouteCoordinate r = itr.next();
-            r.setInstruction(DUMMY_NAVIGATION_TEST_INSTRUCTIONS[i]);
-            i++;
-        }
+        routes.add(createRoute(1, DUMMY_COORDINATES_UOA, "UoA route", testRouteImagePath, routeDAO, 4200, 50, null));
+        routes.add(createRoute(2, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route", testRouteImagePath, routeDAO, 2300, 30, null));
+        routes.add(createRoute(3, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route + elevation", testRouteImagePath, routeDAO, 2300, 70, null));
+        routes.add(createRoute(4, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route", testRouteImagePath, routeDAO, 6000, 95, null));
+        routes.add(createRoute(5, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route - elevation", testRouteImagePath, routeDAO, 6000, 35, null));
+        routes.add(createRoute(6, DUMMY_COORDINATES_NAVIGATION_TEST, "Navigation Test", testRouteImagePath, routeDAO, 870, 39, DUMMY_NAVIGATION_TEST_INSTRUCTIONS));
+//        Iterator<RouteCoordinate> itr = navTest.getGpsCoordinates().iterator();
+//        int i = 0;
+//        while(itr.hasNext()){
+//            RouteCoordinate r = itr.next();
+//            r.setInstruction(DUMMY_NAVIGATION_TEST_INSTRUCTIONS[i]);
+//            i++;
+//        }
+//        routeDAO.update(navTest);
+//        routes.add(navTest);
         return routes;
     }
 
     private static nz.ac.auckland.nihi.trainer.data.Route createRoute(long id, double[] coordinates, String name , String testRouteImagePath,
-                                    Dao<Route, String> routeDAO, double length, double elevation) throws SQLException {
+                                    Dao<Route, String> routeDAO, double length, double elevation, String[] instructions) throws SQLException {
         Route route = new Route();
         route.setUserId(id);
         route.setName(name);
@@ -75,6 +76,7 @@ public class DummyRouteCreator {
 
         routeDAO.assignEmptyForeignCollection(route, "gpsCoordinates");
         routeDAO.create(route);
+        int j = 0;
         for (int i = 0; i < coordinates.length; i += 2) {
             double lat = coordinates[i];
             double lng = coordinates[i + 1];
@@ -82,6 +84,10 @@ public class DummyRouteCreator {
             coord.setLatitude(lat);
             coord.setLongitude(lng);
             coord.setRoute(route);
+            if(instructions != null){
+                coord.setInstruction(instructions[j]);
+                j++;
+            }
             route.getGpsCoordinates().add(coord);
         }
         return route;
