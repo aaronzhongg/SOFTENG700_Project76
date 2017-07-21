@@ -10,6 +10,7 @@ import java.util.List;
 
 import nz.ac.auckland.cs.odin.android.api.services.IOdinService;
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUtils;
+import nz.ac.auckland.nihi.trainer.R;
 import nz.ac.auckland.nihi.trainer.R.anim;
 import nz.ac.auckland.nihi.trainer.R.drawable;
 import nz.ac.auckland.nihi.trainer.R.id;
@@ -37,6 +38,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -149,8 +153,15 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 			bindService(new Intent(this, GPSServiceImpl.class), gpsConn, BIND_AUTO_CREATE);
 		}
 
+
+
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		populateListView();
+	}
 
 
 	/**
@@ -169,12 +180,27 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 
 
 
-	// @Override
-	// public boolean onCreateOptionsMenu(Menu menu) {
-	// MenuInflater inf = new MenuInflater(this);
-	// inf.inflate(R.menu.routes_screen, menu);
-	// return true;
-	// }
+	 @Override
+	 public boolean onCreateOptionsMenu(Menu menu) {
+	 MenuInflater inf = new MenuInflater(this);
+	 inf.inflate(R.menu.routes_generator, menu);
+	 return super.onCreateOptionsMenu(menu);
+	 }
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case id.action_generate_route:
+				Intent intent = new Intent(this, RouteGeneratorActivity.class);
+				startActivity(intent);
+				return true;
+			default:
+				// If we got here, the user's action was not recognized.
+				// Invoke the superclass to handle it.
+				return super.onOptionsItemSelected(item);
+
+		}
+	}
 
 	// ************************************************************************************************************
 
