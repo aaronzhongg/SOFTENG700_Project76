@@ -2,7 +2,6 @@ package nz.ac.auckland.nihi.trainer.activities;
 
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -10,7 +9,6 @@ import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessServic
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUIControllerCommandReceiver;
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUtils;
 import nz.ac.auckland.cs.odin.interconnect.common.EndpointConnectionStatus;
-import nz.ac.auckland.cs.ormlite.DatabaseManager;
 import nz.ac.auckland.nihi.trainer.R.anim;
 import nz.ac.auckland.nihi.trainer.R.drawable;
 import nz.ac.auckland.nihi.trainer.R.id;
@@ -18,7 +16,6 @@ import nz.ac.auckland.nihi.trainer.R.layout;
 import nz.ac.auckland.nihi.trainer.R.string;
 import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
-import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.data.RouteCoordinate;
 import nz.ac.auckland.nihi.trainer.data.Symptom;
@@ -65,7 +62,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -78,7 +74,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.vision.text.Text;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.odin.android.bioharness.BHConnectivityStatus;
 import com.odin.android.bioharness.prefs.BioharnessDescription;
@@ -149,6 +144,9 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 
 	// Determines whether we can see the activity.
 	private boolean activityVisible = true;
+
+	//Determine whether the navigation tts should be enabled
+	private boolean isPaused = true;
 
 	// The map.
 	private GoogleMap theMap;
@@ -593,12 +591,17 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	}
 
 	private void giveNavigationInstructions(Location location){
+		//if no more destinations left do not try to fetch destination
+		//if the user has not started the workout or paused it, do not try to tts
+		if(remainingDestinations.size() < 1 || this.isPaused){
+			return;
+		}
 		RouteCoordinate currentDestination = remainingDestinations.getFirst();
 		//Check if within a certain radius of this destination
 		double distance = LocationUtils.distanceBetweenCoordinates(location.getLatitude(), currentDestination.getLatitude(),
 				location.getLongitude(), currentDestination.getLongitude());
 		//if it's close enough, give the requite instruction
-		if(distance <= 105){
+		if(distance <= 50){
 			WorkoutService.tts.speak(currentDestination.getInstruction(), TextToSpeech.QUEUE_ADD, null);
 			remainingDestinations.removeFirst();
 		}else{
@@ -921,11 +924,13 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 			}
 		}
 
-		// If the timer should be enabled, but isn't, enable it now.
+		// If the timer should be enabled, but isn't, enable it now. Also enable navigation
 		if (shouldEnableTimer && timerUpdateThread == null) {
 			timerUpdateThread = new Thread(timerUpdateTask);
 			timerUpdateThread.setDaemon(true);
 			timerUpdateThread.start();
+			isPaused = false;
+			WorkoutService.setIsPaused(false);
 		}
 
 		// If the timer should be disabled, but is enabled, disable it now.
@@ -936,6 +941,8 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 			} catch (InterruptedException e) {
 			}
 			timerUpdateThread = null;
+			isPaused = true;
+			WorkoutService.setIsPaused(true);
 		}
 
 	}

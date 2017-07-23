@@ -148,6 +148,7 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	private RulesUtils heartRateRulesUtils;
 	private RulesUtils speedRulesUtils;
 	private static String feedback = "";
+	private static boolean isPaused = true;
 
 	// ************************************************************************************************************
 
@@ -706,9 +707,10 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 //		facts.put("heartRate", newData.getHeartRate());
 //		rulesEngine.fire(rules, facts);
 
-		heartRateRulesUtils.fireTimedHeartrateRules(newData.getHeartRate(), this.currentSession.getElapsedTimeInMillis());
-		speedRulesUtils.fireTimedSpeedRules(this.currentSession.getCurrentSpeed(), this.currentSession.getElapsedTimeInMillis());
-
+		if(!isPaused){
+			heartRateRulesUtils.fireTimedHeartrateRules(newData.getHeartRate(), this.currentSession.getElapsedTimeInMillis());
+			speedRulesUtils.fireTimedSpeedRules(this.currentSession.getCurrentSpeed(), this.currentSession.getElapsedTimeInMillis());
+		}
 		// logger.debug("onReceiveSummaryData(): before sendVitalSignData(newData)");
 
 		// If monitoring, send to Odin
@@ -818,8 +820,9 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 			});
 		}
 
-		heartRateRulesUtils = new RulesUtils(300000, this.tts);
-		speedRulesUtils = new RulesUtils(150000, this.tts);
+		heartRateRulesUtils = new RulesUtils(120000, this.tts); //2mins
+		//speedRulesUtils = new RulesUtils(300000, this.tts);	//5mins
+		speedRulesUtils = new RulesUtils(5000, this.tts);		//testing
 
 		// Bind to the Odin, Bluetooth and GPS services
 		bindService(bioharnessServiceIntent, bioharnessConn, BIND_AUTO_CREATE);
@@ -1026,6 +1029,12 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	}
 	public static void setFeedback(String f){
 		feedback = f;
+	}
+	public static boolean isPaused() {
+		return isPaused;
+	}
+	public static void setIsPaused(boolean isPaused) {
+		WorkoutService.isPaused = isPaused;
 	}
 
 	// ************************************************************************************************************
