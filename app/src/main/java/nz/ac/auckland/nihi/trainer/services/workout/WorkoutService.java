@@ -150,6 +150,8 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	private static String feedback = "";
 	private static boolean isPaused = true;
 
+	public static long startWorkoutTimestamp;
+
 	// ************************************************************************************************************
 
 	// ************************************************************************************************************
@@ -259,6 +261,8 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 		currentSession.addGoalListener(this);
 		uiHandler.obtainMessage(MSG_SESSION_CHANGE, currentSession).sendToTarget();
 		uiHandler.obtainMessage(MSG_STATUS_CHANGE, WorkoutServiceStatusChangeType.MonitoringStatus).sendToTarget();
+
+		startWorkoutTimestamp = System.currentTimeMillis();
 
 		return currentSession;
 	}
