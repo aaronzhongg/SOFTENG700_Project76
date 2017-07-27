@@ -43,11 +43,11 @@ public class DummyRouteCreator {
     public static List<Route> createDummyRoutes(Dao<Route, String> routeDAO, String testRouteImagePath) throws SQLException {
         List<Route> routes = new ArrayList<Route>();
         routes.add(createRoute(1, DUMMY_COORDINATES_UOA, "UoA route", testRouteImagePath, routeDAO, 4200, 50, null));
-        routes.add(createRoute(2, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route", testRouteImagePath, routeDAO, 2300, 30, null));
-        routes.add(createRoute(3, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route + elevation", testRouteImagePath, routeDAO, 2300, 70, null));
-        routes.add(createRoute(4, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route", testRouteImagePath, routeDAO, 6000, 95, null));
-        routes.add(createRoute(5, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route - elevation", testRouteImagePath, routeDAO, 6000, 35, null));
-        routes.add(createRoute(6, DUMMY_COORDINATES_NAVIGATION_TEST, "Navigation Test", testRouteImagePath, routeDAO, 870, 39, DUMMY_NAVIGATION_TEST_INSTRUCTIONS));
+        //routes.add(createRoute(2, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route", testRouteImagePath, routeDAO, 2300, 30, null));
+        //routes.add(createRoute(3, DUMMY_COORDINATES_HOWICK_SHORT, "Howick short route + elevation", testRouteImagePath, routeDAO, 2300, 70, null));
+        //routes.add(createRoute(4, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route", testRouteImagePath, routeDAO, 6000, 95, null));
+        //routes.add(createRoute(5, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route - elevation", testRouteImagePath, routeDAO, 6000, 35, null));
+        routes.add(createRoute(2, DUMMY_COORDINATES_NAVIGATION_TEST, "Navigation Test", testRouteImagePath, routeDAO, 870, 39, DUMMY_NAVIGATION_TEST_INSTRUCTIONS));
 //        Iterator<RouteCoordinate> itr = navTest.getGpsCoordinates().iterator();
 //        int i = 0;
 //        while(itr.hasNext()){

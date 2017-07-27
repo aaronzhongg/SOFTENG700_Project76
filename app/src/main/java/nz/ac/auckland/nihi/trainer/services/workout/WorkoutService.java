@@ -21,10 +21,12 @@ import nz.ac.auckland.cs.ormlite.LocalDatabaseHelper;
 import nz.ac.auckland.nihi.trainer.R;
 import nz.ac.auckland.nihi.trainer.R.string;
 import nz.ac.auckland.nihi.trainer.activities.NotificationViewerActivity;
+import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.ExerciseNotification;
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
 import nz.ac.auckland.nihi.trainer.data.Route;
+import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 import nz.ac.auckland.nihi.trainer.data.Symptom;
 import nz.ac.auckland.nihi.trainer.data.SymptomEntry;
 import nz.ac.auckland.nihi.trainer.data.SymptomStrength;
@@ -65,6 +67,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.odin.android.bioharness.BHConnectivityStatus;
 import com.odin.android.bioharness.data.ECGWaveformData;
@@ -129,7 +133,7 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	private boolean disconnectingFromBioharness = false;
 
 	// The database connection
-	private LocalDatabaseHelper dbHelper;
+	private DatabaseHelper dbHelper;
 
 	// The engine for text-to-speech.
 	public static TextToSpeech tts;
@@ -147,10 +151,12 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 //	private ExampleRules exampleRule = new ExampleRules();
 	private RulesUtils heartRateRulesUtils;
 	private RulesUtils speedRulesUtils;
+	private RulesUtils dataRulesUtils;
 	private static String feedback = "";
 	private static boolean isPaused = true;
-
-	public static long startWorkoutTimestamp;
+	private Location currentLocation;
+	private long startWorkoutTimestamp;
+    public static boolean shouldSaveSummaryChunk = false;
 
 	// ************************************************************************************************************
 
@@ -304,6 +310,8 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 		currentSession = new ExerciseSessionData(this, null, null, false);
 		uiHandler.obtainMessage(MSG_SESSION_CHANGE, currentSession).sendToTarget();
 		uiHandler.obtainMessage(MSG_STATUS_CHANGE, WorkoutServiceStatusChangeType.MonitoringStatus).sendToTarget();
+
+		startWorkoutTimestamp = 0;
 
 		// Return the summary.
 		return summary;
@@ -714,6 +722,15 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 		if(!isPaused){
 			heartRateRulesUtils.fireTimedHeartrateRules(newData.getHeartRate(), this.currentSession.getElapsedTimeInMillis());
 			speedRulesUtils.fireTimedSpeedRules(this.currentSession.getCurrentSpeed(), this.currentSession.getElapsedTimeInMillis());
+			dataRulesUtils.fireTimedDataRules(this.currentSession.getElapsedTimeInMillis());
+            if(shouldSaveSummaryChunk){
+				shouldSaveSummaryChunk = false;
+                try {
+                    saveSummaryChunk(this.currentSession.getCurrentSpeed(), this.currentSession.getHeartRate());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
 		}
 		// logger.debug("onReceiveSummaryData(): before sendVitalSignData(newData)");
 
@@ -769,6 +786,7 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 
 		uiHandler.obtainMessage(MSG_LOCATION_CHANGE, location).sendToTarget();
 		currentSession.addGPSData(location);
+        currentLocation = location;
 		if (currentSession.isMonitoring()) {
 			// Location clone = location.hasSpeed() ? location : new Location(location);
 			// if (clone != location) {
@@ -825,8 +843,9 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 		}
 
 		heartRateRulesUtils = new RulesUtils(120000, this.tts); //2mins
-		//speedRulesUtils = new RulesUtils(300000, this.tts);	//5mins
-		speedRulesUtils = new RulesUtils(5000, this.tts);		//testing
+		speedRulesUtils = new RulesUtils(300000, this.tts);	//5mins
+		//speedRulesUtils = new RulesUtils(5000, this.tts);		//testing
+		dataRulesUtils = new RulesUtils(60000, this.tts);
 
 		// Bind to the Odin, Bluetooth and GPS services
 		bindService(bioharnessServiceIntent, bioharnessConn, BIND_AUTO_CREATE);
@@ -1022,12 +1041,18 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	 * 
 	 * @return
 	 */
-	private LocalDatabaseHelper getDbHelper() {
+	private DatabaseHelper getDbHelper() {
 		if (dbHelper == null) {
-			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(this);
-		}
+			dbHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);		}
 		return dbHelper;
 	}
+    private void saveSummaryChunk(float speed, int heartRate) throws SQLException {
+        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        SummaryDataChunk chunk = new SummaryDataChunk(startWorkoutTimestamp, latLng, speed, heartRate);
+        dbHelper = getDbHelper();
+        Dao<SummaryDataChunk, String> summaryDao = dbHelper.getSummaryDataChunksDAO();
+        summaryDao.create(chunk);
+    }
 	public static String getFeedback(){
 		return feedback;
 	}

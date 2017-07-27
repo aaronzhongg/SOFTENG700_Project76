@@ -19,6 +19,7 @@ import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.DummyRouteCreator;
 import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
 import nz.ac.auckland.nihi.trainer.data.Route;
+import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 import nz.ac.auckland.nihi.trainer.fragments.LoginDialogFragment;
 import nz.ac.auckland.nihi.trainer.fragments.LoginDialogFragment.LoginDialogFragmentListener;
 import nz.ac.auckland.nihi.trainer.prefs.NihiPreferences;
@@ -101,17 +102,18 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		dbHelper = getHelper();
-		dbHelper.close();
-		while (dbHelper.isOpen() == true)  {   // maybe you dont want to use while
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		this.deleteDatabase("routes.db");
-		dbHelper = null;
+//		CODE USED TO RESET DB
+//		dbHelper = getHelper();
+//		dbHelper.close();
+//		while (dbHelper.isOpen() == true)  {   // maybe you dont want to use while
+//			try {
+//				Thread.sleep(500);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		this.deleteDatabase("routes.db");
+//		dbHelper = null;
 		if (TestHarnessUtils.isTestHarness() || checkBluetoothAvailable()) {
 
 			super.onCreate(savedInstanceState);
@@ -532,7 +534,9 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	private void loadRoutesToDB(String action) throws SQLException {
 		getHelper().getWritableDatabase();
 		Dao<Route, String> routeDao = getHelper().getRoutesDAO();
+		Dao<SummaryDataChunk, String> summaryDao = getHelper().getSummaryDataChunksDAO();
 		List<Route> routes = routeDao.queryForAll();
+		List<SummaryDataChunk> summaryDataChunks = summaryDao.queryForAll();
 		if(routes.size() == 0){
 			List<Route> newRoutes = DummyRouteCreator.createDummyRoutes(routeDao,"testmapimage.png");
 			StringBuilder sb = new StringBuilder();

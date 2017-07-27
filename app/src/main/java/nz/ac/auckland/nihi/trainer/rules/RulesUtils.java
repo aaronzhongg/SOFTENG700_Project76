@@ -9,6 +9,7 @@ import org.jeasy.rules.core.CompositeRule;
 
 import java.sql.Time;
 
+import static nz.ac.auckland.nihi.trainer.services.workout.WorkoutService.tts;
 import static org.jeasy.rules.core.RulesEngineBuilder.aNewRulesEngine;
 
 /**
@@ -22,6 +23,7 @@ public class RulesUtils {
     private long timestamp;
     private long timeGap;
     private TimeCheck timeCheck;
+    private TimeCheckDataSave dataSave;
 
     public RulesUtils(long timeGap, TextToSpeech tts){
         rulesEngine = aNewRulesEngine()
@@ -31,6 +33,7 @@ public class RulesUtils {
         timestamp = 0;
         this.timeGap = timeGap;
         timeCheck = new TimeCheck(tts);
+        dataSave = new TimeCheckDataSave(tts);
     }
 
     public void fireHeartrateRules(int heartRate){
@@ -88,6 +91,17 @@ public class RulesUtils {
 
         rules = new Rules();
         rules.register(SpeedLow);
+
+        rulesEngine.fire(rules, facts);
+    }
+
+    public void fireTimedDataRules(long timeElapsed){
+        facts = new Facts();
+        facts.put("time", timeElapsed);
+        facts.put("timeGap", timeGap);
+
+        rules = new Rules();
+        rules.register(dataSave);
 
         rulesEngine.fire(rules, facts);
     }

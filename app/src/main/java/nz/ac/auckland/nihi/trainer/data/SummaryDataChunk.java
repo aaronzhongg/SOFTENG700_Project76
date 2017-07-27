@@ -14,7 +14,7 @@ import java.util.Date;
 @DatabaseTable(
         tableName = "summary_data_chunks"
 )
-public class summaryDataChunk {
+public class SummaryDataChunk {
     @DatabaseField(
             id = true
     )
@@ -45,7 +45,10 @@ public class summaryDataChunk {
     )
     private int heartRate;
 
-    public summaryDataChunk( long timestamp,LatLng latLng, float speed, int heartRate){
+    public SummaryDataChunk(){
+
+    }
+    public SummaryDataChunk(long timestamp, LatLng latLng, float speed, int heartRate){
         this.sessionTimestamp = timestamp;
         this.latitude = latLng.latitude;
         this.longitude = latLng.longitude;

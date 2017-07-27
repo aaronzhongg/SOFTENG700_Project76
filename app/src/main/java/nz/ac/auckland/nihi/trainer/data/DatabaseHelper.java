@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import java.sql.SQLException;
 
 import nz.ac.auckland.nihi.trainer.R;
-import nz.ac.auckland.nihi.trainer.data.Route;
 
 /**
  * Created by alex on 6/13/2017.
@@ -23,6 +22,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final Logger logger = Logger.getLogger(DatabaseHelper.class);
 
     private Dao<nz.ac.auckland.nihi.trainer.data.Route, String> routesDAO;
+    private Dao<SummaryDataChunk, String> summaryDataChunksDAO;
 
     // name of the database file for your application -- change to something appropriate for your app
     private static final String DATABASE_NAME = "routes.db";
@@ -46,6 +46,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
             TableUtils.createTable(connectionSource, Route.class);
             TableUtils.createTable(connectionSource, RouteCoordinate.class);
+            TableUtils.createTable(connectionSource, SummaryDataChunk.class);
         } catch (SQLException e) {
             logger.error("onCreate(): Can't create Database tables.", e);
             throw new RuntimeException(e);
@@ -78,6 +79,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 logger.info("onUpgrade(): dropping existing NIHI tables");
                 TableUtils.dropTable(connectionSource, Route.class, true);
                 TableUtils.dropTable(connectionSource, RouteCoordinate.class, true);
+                TableUtils.dropTable(connectionSource, SummaryDataChunk.class, true);
             } catch (SQLException e) {
                 logger.error("onUpgrade(): could not drop NIHI tables", e);
                 throw new RuntimeException(e);
@@ -92,9 +94,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             //For testing, drop tables first
             TableUtils.dropTable(connectionSource, Route.class, true);
             TableUtils.dropTable(connectionSource, RouteCoordinate.class, true);
+            TableUtils.dropTable(connectionSource, SummaryDataChunk.class, true);
 
             TableUtils.createTableIfNotExists(connectionSource, Route.class);
             TableUtils.createTableIfNotExists(connectionSource, RouteCoordinate.class);
+            TableUtils.createTable(connectionSource, SummaryDataChunk.class);
         } catch (SQLException e) {
             logger.error("onCreate(): Can't create Database tables.", e);
             throw new RuntimeException(e);
@@ -108,6 +112,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return routesDAO;
     }
 
+    public Dao<SummaryDataChunk, String> getSummaryDataChunksDAO() throws SQLException{
+        if(summaryDataChunksDAO == null){
+            summaryDataChunksDAO = getDao(SummaryDataChunk.class);
+        }
+        return summaryDataChunksDAO;
+    }
 
     // public Dao<RouteCoordinate, Integer> getRouteCoordinatesDAO() throws SQLException {
     // if (coordinatesDAO == null) {
