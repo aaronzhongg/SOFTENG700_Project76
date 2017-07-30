@@ -64,6 +64,7 @@
             android:label="Select Goal"
             android:theme="@style/AppDialogTheme"></activity>
 
+
         <!-- <meta-data -->
         <!-- android:name="com.google.android.maps.v2.API_KEY" -->
         <!-- android:value="AIzaSyA_10tRyY8O_nAYCpIhIaSXyD87Az_kk_8" /> -->
@@ -87,6 +88,10 @@
             android:name=".activities.WorkoutActivity"
             android:icon="@drawable/nihi_ic_home_workout"
             android:label="@string/homescreen_button_workout"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.WorkoutSummaryListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
 

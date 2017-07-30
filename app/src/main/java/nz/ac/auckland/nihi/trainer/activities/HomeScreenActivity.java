@@ -438,7 +438,7 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 			Intent intent = null;
 
 			if (v.getId() == id.btnReview) {
-				intent = new Intent(getApplicationContext(), ReviewActivity.class);
+				intent = new Intent(getApplicationContext(), WorkoutSummaryListActivity.class);
 
 			} else if (v.getId() == id.btnRoutes) {
 				intent = new Intent(getApplicationContext(), RoutesActivity.class);
