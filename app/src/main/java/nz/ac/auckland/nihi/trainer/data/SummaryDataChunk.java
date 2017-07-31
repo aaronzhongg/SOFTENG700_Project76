@@ -1,5 +1,6 @@
 package nz.ac.auckland.nihi.trainer.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.android.gms.maps.model.LatLng;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -15,6 +16,11 @@ import java.util.Date;
         tableName = "summary_data_chunks"
 )
 public class SummaryDataChunk {
+    @DatabaseField(
+            foreign = true
+    )
+    @JsonIgnore
+    private transient RCExerciseSummary summary;
     @DatabaseField(
             id = true
     )
@@ -94,5 +100,13 @@ public class SummaryDataChunk {
 
     public void setHeartRate(int heartRate) {
         this.heartRate = heartRate;
+    }
+
+    public RCExerciseSummary getSummary() {
+        return this.summary;
+    }
+
+    public void setSummary(RCExerciseSummary summary) {
+        this.summary = summary;
     }
 }

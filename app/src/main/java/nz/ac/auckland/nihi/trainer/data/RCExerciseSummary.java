@@ -86,6 +86,13 @@ public class RCExerciseSummary {
 //    @JsonIgnore
 //    private ForeignCollection<ExerciseNotification> notifications;
 //
+
+    @ForeignCollectionField(
+            eager = true,
+            foreignFieldName = "summary"
+    )
+    private ForeignCollection<SummaryDataChunk> summaryDataChunks;
+
     public RCExerciseSummary() {
     }
 
@@ -207,6 +214,13 @@ public class RCExerciseSummary {
 //    public void setSymptoms(ForeignCollection<SymptomEntry> symptoms) {
 //        this.symptoms = symptoms;
 //    }
+    public ForeignCollection<SummaryDataChunk> getSummaryDataChunks() {
+        return this.summaryDataChunks;
+    }
+
+    public void setSummaryDataChunks(ForeignCollection<SummaryDataChunk> summaryDataChunks) {
+        this.summaryDataChunks = summaryDataChunks;
+    }
 
     public Date getDate() {
         return this.date;

@@ -62,7 +62,7 @@ public class WorkoutSummaryListActivity extends FragmentActivity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 SummaryDataChunk s = workouts.get(position);
                 Intent intent = new Intent(WorkoutSummaryListActivity.this, WorkoutSummaryActivity.class);
-                intent.putExtra("workout_id", s.getId());
+//                intent.putExtra("workout_id", s.getId());
                 startActivity(intent);
                 }
             });

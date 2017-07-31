@@ -13,6 +13,7 @@ import nz.ac.auckland.nihi.trainer.data.Gender;
 import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.data.RouteCoordinate;
+import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 import nz.ac.auckland.nihi.trainer.data.Symptom;
 import nz.ac.auckland.nihi.trainer.data.SymptomEntry;
 import nz.ac.auckland.nihi.trainer.data.SymptomStrength;
@@ -81,6 +82,8 @@ public class ExerciseSessionData {
 	private final ArrayList<SymptomEntry> symptoms = new ArrayList<SymptomEntry>();
 
 	private final ArrayList<ExerciseNotification> notifications = new ArrayList<ExerciseNotification>();
+
+	private final ArrayList<SummaryDataChunk> summaryDataChunks = new ArrayList<SummaryDataChunk>();
 
 	/**
 	 * The cache of ECG data.
@@ -865,6 +868,10 @@ public class ExerciseSessionData {
 		return notificationEntry;
 	}
 
+	public SummaryDataChunk addSummaryDataChunk(SummaryDataChunk s) {
+		summaryDataChunks.add(s);
+		return s;
+	}
 	/**
 	 * Generates a summary of this session and saves it to the database.
 	 * 
@@ -938,9 +945,14 @@ public class ExerciseSessionData {
 
 		summary.setUserId(userId);
 
+		summaryDao.assignEmptyForeignCollection(summary, "summaryDataChunks");
 //		summaryDao.assignEmptyForeignCollection(summary, "symptoms");
 //		summaryDao.assignEmptyForeignCollection(summary, "notifications");
 		summaryDao.create(summary);
+
+		for (SummaryDataChunk s : summaryDataChunks) {
+			summary.getSummaryDataChunks().add(s);
+		}
 
 //		for (SymptomEntry symptom : symptoms) {
 //			summary.getSymptoms().add(symptom);
