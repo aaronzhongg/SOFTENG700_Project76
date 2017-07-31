@@ -10,6 +10,7 @@ import nz.ac.auckland.nihi.trainer.data.BloodLactateConcentrationData;
 import nz.ac.auckland.nihi.trainer.data.ExerciseNotification;
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Gender;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.data.RouteCoordinate;
 import nz.ac.auckland.nihi.trainer.data.Symptom;
@@ -872,9 +873,9 @@ public class ExerciseSessionData {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ExerciseSummary generateSummary(long userId, String creatorName, Dao<ExerciseSummary, String> summaryDao,
+	public RCExerciseSummary generateSummary(long userId, String creatorName, Dao<RCExerciseSummary, String> summaryDao,
 			Dao<Route, String> routeDao) throws SQLException {
-		ExerciseSummary summary = new ExerciseSummary();
+		RCExerciseSummary summary = new RCExerciseSummary();
 
 		summary.setDate(new Date(getStartTimeInMillis()));
 		summary.setDurationInSeconds((int) Math.round((double) getElapsedTimeInMillis() / 1000.0));
@@ -937,17 +938,17 @@ public class ExerciseSessionData {
 
 		summary.setUserId(userId);
 
-		summaryDao.assignEmptyForeignCollection(summary, "symptoms");
-		summaryDao.assignEmptyForeignCollection(summary, "notifications");
+//		summaryDao.assignEmptyForeignCollection(summary, "symptoms");
+//		summaryDao.assignEmptyForeignCollection(summary, "notifications");
 		summaryDao.create(summary);
 
-		for (SymptomEntry symptom : symptoms) {
-			summary.getSymptoms().add(symptom);
-		}
-
-		for (ExerciseNotification notification : notifications) {
-			summary.getNotifications().add(notification);
-		}
+//		for (SymptomEntry symptom : symptoms) {
+//			summary.getSymptoms().add(symptom);
+//		}
+//
+//		for (ExerciseNotification notification : notifications) {
+//			summary.getNotifications().add(notification);
+//		}
 
 		return summary;
 	}

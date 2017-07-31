@@ -12,7 +12,9 @@ import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
 
+import nz.ac.auckland.cs.ormlite.DBSectionHelper;
 import nz.ac.auckland.nihi.trainer.R;
+import nz.ac.auckland.nihi.trainer.data.session.ExerciseSessionData;
 
 /**
  * Created by alex on 6/13/2017.
@@ -23,6 +25,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private Dao<nz.ac.auckland.nihi.trainer.data.Route, String> routesDAO;
     private Dao<SummaryDataChunk, String> summaryDataChunksDAO;
+    private Dao<RCExerciseSummary, String> exerciseSummariesDAO;
 
     // name of the database file for your application -- change to something appropriate for your app
     private static final String DATABASE_NAME = "routes.db";
@@ -47,6 +50,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Route.class);
             TableUtils.createTable(connectionSource, RouteCoordinate.class);
             TableUtils.createTable(connectionSource, SummaryDataChunk.class);
+            TableUtils.createTable(connectionSource, RCExerciseSummary.class);
         } catch (SQLException e) {
             logger.error("onCreate(): Can't create Database tables.", e);
             throw new RuntimeException(e);
@@ -119,6 +123,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return summaryDataChunksDAO;
     }
 
+    public Dao<RCExerciseSummary, String> getExerciseSummaryDAO() throws SQLException{
+        if(exerciseSummariesDAO == null){
+            exerciseSummariesDAO = getDao(RCExerciseSummary.class);
+        }
+        return exerciseSummariesDAO;
+    }
+
     // public Dao<RouteCoordinate, Integer> getRouteCoordinatesDAO() throws SQLException {
     // if (coordinatesDAO == null) {
     // coordinatesDAO = dbHelper.getDao(RouteCoordinate.class);
@@ -133,4 +144,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         super.close();
         routesDAO = null;
     }
+
+
 }

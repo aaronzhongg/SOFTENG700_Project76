@@ -1,5 +1,7 @@
 package nz.ac.auckland.nihi.trainer.activities;
 
+import android.content.Intent;
+import android.support.v4.app.BundleCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -58,7 +60,10 @@ public class WorkoutSummaryListActivity extends FragmentActivity {
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
+                SummaryDataChunk s = workouts.get(position);
+                Intent intent = new Intent(WorkoutSummaryListActivity.this, WorkoutSummaryActivity.class);
+                intent.putExtra("workout_id", s.getId());
+                startActivity(intent);
                 }
             });
 

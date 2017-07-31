@@ -16,6 +16,7 @@ import nz.ac.auckland.nihi.trainer.R.layout;
 import nz.ac.auckland.nihi.trainer.R.string;
 import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.data.RouteCoordinate;
 import nz.ac.auckland.nihi.trainer.data.Symptom;
@@ -502,7 +503,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 		}
 
 		// Notify the service that the workout should cease
-		ExerciseSummary summary = workoutService.getService().endWorkout();
+		RCExerciseSummary summary = workoutService.getService().endWorkout();
 		//Back to route select for now
 		finish();
 		Intent routeIntent = new Intent(getApplicationContext(), RoutesActivity.class);

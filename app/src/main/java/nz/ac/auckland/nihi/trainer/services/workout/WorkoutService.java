@@ -25,6 +25,7 @@ import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.ExerciseNotification;
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 import nz.ac.auckland.nihi.trainer.data.Symptom;
@@ -277,7 +278,7 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	 * If we're currently monitoring, stop monitoring and generate a summary of the session. If not, throw an exception.
 	 */
 	@Override
-	public ExerciseSummary endWorkout() {
+	public RCExerciseSummary endWorkout() {
 		// Verify we're monitoring
 		if (!currentSession.isMonitoring()) {
 			throw new UnsupportedOperationException("Cannot stop a session that's not started!");
@@ -287,20 +288,18 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 		NotificationUtils.clearNotification(this, NOTIFICATION_REACH_GOAL);
 
 //		// Create the summary
-		ExerciseSummary summary = null;
-//		try {
-//			// Create summary, save to DB.
-//			Dao<ExerciseSummary, String> summaryDao = getDbHelper().getSectionHelper(NihiDBHelper.class)
-//					.getExerciseSummaryDAO();
-//			Dao<Route, String> routeDao = getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO();
-//			summary = currentSession.generateSummary(OdinPreferences.UserID.getLongValue(this, -1L),
-//					NihiPreferences.Name.getStringValue(this, "Unknown"), summaryDao, routeDao);
-//		} catch (SQLException e) {
-//			// Won't happen, we can ignore this.
-//			logger.error("endWorkout(): " + e.getMessage(), e);
-//			//Logger.flushLogOnShutdown();
-//			throw new RuntimeException(e);
-//		}
+		RCExerciseSummary summary = null;
+		try {
+			// Create summary, save to DB.
+			Dao<RCExerciseSummary, String> summaryDao = getDbHelper().getExerciseSummaryDAO();
+			Dao<Route, String> routeDao = getDbHelper().getRoutesDAO();
+			summary = currentSession.generateSummary(OdinPreferences.UserID.getLongValue(this, -1L), NihiPreferences.Name.getStringValue(this, "Unknown"), summaryDao, routeDao);
+		} catch (SQLException e) {
+			// Won't happen, we can ignore this.
+			logger.error("endWorkout(): " + e.getMessage(), e);
+			//Logger.flushLogOnShutdown();
+			throw new RuntimeException(e);
+		}
 
 		//	TODO: REMOVE ODIN CONNECTION - SEND SESSION SUMMARY TO ODIN
 		// Notify Odin that we're done.
