@@ -12,13 +12,14 @@ import java.sql.SQLException;
 
 import nz.ac.auckland.nihi.trainer.R;
 import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 
 public class WorkoutSummaryActivity extends FragmentActivity {
 
     private DatabaseHelper dbHelper;
-    private SummaryDataChunk s;
-    Dao<SummaryDataChunk, String> summaryDao;
+    private RCExerciseSummary s;
+    Dao<RCExerciseSummary, String> exerciseSummariesDAO;
 
 
     /**
@@ -39,11 +40,11 @@ public class WorkoutSummaryActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout_summary);
         try {
-            summaryDao = getHelper().getSummaryDataChunksDAO();
+            exerciseSummariesDAO = getHelper().getExerciseSummaryDAO();
 //            QueryBuilder<SummaryDataChunk, String> queryBuilder = summaryDao.queryBuilder();
 //            queryBuilder.where().eq(SummaryDataChunk.id = );
             String workoutId = getIntent().getExtras().getString("workout_id");
-            s = summaryDao.queryForId(workoutId);
+            s = exerciseSummariesDAO.queryForId(workoutId);
         } catch (SQLException e) {
             e.printStackTrace();
         }

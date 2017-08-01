@@ -103,17 +103,17 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	protected void onCreate(Bundle savedInstanceState) {
 
 //		CODE USED TO RESET DB
-		dbHelper = getHelper();
-		dbHelper.close();
-		while (dbHelper.isOpen() == true)  {   // maybe you dont want to use while
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		this.deleteDatabase("routes.db");
-		dbHelper = null;
+//		dbHelper = getHelper();
+//		dbHelper.close();
+//		while (dbHelper.isOpen() == true)  {   // maybe you dont want to use while
+//			try {
+//				Thread.sleep(500);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		this.deleteDatabase("routes.db");
+//		dbHelper = null;
 		if (TestHarnessUtils.isTestHarness() || checkBluetoothAvailable()) {
 
 			super.onCreate(savedInstanceState);

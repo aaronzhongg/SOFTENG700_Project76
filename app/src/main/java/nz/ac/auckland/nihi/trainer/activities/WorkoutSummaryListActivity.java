@@ -24,7 +24,10 @@ import nz.ac.auckland.cs.ormlite.DatabaseManager;
 import nz.ac.auckland.cs.ormlite.LocalDatabaseHelper;
 import nz.ac.auckland.nihi.trainer.R;
 import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
+import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
+import nz.ac.auckland.nihi.trainer.data.session.ExerciseSessionData;
 import nz.ac.auckland.nihi.trainer.views.WorkoutListAdapter;
 
 public class WorkoutSummaryListActivity extends FragmentActivity {
@@ -35,7 +38,7 @@ public class WorkoutSummaryListActivity extends FragmentActivity {
     private DatabaseHelper dbHelper;
     private ListView listView;
     WorkoutListAdapter adapter;
-    private List<SummaryDataChunk> workouts = new ArrayList<SummaryDataChunk>();
+    private List<RCExerciseSummary> exerciseSummaries = new ArrayList<RCExerciseSummary>();
 
     /**
      * Lazily creates the {@link #dbHelper} if required, then returns it.
@@ -56,13 +59,13 @@ public class WorkoutSummaryListActivity extends FragmentActivity {
         setContentView(R.layout.activity_workout_summary_list);
         loadWorkoutList();
         listView = (ListView) findViewById(R.id.summary_list);
-        adapter = new WorkoutListAdapter(this, workouts);
+        adapter = new WorkoutListAdapter(this, exerciseSummaries);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                SummaryDataChunk s = workouts.get(position);
+                RCExerciseSummary s = exerciseSummaries.get(position);
                 Intent intent = new Intent(WorkoutSummaryListActivity.this, WorkoutSummaryActivity.class);
-//                intent.putExtra("workout_id", s.getId());
+                intent.putExtra("workout_id", s.getId());
                 startActivity(intent);
                 }
             });
@@ -71,8 +74,8 @@ public class WorkoutSummaryListActivity extends FragmentActivity {
 
     protected void loadWorkoutList() {
         try {
-            Dao<SummaryDataChunk, String> summaryDao = getHelper().getSummaryDataChunksDAO();
-            workouts = summaryDao.queryForAll();
+            Dao<RCExerciseSummary, String> exerciseSummaryDao = getHelper().getExerciseSummaryDAO();
+            exerciseSummaries = exerciseSummaryDao.queryForAll();
 
         } catch (SQLException e) {
             e.printStackTrace();

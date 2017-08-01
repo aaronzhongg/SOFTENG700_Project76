@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 import nz.ac.auckland.nihi.trainer.R;
+import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 
 /**
@@ -23,10 +25,10 @@ import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 
 public class WorkoutListAdapter extends BaseAdapter {
     Context context;
-    List<SummaryDataChunk> data;
+    List<RCExerciseSummary> data;
     private static LayoutInflater inflater = null;
 
-    public WorkoutListAdapter(Context context, List<SummaryDataChunk> data) {
+    public WorkoutListAdapter(Context context, List<RCExerciseSummary> data) {
         // TODO Auto-generated constructor stub
         this.context = context;
         this.data = data;
@@ -53,12 +55,12 @@ public class WorkoutListAdapter extends BaseAdapter {
         if (vi == null) {
             vi = inflater.inflate(R.layout.workout_summary_row, null);
         }
-        SummaryDataChunk s = (SummaryDataChunk) getItem(i);
+        RCExerciseSummary s = (RCExerciseSummary) getItem(i);
         TextView workoutTimestamp = (TextView) vi.findViewById(R.id.workout_text_row);
 
-        Date date = new Date(s.getSessionTimestamp());
-        Format format = new SimpleDateFormat("dd MM yyyy HH:mm");
-        workoutTimestamp.setText(format.format(date));
+//        Date date = new Date(s);
+//        Format format = new SimpleDateFormat("dd MM yyyy HH:mm");
+        workoutTimestamp.setText(s.getDate().toString());
         return vi;
     }
 }
