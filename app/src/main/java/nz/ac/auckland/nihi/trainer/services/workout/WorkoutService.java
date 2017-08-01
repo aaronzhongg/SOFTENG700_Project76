@@ -1047,7 +1047,7 @@ public class WorkoutService extends Service implements IWorkoutService, IBioHarn
 	}
     private void saveSummaryChunk(float speed, int heartRate) throws SQLException {
         LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        SummaryDataChunk chunk = new SummaryDataChunk(startWorkoutTimestamp, latLng, speed, heartRate);
+        SummaryDataChunk chunk = new SummaryDataChunk(this.currentSession.getElapsedTimeInMillis(), latLng, speed, heartRate);
 //        dbHelper = getDbHelper();
 //        Dao<SummaryDataChunk, String> summaryDao = dbHelper.getSummaryDataChunksDAO();
 //        summaryDao.create(chunk);

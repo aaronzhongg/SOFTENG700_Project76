@@ -26,7 +26,11 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUtils;
 import nz.ac.auckland.nihi.trainer.R;
@@ -105,17 +109,14 @@ public class WorkoutSummaryActivity extends FragmentActivity {
     private void addMarkers() {
         Collection<SummaryDataChunk> summaryDataChunks = exerciseSummary.getSummaryDataChunks();
         for (SummaryDataChunk s: summaryDataChunks) {
-            mMap.addMarker(new MarkerOptions().position(new LatLng(s.getLatitude(), s.getLongitude())).title("time")
+            long minutes = TimeUnit.MILLISECONDS.toMinutes(s.getSessionTimestamp());
+//            long seconds = TimeUnit.MILLISECONDS.toSeconds(s.getSessionTimestamp());
+            mMap.addMarker(new MarkerOptions().position(new LatLng(s.getLatitude(), s.getLongitude())).title("minute: " + minutes)
                     .snippet("Heart rate (bpm): " + s.getHeartRate() + "\nSpeed (km/h): " + s.getSpeed()));
         }
 
     }
 
-    /**
-     * Shows the given location on the map, if the map is visible.
-     *
-     * @param location
-     */
     private void showOnMap(LatLng gmLocation) {
         final double RADIUS_KM = 1.5; // the distance, in KM, to show around the point.
 
