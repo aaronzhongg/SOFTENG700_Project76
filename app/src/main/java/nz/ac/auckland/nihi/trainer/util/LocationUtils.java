@@ -15,8 +15,10 @@ import java.util.Collection;
 import java.util.List;
 
 import nz.ac.auckland.nihi.trainer.R.string;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.data.RouteCoordinate;
+import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 
 import org.apache.log4j.Logger;
 
@@ -335,6 +337,20 @@ public class LocationUtils {
 			int counter = 0;
 			for (RouteCoordinate coord : gpsCoordinates) {
 				arr[counter++] = new LatLng(coord.getLatitude(), coord.getLongitude());
+			}
+			return arr;
+		} else {
+			return new LatLng[0];
+		}
+	}
+
+	public static LatLng[] toLatLng(RCExerciseSummary e) {
+		Collection<SummaryDataChunk> summaryDataChunks = e.getSummaryDataChunks();
+		if (summaryDataChunks != null) {
+			LatLng[] arr = new LatLng[summaryDataChunks.size()];
+			int counter = 0;
+			for (SummaryDataChunk s: summaryDataChunks) {
+				arr[counter++] = new LatLng(s.getLatitude(), s.getLongitude());
 			}
 			return arr;
 		} else {
