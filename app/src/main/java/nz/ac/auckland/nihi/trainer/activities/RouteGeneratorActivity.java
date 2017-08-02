@@ -83,14 +83,14 @@ public class RouteGeneratorActivity extends FragmentActivity implements GPSServi
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        if (location != null) {
-            latlng = location.getLatitude() + "," + location.getLongitude();
-            dialog.dismiss();
-        } else {
+//        if (location != null) {
+//            latlng = location.getLatitude() + "," + location.getLongitude();
+//            dialog.dismiss();
+//        } else {
             bindService(new Intent(this, GPSServiceImpl.class), gpsConn, BIND_AUTO_CREATE);
-        }
+//        }
     }
 //    protected void getLocation() {
 //        dialog.setMessage("Retrieving current location...");

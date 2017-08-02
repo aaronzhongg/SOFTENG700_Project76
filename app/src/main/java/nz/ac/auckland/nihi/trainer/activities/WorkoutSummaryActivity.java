@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -53,6 +54,11 @@ public class WorkoutSummaryActivity extends FragmentActivity {
     private Polyline routePolyline;
     // A value indicating if we're currently showing the map.
     private boolean isShowingMap = false;
+
+    private TextView timeElapsed;
+    private TextView totalDistance;
+    private TextView averageSpeed;
+    private TextView averageHeartrate;
 
     /**
      * Lazily creates the {@link #dbHelper} if required, then returns it.
@@ -103,6 +109,12 @@ public class WorkoutSummaryActivity extends FragmentActivity {
             }
         });
 
+        timeElapsed = (TextView) findViewById(R.id.total_time_elapsed);
+        totalDistance = (TextView) findViewById(R.id.total_distance_ran);
+        averageSpeed = (TextView) findViewById(R.id.average_speed);
+        averageHeartrate = (TextView) findViewById(R.id.average_heartrate);
+
+        setStats();
 
     }
 
@@ -117,8 +129,30 @@ public class WorkoutSummaryActivity extends FragmentActivity {
 
     }
 
+    private void setStats(){
+        int duration = exerciseSummary.getDurationInSeconds();
+        int minutes = duration / 60;
+        int seconds = duration % 60;
+
+        if (seconds < 10) {
+            timeElapsed.setText(minutes + ":0" + seconds);
+        } else {
+            timeElapsed.setText(minutes + ":" + seconds);
+        }
+
+        String temp = exerciseSummary.getDistanceInMetres()/1000 + "km";
+        totalDistance.setText(temp);
+
+        temp = String.format("%.2f",exerciseSummary.getAvgSpeed()) + "km/hr";
+        averageSpeed.setText(temp);
+
+        temp = exerciseSummary.getAvgHeartRate() + "bpm";
+        averageHeartrate.setText(temp);
+
+    }
+
     private void showOnMap(LatLng gmLocation) {
-        final double RADIUS_KM = 1.5; // the distance, in KM, to show around the point.
+        final double RADIUS_KM = 2; // the distance, in KM, to show around the point.
 
 //        if (!TestHarnessUtils.isTestHarness() && isShowingMap) {
 //            LatLng gmLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -171,6 +205,8 @@ public class WorkoutSummaryActivity extends FragmentActivity {
                         });
                     }
                 }
+
+                mMap.getUiSettings().setScrollGesturesEnabled(false);
             }
 //        }
     }
