@@ -473,6 +473,22 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 		}
 	};
 
+	private final View.OnClickListener deleteRouteButtonClickListner = new View.OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			Route route = (Route) v.getTag();
+
+			//Remove the route from the database
+			try {
+				getDbHelper().getRoutesDAO().delete(route);
+			} catch (SQLException e) {
+				logger.error(e);
+				throw new RuntimeException(e);
+			}
+			populateListView();
+		}
+	};
 	/**
 	 * Populates the UI with a subset of all routes in the database, depending on the "viewing" variable.
 	 */
@@ -648,6 +664,9 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 				btnStartWorkout.setTag(route);
 				btnStartWorkout.setOnClickListener(startWorkoutButtonClickListener);
 
+				View btnDeleteRoute = root.findViewById(id.btnDeleteRoute);
+				btnDeleteRoute.setTag(route);
+				btnDeleteRoute.setOnClickListener(deleteRouteButtonClickListner);
 			}
 			return root;
 		}
