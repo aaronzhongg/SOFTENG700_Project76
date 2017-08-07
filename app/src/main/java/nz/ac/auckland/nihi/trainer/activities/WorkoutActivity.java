@@ -592,6 +592,9 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	}
 
 	private void giveNavigationInstructions(Location location){
+		if (remainingDestinations == null) {
+			return;
+		}
 		//if no more destinations left do not try to fetch destination
 		//if the user has not started the workout or paused it, do not try to tts
 		if(remainingDestinations.size() < 1 || this.isPaused){
