@@ -194,5 +194,8 @@
     <orderEntry type="library" exported="" name="janino-3.0.7" level="project" />
     <orderEntry type="library" exported="" name="animated-vector-drawable-25.1.1" level="project" />
     <orderEntry type="module" module-name="bioharness-lib" exported="" />
+    <orderEntry type="library" exported="" name="android-android-25" level="project" />
+    <orderEntry type="library" exported="" name="ormlite-android-4.45" level="project" />
+    <orderEntry type="library" exported="" name="ormlite-core-4.45" level="project" />
   </component>
 </module>
