@@ -25,12 +25,18 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.sql.SQLException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUtils;
@@ -60,6 +66,11 @@ public class WorkoutSummaryActivity extends FragmentActivity {
     private TextView averageSpeed;
     private TextView averageHeartrate;
 
+    private GraphView heartrateGraph;
+    private GraphView speedGraph;
+    LineGraphSeries<DataPoint> heartRatePoints;
+    LineGraphSeries<DataPoint> speedPoints;
+
     /**
      * Lazily creates the {@link #dbHelper} if required, then returns it.
      *
@@ -76,6 +87,10 @@ public class WorkoutSummaryActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        heartrateGraph = (GraphView) findViewById(R.id.heartrate_graph);
+        speedGraph = (GraphView) findViewById(R.id.speed_graph);
+
         setContentView(R.layout.activity_workout_summary);
         try {
             // Get RCExerciseSummary object to be displayed
@@ -104,7 +119,7 @@ public class WorkoutSummaryActivity extends FragmentActivity {
                     routePolyline = WorkoutSummaryActivity.this.mMap.addPolyline(polyOpt);
                 }
 
-                addMarkers();
+                addData();
                 showOnMap(new LatLng(route.getGpsCoordinates().iterator().next().getLatitude(),route.getGpsCoordinates().iterator().next().getLongitude()));
             }
         });
@@ -114,18 +129,49 @@ public class WorkoutSummaryActivity extends FragmentActivity {
         averageSpeed = (TextView) findViewById(R.id.average_speed);
         averageHeartrate = (TextView) findViewById(R.id.average_heartrate);
 
+
         setStats();
 
     }
 
-    private void addMarkers() {
+    private void addData() {
         Collection<SummaryDataChunk> summaryDataChunks = exerciseSummary.getSummaryDataChunks();
+        List<DataPoint> hrDp = new ArrayList<DataPoint>();
+        List<DataPoint> sDp = new ArrayList<DataPoint>();
         for (SummaryDataChunk s: summaryDataChunks) {
             long minutes = TimeUnit.MILLISECONDS.toMinutes(s.getSessionTimestamp());
 //            long seconds = TimeUnit.MILLISECONDS.toSeconds(s.getSessionTimestamp());
+            int heart = s.getHeartRate();
+            float speed = s.getSpeed();
             mMap.addMarker(new MarkerOptions().position(new LatLng(s.getLatitude(), s.getLongitude())).title("minute: " + minutes)
-                    .snippet("Heart rate (bpm): " + s.getHeartRate() + "\nSpeed (km/h): " + s.getSpeed()));
+                    .snippet("Heart rate (bpm): " + heart + "\nSpeed (km/h): " + speed));
+
+            // Add data to plot on graph
+            hrDp.add(new DataPoint(minutes, heart));
+            sDp.add(new DataPoint(minutes, speed));
         }
+
+        DataPoint[] hrtemp = new DataPoint[ hrDp.size() ];
+        DataPoint[] stemp = new DataPoint[ sDp.size() ];
+        hrDp.toArray(hrtemp);
+        sDp.toArray(stemp);
+
+        heartRatePoints = new LineGraphSeries<>(hrtemp);
+        speedPoints = new LineGraphSeries<>(stemp);
+        heartRatePoints.setTitle("Heart rate");
+        speedPoints.setTitle("Speed");
+        heartrateGraph.addSeries(heartRatePoints);
+        speedGraph.addSeries(speedPoints);
+
+        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(heartrateGraph);
+        staticLabelsFormatter.setHorizontalLabels(new String[] {"Time (min)"});
+        staticLabelsFormatter.setVerticalLabels(new String[] {"Heart rate (bpm)"});
+        heartrateGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+
+        StaticLabelsFormatter staticLabelsFormatter1 = new StaticLabelsFormatter(speedGraph);
+        staticLabelsFormatter1.setHorizontalLabels(new String[] {"Time (min)"});
+        staticLabelsFormatter1.setVerticalLabels(new String[] {"Speed (km/h)"});
+        speedGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter1);
 
     }
 

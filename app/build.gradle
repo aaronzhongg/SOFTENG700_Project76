@@ -46,5 +46,6 @@ dependencies {
     compile 'nz.ac.auckland.nihi.remote:remote-shared-components:1.0-SNAPSHOT'
     compile 'com.google.android.gms:play-services:10.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.jjoe64:graphview:4.2.1'
     testCompile 'junit:junit:4.12'
 }
