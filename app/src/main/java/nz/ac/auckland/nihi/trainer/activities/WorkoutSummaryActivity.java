@@ -19,6 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -113,6 +114,22 @@ public class WorkoutSummaryActivity extends FragmentActivity {
 //                        .draggable(false).position(new LatLng(0, 0));
 //                WorkoutActivity.this.userMapMarker = googleMap.addMarker(markerOpt);
                 WorkoutSummaryActivity.this.mMap = googleMap;
+                WorkoutSummaryActivity.this.mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                    @Override
+                    public View getInfoWindow(Marker marker) {
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker) {
+                        View v = getLayoutInflater().inflate(R.layout.marker_popup, null);
+                        TextView tv = (TextView) v.findViewById(R.id.markertitle);
+                        tv.setText(marker.getTitle());
+                        tv = (TextView) v.findViewById(R.id.markersnippet);
+                        tv.setText(marker.getSnippet());
+                        return v;
+                    }
+                });
                 PolylineOptions polyOpt = new PolylineOptions();
                 polyOpt.add(LocationUtils.toLatLngArray(route)).color(Color.RED).width(10);
                 if (WorkoutSummaryActivity.this.mMap != null) {
@@ -186,7 +203,7 @@ public class WorkoutSummaryActivity extends FragmentActivity {
             timeElapsed.setText(minutes + ":" + seconds);
         }
 
-        String temp = exerciseSummary.getDistanceInMetres()/1000 + "km";
+        String temp = ((float)exerciseSummary.getDistanceInMetres())/1000 + "km";
         totalDistance.setText(temp);
 
         temp = String.format("%.2f",exerciseSummary.getAvgSpeed()) + "km/hr";
