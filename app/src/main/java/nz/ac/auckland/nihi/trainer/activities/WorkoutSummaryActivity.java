@@ -89,9 +89,6 @@ public class WorkoutSummaryActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        heartrateGraph = (GraphView) findViewById(R.id.heartrate_graph);
-        speedGraph = (GraphView) findViewById(R.id.speed_graph);
-
         setContentView(R.layout.activity_workout_summary);
         try {
             // Get RCExerciseSummary object to be displayed
@@ -136,6 +133,8 @@ public class WorkoutSummaryActivity extends FragmentActivity {
                     routePolyline = WorkoutSummaryActivity.this.mMap.addPolyline(polyOpt);
                 }
 
+                heartrateGraph = (GraphView) findViewById(R.id.heartrate_graph);
+                speedGraph = (GraphView) findViewById(R.id.speed_graph);
                 addData();
                 showOnMap(new LatLng(route.getGpsCoordinates().iterator().next().getLatitude(),route.getGpsCoordinates().iterator().next().getLongitude()));
             }
@@ -181,13 +180,13 @@ public class WorkoutSummaryActivity extends FragmentActivity {
         speedGraph.addSeries(speedPoints);
 
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(heartrateGraph);
-        staticLabelsFormatter.setHorizontalLabels(new String[] {"Time (min)"});
-        staticLabelsFormatter.setVerticalLabels(new String[] {"Heart rate (bpm)"});
+        staticLabelsFormatter.setHorizontalLabels(new String[] {"Time", "(min)"});
+        staticLabelsFormatter.setVerticalLabels(new String[] {"Heart rate", "(bpm)"});
         heartrateGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
 
         StaticLabelsFormatter staticLabelsFormatter1 = new StaticLabelsFormatter(speedGraph);
-        staticLabelsFormatter1.setHorizontalLabels(new String[] {"Time (min)"});
-        staticLabelsFormatter1.setVerticalLabels(new String[] {"Speed (km/h)"});
+        staticLabelsFormatter1.setHorizontalLabels(new String[] {"Time ", "(min)"});
+        staticLabelsFormatter1.setVerticalLabels(new String[] {"Speed ", "(km/h)"});
         speedGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter1);
 
     }
