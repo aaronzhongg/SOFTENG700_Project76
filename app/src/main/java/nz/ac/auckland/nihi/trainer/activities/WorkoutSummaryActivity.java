@@ -1,6 +1,7 @@
 package nz.ac.auckland.nihi.trainer.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
@@ -271,5 +272,14 @@ public class WorkoutSummaryActivity extends FragmentActivity {
                 mMap.getUiSettings().setScrollGesturesEnabled(false);
             }
 //        }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        startActivity(new Intent(WorkoutSummaryActivity.this, WorkoutSummaryListActivity.class));
+        finish();
+
     }
 }
