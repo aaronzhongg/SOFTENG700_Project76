@@ -18,6 +18,7 @@ import nz.ac.auckland.nihi.trainer.R.string;
 import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.DummyRouteCreator;
 import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 import nz.ac.auckland.nihi.trainer.fragments.LoginDialogFragment;
@@ -534,11 +535,11 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	private void loadRoutesToDB(String action) throws SQLException {
 		getHelper().getWritableDatabase();
 		Dao<Route, String> routeDao = getHelper().getRoutesDAO();
-		Dao<SummaryDataChunk, String> summaryDao = getHelper().getSummaryDataChunksDAO();
+		Dao<RCExerciseSummary, String> summaryDao = getHelper().getExerciseSummaryDAO();
 		List<Route> routes = routeDao.queryForAll();
-		List<SummaryDataChunk> summaryDataChunks = summaryDao.queryForAll();
+		List<RCExerciseSummary> rcExerciseSummaries = summaryDao.queryForAll();
 		if(routes.size() == 0){
-			List<Route> newRoutes = DummyRouteCreator.createDummyRoutes(routeDao,"testmapimage.png");
+			List<Route> newRoutes = DummyRouteCreator.createDummyRoutes(routeDao,"testmapimage.png", summaryDao);
 			StringBuilder sb = new StringBuilder();
 			for (Route r : newRoutes){
 				sb.append(r.toString());
