@@ -81,4 +81,13 @@ public class WorkoutSummaryListActivity extends FragmentActivity {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        startActivity(new Intent(WorkoutSummaryListActivity.this, HomeScreenActivity.class));
+        finish();
+
+    }
 }

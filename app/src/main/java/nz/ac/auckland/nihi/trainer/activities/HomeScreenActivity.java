@@ -446,13 +446,14 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 			} else if (v.getId() == id.btnFriends) {
 
 			} else if (v.getId() == id.btnProfile) {
-				intent = new Intent(getApplicationContext(), ProfileActivity.class);
+				//intent = new Intent(getApplicationContext(), ProfileActivity.class);
 
 			} else if (v.getId() == id.btnGoals) {
-				intent = new Intent(getApplicationContext(), GoalsActivity.class);
+				//intent = new Intent(getApplicationContext(), GoalsActivity.class);
 
 			} else if (v.getId() == id.btnWorkout) {
-				intent = new Intent(getApplicationContext(), WorkoutActivity.class);
+				//For now, go to route select to prevent errors
+				intent = new Intent(getApplicationContext(), RoutesActivity.class);
 			}
 
 			if (intent != null) {

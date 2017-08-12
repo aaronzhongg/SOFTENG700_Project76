@@ -506,8 +506,9 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 		RCExerciseSummary summary = workoutService.getService().endWorkout();
 		//Navigate to the summary list page.
 		finish();
-		Intent summaryIntent = new Intent(getApplicationContext(), WorkoutSummaryListActivity.class);
+		Intent summaryIntent = new Intent(getApplicationContext(), WorkoutSummaryActivity.class);
 		if (summaryIntent != null) {
+			summaryIntent.putExtra("workout_id", summary.getId());
 			startActivity(summaryIntent);
 			overridePendingTransition(anim.push_left_in, anim.push_left_out);
 		}
