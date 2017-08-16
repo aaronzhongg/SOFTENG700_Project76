@@ -864,6 +864,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 
 		// If we can't start a new workout, and we're not monitoring, then we're in the "setup" phase.
 		if (status == null || !(status.canStartNewWorkout() || status.isMonitoring())) {
+			//symptoms and notifications are disabled
 //			btnSymptoms.setEnabled(false);
 //			btnNotifications.setEnabled(false);
 			btnSelectWorkout.setEnabled(false);
