@@ -824,13 +824,15 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 		btnSelectWorkout = (Button) findViewById(id.btnSelectWorkout);
 		btnSelectWorkout.setOnClickListener(btnSelectWorkoutClickListener);
 
-		// "Symptoms" button
+//		// "Symptoms" button
 		btnSymptoms = (Button) findViewById(id.btnSymptoms);
-		btnSymptoms.setOnClickListener(btnSymptomsClickListener);
-
-		// "Notifications" button
+		btnSymptoms.setEnabled(false);
+//		btnSymptoms.setOnClickListener(btnSymptomsClickListener);
+//
+//		// "Notifications" button
 		btnNotifications = (Button) findViewById(id.btnNotifications);
-		btnNotifications.setOnClickListener(btnNotificationsClickListener);
+		btnNotifications.setEnabled(false);
+//		btnNotifications.setOnClickListener(btnNotificationsClickListener);
 
 		// "Show / Hide Map" button
 		btnToggleMap = (ToggleButton) findViewById(id.btnToggleMap);
@@ -862,8 +864,8 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 
 		// If we can't start a new workout, and we're not monitoring, then we're in the "setup" phase.
 		if (status == null || !(status.canStartNewWorkout() || status.isMonitoring())) {
-			btnSymptoms.setEnabled(false);
-			btnNotifications.setEnabled(false);
+//			btnSymptoms.setEnabled(false);
+//			btnNotifications.setEnabled(false);
 			btnSelectWorkout.setEnabled(false);
 			btnStartWorkout.setVisibility(View.INVISIBLE);
 			btnStopWorkout.setVisibility(View.INVISIBLE);
@@ -871,8 +873,8 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 
 		// If we're monitoring, we're in the "workout" phase.
 		else if (status.isMonitoring()) {
-			btnSymptoms.setEnabled(true);
-			btnNotifications.setEnabled(true);
+//			btnSymptoms.setEnabled(true);
+//			btnNotifications.setEnabled(true);
 			btnSelectWorkout.setEnabled(false);
 			btnStartWorkout.setVisibility(View.INVISIBLE);
 			btnStopWorkout.setVisibility(View.VISIBLE);
@@ -881,8 +883,8 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 
 		// if we're not monitoring (but we can start a new workout), we're in the "ready" phase.
 		else {
-			btnSymptoms.setEnabled(false);
-			btnNotifications.setEnabled(false);
+//			btnSymptoms.setEnabled(false);
+//			btnNotifications.setEnabled(false);
 			btnSelectWorkout.setEnabled(true);
 			btnStartWorkout.setVisibility(View.VISIBLE);
 			btnStopWorkout.setVisibility(View.INVISIBLE);

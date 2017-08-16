@@ -73,7 +73,7 @@
             android:layout_marginRight="0dp"
             android:layout_weight="1"
             android:background="@drawable/my_button_background"
-            android:text="@string/workoutscreen_button_symptoms" />
+            android:text="" />
 
         <!-- <View -->
         <!-- android:layout_width="1dp" -->
@@ -90,7 +90,7 @@
             android:layout_marginRight="0dp"
             android:layout_weight="1"
             android:background="@drawable/my_button_background"
-            android:text="@string/workoutscreen_button_notifications" />
+            android:text="" />
     </LinearLayout>
 
     <View
