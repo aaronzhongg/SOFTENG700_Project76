@@ -180,16 +180,17 @@ public class WorkoutSummaryActivity extends FragmentActivity {
         heartrateGraph.addSeries(heartRatePoints);
         speedGraph.addSeries(speedPoints);
 
-        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(heartrateGraph);
-        staticLabelsFormatter.setHorizontalLabels(new String[] {"Time", "(min)"});
-        staticLabelsFormatter.setVerticalLabels(new String[] {"Heart rate", "(bpm)"});
-        heartrateGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+        //StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(heartrateGraph);
+        //staticLabelsFormatter.setHorizontalLabels(new String[] {"Time", "(min)"});
+        //staticLabelsFormatter.setVerticalLabels(new String[] {"Heart rate", "(bpm)"});
+        heartrateGraph.getGridLabelRenderer().setHorizontalAxisTitle("Time(min)");
+        heartrateGraph.getGridLabelRenderer().setVerticalAxisTitle("Heart rate (bpm)");
 
-        StaticLabelsFormatter staticLabelsFormatter1 = new StaticLabelsFormatter(speedGraph);
-        staticLabelsFormatter1.setHorizontalLabels(new String[] {"Time ", "(min)"});
-        staticLabelsFormatter1.setVerticalLabels(new String[] {"Speed ", "(km/h)"});
-        speedGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter1);
-
+        //StaticLabelsFormatter staticLabelsFormatter1 = new StaticLabelsFormatter(speedGraph);
+        //staticLabelsFormatter1.setHorizontalLabels(new String[] {"Time ", "(min)"});
+        //staticLabelsFormatter1.setVerticalLabels(new String[] {"Speed ", "(km/h)"});
+        speedGraph.getGridLabelRenderer().setHorizontalAxisTitle("Time(min)");
+        speedGraph.getGridLabelRenderer().setVerticalAxisTitle("Speed (km/h)");
     }
 
     private void setStats(){
