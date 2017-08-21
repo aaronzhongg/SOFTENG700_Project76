@@ -73,6 +73,8 @@ public class WorkoutSummaryActivity extends FragmentActivity {
     LineGraphSeries<DataPoint> heartRatePoints;
     LineGraphSeries<DataPoint> speedPoints;
 
+    int runDuration;
+
     /**
      * Lazily creates the {@link #dbHelper} if required, then returns it.
      *
@@ -101,6 +103,14 @@ public class WorkoutSummaryActivity extends FragmentActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        timeElapsed = (TextView) findViewById(R.id.total_time_elapsed);
+        totalDistance = (TextView) findViewById(R.id.total_distance_ran);
+        averageSpeed = (TextView) findViewById(R.id.average_speed);
+        averageHeartrate = (TextView) findViewById(R.id.average_heartrate);
+
+
+        setStats();
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.summary_map);
         // Add a custom marker to the map to show the user's location.
@@ -141,13 +151,7 @@ public class WorkoutSummaryActivity extends FragmentActivity {
             }
         });
 
-        timeElapsed = (TextView) findViewById(R.id.total_time_elapsed);
-        totalDistance = (TextView) findViewById(R.id.total_distance_ran);
-        averageSpeed = (TextView) findViewById(R.id.average_speed);
-        averageHeartrate = (TextView) findViewById(R.id.average_heartrate);
 
-
-        setStats();
 
     }
 
@@ -155,6 +159,11 @@ public class WorkoutSummaryActivity extends FragmentActivity {
         Collection<SummaryDataChunk> summaryDataChunks = exerciseSummary.getSummaryDataChunks();
         List<DataPoint> hrDp = new ArrayList<DataPoint>();
         List<DataPoint> sDp = new ArrayList<DataPoint>();
+        int minHeart = 999;
+        int maxHeart = 0;
+        float minSpeed = 999f;
+        float maxSpeed = 0f;
+
         for (SummaryDataChunk s: summaryDataChunks) {
             long minutes = TimeUnit.MILLISECONDS.toMinutes(s.getSessionTimestamp());
 //            long seconds = TimeUnit.MILLISECONDS.toSeconds(s.getSessionTimestamp());
@@ -166,12 +175,41 @@ public class WorkoutSummaryActivity extends FragmentActivity {
             // Add data to plot on graph
             hrDp.add(new DataPoint(minutes, heart));
             sDp.add(new DataPoint(minutes, speed));
+
+            if (minSpeed > speed) {
+                minSpeed = speed;
+            } else if (maxSpeed < speed) {
+                maxSpeed = speed;
+            }
+
+            if(minHeart > heart) {
+                minHeart = heart;
+            } else if (maxHeart < heart) {
+                maxHeart = heart;
+            }
+
         }
 
         DataPoint[] hrtemp = new DataPoint[ hrDp.size() ];
         DataPoint[] stemp = new DataPoint[ sDp.size() ];
         hrDp.toArray(hrtemp);
         sDp.toArray(stemp);
+
+        heartrateGraph.getViewport().setYAxisBoundsManual(true);
+        heartrateGraph.getViewport().setMinY(minHeart);
+        heartrateGraph.getViewport().setMaxY(maxHeart);
+
+        heartrateGraph.getViewport().setXAxisBoundsManual(true);
+        heartrateGraph.getViewport().setMinX(0);
+        heartrateGraph.getViewport().setMaxX(runDuration + 1);
+
+        speedGraph.getViewport().setYAxisBoundsManual(true);
+        speedGraph.getViewport().setMinY(minSpeed);
+        speedGraph.getViewport().setMaxY(maxSpeed);
+
+        speedGraph.getViewport().setXAxisBoundsManual(true);
+        speedGraph.getViewport().setMinX(0);
+        speedGraph.getViewport().setMaxX(runDuration + 1);
 
         heartRatePoints = new LineGraphSeries<>(hrtemp);
         speedPoints = new LineGraphSeries<>(stemp);
@@ -197,6 +235,8 @@ public class WorkoutSummaryActivity extends FragmentActivity {
         int duration = exerciseSummary.getDurationInSeconds();
         int minutes = duration / 60;
         int seconds = duration % 60;
+
+        runDuration = minutes;
 
         if (seconds < 10) {
             timeElapsed.setText(minutes + ":0" + seconds);
