@@ -848,7 +848,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 				id.largeStatsFragment);
 		smallStatsFragment = (WorkoutScreenStatsViewFragment) getSupportFragmentManager().findFragmentById(
 				id.smallStatsFragment);
-		smallStatsFragment.setVisibility(View.GONE);
+        largeStatsFragment.setVisibility(View.GONE);
 	}
 
 	/**
