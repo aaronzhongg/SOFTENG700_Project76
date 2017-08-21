@@ -31,6 +31,7 @@ import nz.ac.auckland.nihi.trainer.util.OdinIDUtils;
 
 import org.apache.log4j.Logger;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -38,7 +39,10 @@ import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -85,6 +89,7 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	 * The helper allowing us to access the database.
 	 */
 	private DatabaseHelper dbHelper = null;
+	private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 111;
 
 	// ************************************************************************************************************
 
@@ -160,9 +165,34 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 			//For testing db, remove the textview and setContentView otherwise
 			//setContentView(tv);
 
+
+// ...
+
+// Check for permission
+			if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+			}
 		}
 	}
 
+	@Override
+	public void onRequestPermissionsResult(int requestCode,
+										   String permissions[], int[] grantResults) {
+		switch (requestCode) {
+			case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
+				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+					// permission was granted
+				} else {
+					// permission was denied
+					Intent intent = new Intent(Intent.ACTION_MAIN);
+					intent.addCategory(Intent.CATEGORY_HOME);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(intent);
+				}
+				return;
+			}
+		}
+	}
 	/**
 	 * Starts a task that will automatically synchronize route information and such every day.
 	 * 

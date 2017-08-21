@@ -27,6 +27,7 @@ public class SpeedLow {
 
     @Action
     public void giveEncouragement(){
+        speed = Math.round(speed);
         WorkoutService.setFeedback("Speed is reaching walking levels!! Consider picking up the pace or resting. Speed is " + speed);
     }
 
