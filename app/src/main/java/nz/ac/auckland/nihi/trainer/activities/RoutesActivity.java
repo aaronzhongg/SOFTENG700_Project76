@@ -703,6 +703,11 @@ public class RoutesActivity extends FragmentActivity implements GPSServiceListen
 				// txtName.setText(route.getName());
 
 				DecimalFormat formatter = new DecimalFormat("#.##");
+
+				//set name of route
+				TextView txtName = (TextView) root.findViewById(id.txtRouteName);
+				txtName.setText(route.getName());
+
 				TextView txtLength = (TextView) root.findViewById(id.txtRouteLength);
 				//Instead of querying the API simply use the route's length
 				//double routeLength = LocationUtils.getRouteLengthInMeters(route);

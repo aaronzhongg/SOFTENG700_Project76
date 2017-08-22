@@ -282,8 +282,10 @@
     <string name="rg_elevation_hint">Enter a route elevation gain</string>
 
     <string name="rg_name_label">Route name</string>
-    <string name="rg_distance_label">Route distance</string>
-    <string name="rg_elevation_label">Route elevation</string>
+    <string name="rg_distance_label">Route distance (meters)</string>
+    <string name="rg_elevation_label">Total route elevation (meters)</string>
 
     <string name="rg_button_label">Generate</string>
+    <string name="route_name">Name:</string>
+    <string name="route_name_placeholder">Test Route</string>
 </resources>
