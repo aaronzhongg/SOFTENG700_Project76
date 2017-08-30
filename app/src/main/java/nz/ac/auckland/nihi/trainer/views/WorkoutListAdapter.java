@@ -59,8 +59,8 @@ public class WorkoutListAdapter extends BaseAdapter {
         TextView workoutTimestamp = (TextView) vi.findViewById(R.id.workout_text_row);
 
 //        Date date = new Date(s);
-//        Format format = new SimpleDateFormat("dd MM yyyy HH:mm");
-        workoutTimestamp.setText(s.getDate().toString());
+        Format format = new SimpleDateFormat("dd MMM yyyy HH:mm");
+        workoutTimestamp.setText(format.format(s.getDate()));
         return vi;
     }
 }
