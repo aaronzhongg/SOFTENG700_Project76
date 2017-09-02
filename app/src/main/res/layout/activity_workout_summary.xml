@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView android:layout_height="fill_parent"
     android:layout_width="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/rc_primary_color"
+    android:id="@+id/map_scroll_view">
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,9 +19,9 @@
         android:layout_height="250dp"
         android:id="@+id/summary_map"
         tools:context=".MapsActivity"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
         tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp" />
+        tools:layout_editor_absoluteX="8dp"
+        class="nz.ac.auckland.nihi.trainer.views.CustomMapFragment"/>
 
     <LinearLayout
         android:layout_width="match_parent"

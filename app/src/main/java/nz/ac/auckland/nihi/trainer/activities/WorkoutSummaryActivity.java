@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -49,6 +50,7 @@ import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 import nz.ac.auckland.nihi.trainer.util.LocationUtils;
+import nz.ac.auckland.nihi.trainer.views.CustomMapFragment;
 
 public class WorkoutSummaryActivity extends FragmentActivity {
 
@@ -57,6 +59,7 @@ public class WorkoutSummaryActivity extends FragmentActivity {
     Dao<RCExerciseSummary, String> exerciseSummariesDAO;
     Route route;
 
+    private ScrollView scrollView;
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
     private Polyline routePolyline;
@@ -112,7 +115,14 @@ public class WorkoutSummaryActivity extends FragmentActivity {
 
         setStats();
 
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.summary_map);
+        scrollView = (ScrollView) findViewById(R.id.map_scroll_view);
+        mapFragment = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.summary_map);
+        ((CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.summary_map)).setListener(new CustomMapFragment.OnTouchListener() {
+            @Override
+            public void onTouch() {
+                scrollView.requestDisallowInterceptTouchEvent(true);
+            }
+        });
         // Add a custom marker to the map to show the user's location.
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -310,7 +320,7 @@ public class WorkoutSummaryActivity extends FragmentActivity {
                     }
                 }
 
-                mMap.getUiSettings().setScrollGesturesEnabled(false);
+//                mMap.getUiSettings().setScrollGesturesEnabled(false);
             }
 //        }
     }

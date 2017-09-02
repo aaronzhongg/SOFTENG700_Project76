@@ -10,8 +10,8 @@
     <string name="homescreen_button_review">Review</string>
     <string name="homescreen_button_routes">Routes</string>
     <string name="homescreen_button_friends">Friends</string>
-    <string name="homescreen_button_profile">Profile</string>
-    <string name="homescreen_button_goals">Goals</string>
+    <string name="homescreen_button_profile">Profile (disabled)</string>
+    <string name="homescreen_button_goals">Goals (disabled)</string>
     <string name="homescreen_button_workout">Workout</string>
     <string name="homescreen_label_testharness">TEST HARNESS MODE</string>
     <string name="homescreen_dialog_cantconnect">Can\'t Connect</string>
