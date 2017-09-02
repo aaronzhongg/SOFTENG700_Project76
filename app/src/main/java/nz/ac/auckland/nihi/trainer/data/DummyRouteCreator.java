@@ -76,6 +76,19 @@ public class DummyRouteCreator {
             "Turn right", "Head south on Princes St toward Shortland St Take the stairs", "Turn left onto Alfred St", "Turn right onto Symonds St"
     };
 
+    private static final double[] DUMMY_COORDINATES_EAST = new double[] {-36.8984218,174.8876015, -36.8965143,174.8881496, -36.8963618, 174.8882676,
+            -36.897802,174.8970622, -36.8958801,174.899833, -36.8898941,174.9009862, -36.8907574,174.9011334, -36.891511,174.898174,
+            -36.8918565,174.8859266, -36.8917267,174.8824176, -36.892667,174.8824378, -36.8926084,174.8818623, -36.8919345,174.8815763,
+            -36.8926084, 174.8818623, -36.8927678,174.8857797, -36.8948642, 174.8855881, -36.8976199, 174.8862124, -36.8978487, 174.8877508};
+
+    private static final String[] DUMMY_NAVIGATION_EAST = new String[] {
+            "Head north on Glenmore Rd toward Elimar Dr","Slight right to stay on Glenmore Rd", "At the roundabout, take the 1st exit onto Butley Dr",
+            "At the roundabout, take the 2nd exit onto Fortunes Rd", "Slight left onto Pigeon Mountain Rd Destination will be on the right", "Head south on Pigeon Mountain Rd",
+            "Turn right", "Turn right", "Turn right toward Bramley Dr", "Turn left toward Bramley Dr", "Turn right onto Bramley Dr", "Turn right Destination will be on the right",
+            "Head southeast toward Bramley Dr", "Turn left onto Bramley Dr", "Turn right onto Belmere Rise", "Continue onto Sarah Pl", "Sarah Pl turns left and becomes Elimar Dr",
+            "Turn right onto Glenmore Rd Destination will be on the right"
+    };
+
     public static List<Route> createDummyRoutes(Dao<Route, String> routeDAO, String testRouteImagePath, Dao<RCExerciseSummary, String> exerciseSummaryDao) throws SQLException {
         List<Route> routes = new ArrayList<Route>();
         routes.add(createRoute(1, DUMMY_COORDINATES_UOA, "UoA route", testRouteImagePath, routeDAO, 4200, 50, null));
@@ -85,6 +98,7 @@ public class DummyRouteCreator {
         //routes.add(createRoute(5, DUMMY_COORDINATES_HOWICK_LONG, "Howick long route - elevation", testRouteImagePath, routeDAO, 6000, 35, null));
         routes.add(createRoute(2, DUMMY_COORDINATES_NAVIGATION_TEST, "Navigation Test", testRouteImagePath, routeDAO, 870, 39, DUMMY_NAVIGATION_TEST_INSTRUCTIONS));
         Route route1 = createRoute(3, DUMMY_COORDINATES2, "Route #1", testRouteImagePath, routeDAO, 2729, 140, DUMMY_NAVIGATION2);
+        Route route2 = createRoute(4, DUMMY_COORDINATES_EAST, "EAST_5km", testRouteImagePath, routeDAO, 5866, 150, DUMMY_NAVIGATION_EAST);
         routes.add(route1);
 //        routes.add(createRoute(3, DUMMY_COORDINATES1, "Route #1", testRouteImagePath, routeDAO, 2641, 114, DUMMY_NAVIGATION1));
 //        Iterator<RouteCoordinate> itr = navTest.getGpsCoordinates().iterator();
@@ -97,13 +111,54 @@ public class DummyRouteCreator {
 //        routeDAO.update(navTest);
 //        routes.add(navTest);
 
-        createDummyRunningData(exerciseSummaryDao, route1);
+        createDummyRunningData(exerciseSummaryDao, route1, route2);
         return routes;
     }
 
-    public static void createDummyRunningData(Dao<RCExerciseSummary, String> summaryDao, Route followedRoute) throws SQLException {
+    public static void createDummyRunningData(Dao<RCExerciseSummary, String> summaryDao, Route followedRoute, Route followedRoute2) throws SQLException {
+
         RCExerciseSummary newSummary = new RCExerciseSummary() {};
-        newSummary.setDate(new Date(1502506419));
+        newSummary.setDate(new Date(1505041152L * 1000));
+        newSummary.setDurationInSeconds(2158);
+        newSummary.setDistanceInMetres(5866);
+        newSummary.setFollowedRoute(followedRoute2);
+        newSummary.setAvgHeartRate(140);
+        newSummary.setMinHeartRate(60);
+        newSummary.setMaxHeartRate(180);
+
+        newSummary.setAvgSpeed(9.52f);
+        newSummary.setMinSpeed(7f);
+        newSummary.setMaxSpeed(11.54f);
+
+        newSummary.setUserId(0);
+
+        summaryDao.assignEmptyForeignCollection(newSummary, "summaryDataChunks");
+        summaryDao.create(newSummary);
+
+        SummaryDataChunk[] summaryDataChunks1 = new SummaryDataChunk[] { new SummaryDataChunk(0, new LatLng(-36.8984218,174.8876015), 7f, 60 ),
+//                new SummaryDataChunk(2000*60, new LatLng(-36.8965143,174.8881496), 7f, 100 ),
+                new SummaryDataChunk(3000*60, new LatLng(-36.8963618, 174.8882676), 8.5f, 114 ),
+                new SummaryDataChunk(6000*60, new LatLng(-36.897802,174.8970622), 9f, 122 ),
+                new SummaryDataChunk(9000*60, new LatLng(-36.8958801,174.899833), 10f, 133 ),
+//                new SummaryDataChunk(10000*60, new LatLng(-36.8898941,174.9009862), 8f, 145 ),
+                new SummaryDataChunk(12000*60, new LatLng(-36.8907574,174.9011334), 9.3f, 150 ),
+                new SummaryDataChunk(15000*60, new LatLng(-36.891511,174.898174), 11.04f, 167 ),
+                new SummaryDataChunk(18000*60, new LatLng(-36.8918565,174.8859266), 9f, 170 ),
+                new SummaryDataChunk(21000*60, new LatLng(-36.8917267,174.8824176), 8.5f, 180 ),
+//                new SummaryDataChunk(19000*60, new LatLng(-36.892667,174.8824378), 8.5f, 175 ),
+//                new SummaryDataChunk(20000*60, new LatLng(-36.8926084,174.8818623), 8.5f, 175 ),
+//                new SummaryDataChunk(21000*60, new LatLng(-36.8919345,174.8815763), 8.5f, 175 ),
+                new SummaryDataChunk(24000*60, new LatLng(-36.8926084, 174.8818623), 9f, 180 ),
+                new SummaryDataChunk(27000*60, new LatLng(-36.8927678,174.8857797), 9.5f, 175 ),
+                new SummaryDataChunk(30000*60, new LatLng(-36.8948642, 174.8855881), 8f, 170 ),
+                new SummaryDataChunk(33000*60, new LatLng(-36.8976199, 174.8862124), 7.5f, 175 )};
+//                new SummaryDataChunk(26000*60, new LatLng(-36.8978487, 174.8877508), 8.5f, 175 )};
+        for (SummaryDataChunk s : summaryDataChunks1) {
+            newSummary.getSummaryDataChunks().add(s);
+        }
+
+
+        newSummary.setDate(new Date(1502506419L * 1000));
         newSummary.setDurationInSeconds(1154);
         newSummary.setDistanceInMetres(2730);
         newSummary.setFollowedRoute(followedRoute);
@@ -119,8 +174,6 @@ public class DummyRouteCreator {
 
 
         summaryDao.assignEmptyForeignCollection(newSummary, "summaryDataChunks");
-//		summaryDao.assignEmptyForeignCollection(summary, "symptoms");
-//		summaryDao.assignEmptyForeignCollection(summary, "notifications");
         summaryDao.create(newSummary);
 
         SummaryDataChunk[] summaryDataChunks = new SummaryDataChunk[] { new SummaryDataChunk(0, new LatLng(-36.853246899999988,174.7690034), 6f, 70 ),
@@ -130,7 +183,7 @@ public class DummyRouteCreator {
                 new SummaryDataChunk(8000*60, new LatLng(-36.8508999,174.7645171), 10f, 133 ),
                 new SummaryDataChunk(10000*60, new LatLng(-36.84637,174.7661036), 8f, 145 ),
                 new SummaryDataChunk(12000*60, new LatLng(-36.8469485,174.7697461), 9.3f, 150 ),
-                new SummaryDataChunk(14000*60, new LatLng(-36.8468204,174.7699715), 11.04f, 167 ),
+//                new SummaryDataChunk(14000*60, new LatLng(-36.8468204,174.7699715), 11.04f, 167 ),
                 new SummaryDataChunk(16000*60, new LatLng(-36.8468186,174.7705735), 7f, 170 ),
                 new SummaryDataChunk(18000*60, new LatLng(-36.8512771,174.7685394), 7.5f, 180 ),
                 new SummaryDataChunk(19233*60, new LatLng(-36.851862,174.770357), 8.5f, 175 )};
