@@ -3,7 +3,7 @@
     <!-- Style for most buttons in the app. -->
     <style name="PrimaryButtonStyle" parent="@android:style/Widget.Holo.Button">
         <item name="font">zeroes_three.ttf</item>
-        <item name="android:background">@drawable/primary_button_background</item>
+        <item name="android:background">@color/rc_primary_color</item>
         <item name="android:textColor">@color/nihi_primary_font_color</item>
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
@@ -30,7 +30,12 @@
 
     <!-- Style for the root element of a Layout (shows the background image). -->
     <style name="RootLayoutStyle">
-        <item name="android:background">@drawable/nihi_background_1</item>
+        <item name="android:background">@color/rc_background</item>
+    </style>
+
+    <!-- Style for the root element of a Layout (shows the background image). -->
+    <style name="RouteLayoutStyle">
+        <item name="android:background">@color/rc_primary_color</item>
     </style>
 
     <style name="DialogRootLayoutStyle" parent="@style/RootLayoutStyle">

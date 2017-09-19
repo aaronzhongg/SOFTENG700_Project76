@@ -29,8 +29,12 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/imgRouteThumbnail" >
+        android:layout_alignBottom="@+id/imgRouteThumbnail"
+        android:layout_toRightOf="@+id/imgRouteThumbnail"
+        android:layout_toEndOf="@+id/imgRouteThumbnail"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:id="@+id/relativeLayout">
 
         <nz.ac.auckland.nihi.trainer.views.FontableTextView
             android:id="@+id/txtTitleRouteLength"
@@ -90,5 +94,26 @@
             android:text="@string/unit_kilometers"
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtTitleRouteName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_alignLeft="@+id/relativeLayout"
+        android:layout_alignStart="@+id/relativeLayout"
+        android:text="Name:"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
+
+    <TextView
+        android:id="@+id/txtRouteName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_marginLeft="4dp"
+        android:layout_toEndOf="@+id/txtTitleRouteName"
+        android:layout_toRightOf="@+id/txtTitleRouteName"
+        android:text="@string/route_name_placeholder"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
 
 </RelativeLayout>

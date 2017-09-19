@@ -10,8 +10,10 @@ import nz.ac.auckland.nihi.trainer.data.BloodLactateConcentrationData;
 import nz.ac.auckland.nihi.trainer.data.ExerciseNotification;
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Gender;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.data.RouteCoordinate;
+import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 import nz.ac.auckland.nihi.trainer.data.Symptom;
 import nz.ac.auckland.nihi.trainer.data.SymptomEntry;
 import nz.ac.auckland.nihi.trainer.data.SymptomStrength;
@@ -80,6 +82,8 @@ public class ExerciseSessionData {
 	private final ArrayList<SymptomEntry> symptoms = new ArrayList<SymptomEntry>();
 
 	private final ArrayList<ExerciseNotification> notifications = new ArrayList<ExerciseNotification>();
+
+	private final ArrayList<SummaryDataChunk> summaryDataChunks = new ArrayList<SummaryDataChunk>();
 
 	/**
 	 * The cache of ECG data.
@@ -864,6 +868,10 @@ public class ExerciseSessionData {
 		return notificationEntry;
 	}
 
+	public SummaryDataChunk addSummaryDataChunk(SummaryDataChunk s) {
+		summaryDataChunks.add(s);
+		return s;
+	}
 	/**
 	 * Generates a summary of this session and saves it to the database.
 	 * 
@@ -872,9 +880,9 @@ public class ExerciseSessionData {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ExerciseSummary generateSummary(long userId, String creatorName, Dao<ExerciseSummary, String> summaryDao,
+	public RCExerciseSummary generateSummary(long userId, String creatorName, Dao<RCExerciseSummary, String> summaryDao,
 			Dao<Route, String> routeDao) throws SQLException {
-		ExerciseSummary summary = new ExerciseSummary();
+		RCExerciseSummary summary = new RCExerciseSummary();
 
 		summary.setDate(new Date(getStartTimeInMillis()));
 		summary.setDurationInSeconds((int) Math.round((double) getElapsedTimeInMillis() / 1000.0));
@@ -937,17 +945,22 @@ public class ExerciseSessionData {
 
 		summary.setUserId(userId);
 
-		summaryDao.assignEmptyForeignCollection(summary, "symptoms");
-		summaryDao.assignEmptyForeignCollection(summary, "notifications");
+		summaryDao.assignEmptyForeignCollection(summary, "summaryDataChunks");
+//		summaryDao.assignEmptyForeignCollection(summary, "symptoms");
+//		summaryDao.assignEmptyForeignCollection(summary, "notifications");
 		summaryDao.create(summary);
 
-		for (SymptomEntry symptom : symptoms) {
-			summary.getSymptoms().add(symptom);
+		for (SummaryDataChunk s : summaryDataChunks) {
+			summary.getSummaryDataChunks().add(s);
 		}
 
-		for (ExerciseNotification notification : notifications) {
-			summary.getNotifications().add(notification);
-		}
+//		for (SymptomEntry symptom : symptoms) {
+//			summary.getSymptoms().add(symptom);
+//		}
+//
+//		for (ExerciseNotification notification : notifications) {
+//			summary.getNotifications().add(notification);
+//		}
 
 		return summary;
 	}

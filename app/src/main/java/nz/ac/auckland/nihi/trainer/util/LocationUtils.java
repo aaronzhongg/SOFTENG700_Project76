@@ -15,8 +15,10 @@ import java.util.Collection;
 import java.util.List;
 
 import nz.ac.auckland.nihi.trainer.R.string;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Route;
 import nz.ac.auckland.nihi.trainer.data.RouteCoordinate;
+import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 
 import org.apache.log4j.Logger;
 
@@ -342,6 +344,20 @@ public class LocationUtils {
 		}
 	}
 
+	public static LatLng[] toLatLng(RCExerciseSummary e) {
+		Collection<SummaryDataChunk> summaryDataChunks = e.getSummaryDataChunks();
+		if (summaryDataChunks != null) {
+			LatLng[] arr = new LatLng[summaryDataChunks.size()];
+			int counter = 0;
+			for (SummaryDataChunk s: summaryDataChunks) {
+				arr[counter++] = new LatLng(s.getLatitude(), s.getLongitude());
+			}
+			return arr;
+		} else {
+			return new LatLng[0];
+		}
+	}
+
 	/**
 	 * Converts the given {@link Route} to a list of {@link Location} objects. Doing this allows us to access the
 	 * distance algorithms built into the class.
@@ -396,6 +412,32 @@ public class LocationUtils {
 		} else {
 			return distance;
 		}
+	}
+
+	/**
+	 * Calculate distance between two points in latitude and longitude
+	 *
+	 * lat1, lon1 Start point lat2, lon2, end point
+	 * @returns Distance in Meters
+	 */
+	public static double distanceBetweenCoordinates(double lat1, double lat2, double lon1,
+								  double lon2) {
+
+		final int R = 6371; // Radius of the earth
+
+		double latDistance = Math.toRadians(lat2 - lat1);
+		double lonDistance = Math.toRadians(lon2 - lon1);
+		double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+				+ Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+				* Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		double distance = R * c * 1000; // convert to meters
+
+		double height = 0; //Ignoring height, therefore accuracy is diminished over long distances
+
+		distance = Math.pow(distance, 2) + Math.pow(height, 2);
+
+		return Math.sqrt(distance);
 	}
 
 }

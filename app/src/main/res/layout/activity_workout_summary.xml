@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/rc_primary_color"
+    android:id="@+id/map_scroll_view">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="nz.ac.auckland.nihi.trainer.activities.WorkoutSummaryActivity"
+    android:orientation="vertical">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:id="@+id/summary_map"
+        tools:context=".MapsActivity"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp"
+        class="nz.ac.auckland.nihi.trainer.views.CustomMapFragment"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/total_time_elapsed"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="11:23"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="28dp"/>
+                <TextView
+                    android:id="@+id/total_time_elapsed_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Total time elapsed"
+                    android:layout_weight="3"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/total_distance_ran"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="12km"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="28dp"/>
+                <TextView
+                    android:id="@+id/total_distance_ran_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Total distance"
+                    android:layout_weight="3"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/average_speed"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="5km/hr"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="28dp"/>
+                <TextView
+                    android:id="@+id/average_speed_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Average speed"
+                    android:layout_weight="3"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/average_heartrate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="123bpm"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="28dp"/>
+                <TextView
+                    android:id="@+id/average_heartrate_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Average heartrate"
+                    android:layout_weight="3"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/heartrate_graph" />
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/speed_graph" />
+
+
+</LinearLayout>
+</ScrollView>

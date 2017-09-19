@@ -2,22 +2,23 @@ package nz.ac.auckland.nihi.trainer.activities;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.Random;
 
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessService;
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUIControllerCommandReceiver;
 import nz.ac.auckland.cs.odin.android.api.services.testharness.TestHarnessUtils;
 import nz.ac.auckland.cs.odin.interconnect.common.EndpointConnectionStatus;
-import nz.ac.auckland.cs.ormlite.DatabaseManager;
-import nz.ac.auckland.cs.ormlite.LocalDatabaseHelper;
 import nz.ac.auckland.nihi.trainer.R.anim;
 import nz.ac.auckland.nihi.trainer.R.drawable;
 import nz.ac.auckland.nihi.trainer.R.id;
 import nz.ac.auckland.nihi.trainer.R.layout;
 import nz.ac.auckland.nihi.trainer.R.string;
+import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
-import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Route;
+import nz.ac.auckland.nihi.trainer.data.RouteCoordinate;
 import nz.ac.auckland.nihi.trainer.data.Symptom;
 import nz.ac.auckland.nihi.trainer.data.SymptomStrength;
 import nz.ac.auckland.nihi.trainer.data.session.ExerciseSessionData;
@@ -53,6 +54,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
@@ -73,6 +75,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.odin.android.bioharness.BHConnectivityStatus;
 import com.odin.android.bioharness.prefs.BioharnessDescription;
 import com.odin.android.bioharness.prefs.BioharnessPreferences;
@@ -126,7 +129,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	private Handler timerUpdateHandler;
 
 	// The database helper, required to load Route data.
-	private LocalDatabaseHelper dbHelper;
+	private DatabaseHelper dbHelper;
 
 	// The map marker that shows the user's current location.
 	private Marker userMapMarker;
@@ -143,8 +146,19 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	// Determines whether we can see the activity.
 	private boolean activityVisible = true;
 
+	//Determine whether the navigation tts should be enabled
+	private boolean isPaused = true;
+
 	// The map.
 	private GoogleMap theMap;
+
+	//Current route
+	private Route currentRoute;
+
+	//The next point that the user needs to navigate to
+	private LinkedList<RouteCoordinate> remainingDestinations;
+
+	//TTS
 
 	// ************************************************************************************************************
 
@@ -153,10 +167,9 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	 * 
 	 * @return
 	 */
-	private LocalDatabaseHelper getDbHelper() {
+	private DatabaseHelper getDbHelper() {
 		if (dbHelper == null) {
-			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(this);
-		}
+			dbHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);		}
 		return dbHelper;
 	}
 
@@ -171,9 +184,18 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 		super.onCreate(savedInstanceState);
 		timerUpdateHandler = new Handler(this.timerUpdateHandlerCallback);
 
+		logger.info("testing");
 		// Create the user interface and set its inital properties.
 		buildUI();
 		setUIState(null);
+
+		//enable tts
+//		this.tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+//			@Override
+//			public void onInit(int status) {
+//			}
+//		});
+
 
 		// If Bluetooth is enabled, or if this is the test harness, start the workout service.
 		if (TestHarnessUtils.isTestHarness() || BluetoothAdapter.getDefaultAdapter().isEnabled()) {
@@ -481,17 +503,24 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 		}
 
 		// Notify the service that the workout should cease
-		ExerciseSummary summary = workoutService.getService().endWorkout();
-
-		// Display workout summary activity or finish activity, depending on value of variable.
-		if (finishOnStop) {
-			finish();
-			overridePendingTransition(anim.push_right_in, anim.push_right_out);
-		} else {
-			Intent summaryIntent = new Intent(this, ReviewActivity.class);
-			summaryIntent.putExtra(ReviewActivity.EXTRA_SUMMARY_ID, summary.getId());
+		RCExerciseSummary summary = workoutService.getService().endWorkout();
+		//Navigate to the summary list page.
+		finish();
+		Intent summaryIntent = new Intent(getApplicationContext(), WorkoutSummaryActivity.class);
+		if (summaryIntent != null) {
+			summaryIntent.putExtra("workout_id", summary.getId());
 			startActivity(summaryIntent);
+			overridePendingTransition(anim.push_left_in, anim.push_left_out);
 		}
+		// TODO: Implement this bit with our app -> Display workout summary activity or finish activity, depending on value of variable.
+//		if (finishOnStop) {
+//			finish();
+//			overridePendingTransition(anim.push_right_in, anim.push_right_out);
+//		} else {
+//			Intent summaryIntent = new Intent(this, ReviewActivity.class);
+//			summaryIntent.putExtra(ReviewActivity.EXTRA_SUMMARY_ID, summary.getId());
+//			startActivity(summaryIntent);
+//		}
 	}
 
 	// ************************************************************************************************************
@@ -503,7 +532,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	/**
 	 * The {@link ServiceConnection} that allows us to bind to the {@link WorkoutService Workout} service. When a
 	 * service connection is obtained, obtain a reference to the service interface and set its listener to our internal
-	 * {@link WorkoutActivity#workoutServiceListener} object. Then, hookup the UI to the service's sesison object, and
+	 *  WorkoutActivity#workoutServiceListener} object. Then, hookup the UI to the service's sesison object, and
 	 * set the state of the UI to match.
 	 */
 	private final ServiceConnection workoutServiceConn = new ServiceConnection() {
@@ -542,6 +571,12 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 					changeGoal(new FreeWorkoutGoal());
 				} else {
 					changeGoal(new RouteGoal(routeId));
+					try {
+						currentRoute = dbHelper.getRoutesDAO().queryForId(routeId);
+						remainingDestinations = new LinkedList<RouteCoordinate>(currentRoute.getGpsCoordinates());
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
 
 			}
@@ -554,6 +589,29 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	@Override
 	public void locationChanged(Location newLocation) {
 		showOnMap(newLocation);
+		giveNavigationInstructions(newLocation);
+	}
+
+	private void giveNavigationInstructions(Location location){
+		if (remainingDestinations == null) {
+			return;
+		}
+		//if no more destinations left do not try to fetch destination
+		//if the user has not started the workout or paused it, do not try to tts
+		if(remainingDestinations.size() < 1 || this.isPaused){
+			return;
+		}
+		RouteCoordinate currentDestination = remainingDestinations.getFirst();
+		//Check if within a certain radius of this destination
+		double distance = LocationUtils.distanceBetweenCoordinates(location.getLatitude(), currentDestination.getLatitude(),
+				location.getLongitude(), currentDestination.getLongitude());
+		//if it's close enough, give the requite instruction
+		if(distance <= 50){
+			WorkoutService.tts.speak(currentDestination.getInstruction(), TextToSpeech.QUEUE_ADD, null);
+			remainingDestinations.removeFirst();
+		}else{
+			//WorkoutService.tts.speak("Distance is:" + distance, TextToSpeech.QUEUE_ADD, null);
+		}
 	}
 
 	/**
@@ -690,6 +748,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 				if (session != null) {
 					btnStopWorkout.setText(AndroidTextUtils.getRelativeTimeStringMillis(session
 							.getElapsedTimeInMillis()));
+					//logger.info("Heart rate is: " + session.getHeartRate());
 					return true;
 				}
 			}
@@ -765,13 +824,15 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 		btnSelectWorkout = (Button) findViewById(id.btnSelectWorkout);
 		btnSelectWorkout.setOnClickListener(btnSelectWorkoutClickListener);
 
-		// "Symptoms" button
+//		// "Symptoms" button
 		btnSymptoms = (Button) findViewById(id.btnSymptoms);
-		btnSymptoms.setOnClickListener(btnSymptomsClickListener);
-
-		// "Notifications" button
+		btnSymptoms.setEnabled(false);
+//		btnSymptoms.setOnClickListener(btnSymptomsClickListener);
+//
+//		// "Notifications" button
 		btnNotifications = (Button) findViewById(id.btnNotifications);
-		btnNotifications.setOnClickListener(btnNotificationsClickListener);
+		btnNotifications.setEnabled(false);
+//		btnNotifications.setOnClickListener(btnNotificationsClickListener);
 
 		// "Show / Hide Map" button
 		btnToggleMap = (ToggleButton) findViewById(id.btnToggleMap);
@@ -787,7 +848,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 				id.largeStatsFragment);
 		smallStatsFragment = (WorkoutScreenStatsViewFragment) getSupportFragmentManager().findFragmentById(
 				id.smallStatsFragment);
-		smallStatsFragment.setVisibility(View.GONE);
+        largeStatsFragment.setVisibility(View.GONE);
 	}
 
 	/**
@@ -795,7 +856,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	 * 
 	 * UPDATE: This also controls whether the timer is running! YAY!
 	 * 
-	 * @param newState
+	 *
 	 */
 	private void setUIState(WorkoutServiceStatus status) {
 
@@ -803,8 +864,9 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 
 		// If we can't start a new workout, and we're not monitoring, then we're in the "setup" phase.
 		if (status == null || !(status.canStartNewWorkout() || status.isMonitoring())) {
-			btnSymptoms.setEnabled(false);
-			btnNotifications.setEnabled(false);
+			//symptoms and notifications are disabled
+//			btnSymptoms.setEnabled(false);
+//			btnNotifications.setEnabled(false);
 			btnSelectWorkout.setEnabled(false);
 			btnStartWorkout.setVisibility(View.INVISIBLE);
 			btnStopWorkout.setVisibility(View.INVISIBLE);
@@ -812,8 +874,8 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 
 		// If we're monitoring, we're in the "workout" phase.
 		else if (status.isMonitoring()) {
-			btnSymptoms.setEnabled(true);
-			btnNotifications.setEnabled(true);
+//			btnSymptoms.setEnabled(true);
+//			btnNotifications.setEnabled(true);
 			btnSelectWorkout.setEnabled(false);
 			btnStartWorkout.setVisibility(View.INVISIBLE);
 			btnStopWorkout.setVisibility(View.VISIBLE);
@@ -822,16 +884,18 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 
 		// if we're not monitoring (but we can start a new workout), we're in the "ready" phase.
 		else {
-			btnSymptoms.setEnabled(false);
-			btnNotifications.setEnabled(false);
+//			btnSymptoms.setEnabled(false);
+//			btnNotifications.setEnabled(false);
 			btnSelectWorkout.setEnabled(true);
 			btnStartWorkout.setVisibility(View.VISIBLE);
 			btnStopWorkout.setVisibility(View.INVISIBLE);
 		}
 
 		// If we're not fully connected to both Odin and the Bioharness, show the connection dialog.
-		if (status == null || status.getBioharnessConnectivityStatus() != BHConnectivityStatus.CONNECTED
-				|| status.getOdinConnectivityStatus() != EndpointConnectionStatus.CONNECTED) {
+		if (status == null || status.getBioharnessConnectivityStatus() != BHConnectivityStatus.CONNECTED) {
+			//	TODO: REMOVE ODIN CONNECTION
+//				|| status.getOdinConnectivityStatus() != EndpointConnectionStatus.CONNECTED) {
+
 
 			if (this.connectionDialog == null) {
 				this.connectionDialog = new ConnectionProgressDialogFragment();
@@ -846,7 +910,8 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 
 			if (status != null) {
 				this.connectionDialog.setBioharnessConnectionStatus(status.getBioharnessConnectivityStatus());
-				this.connectionDialog.setOdinConnectionStatus(status.getOdinConnectivityStatus());
+				//	TODO: REMOVE ODIN CONNECTION
+//				this.connectionDialog.setOdinConnectionStatus(status.getOdinConnectivityStatus());
 			} else {
 				this.connectionDialog.setBioharnessConnectionStatus(BHConnectivityStatus.DISCONNECTED);
 				this.connectionDialog.setOdinConnectionStatus(EndpointConnectionStatus.DISCONNECTED);
@@ -867,11 +932,13 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 			}
 		}
 
-		// If the timer should be enabled, but isn't, enable it now.
+		// If the timer should be enabled, but isn't, enable it now. Also enable navigation
 		if (shouldEnableTimer && timerUpdateThread == null) {
 			timerUpdateThread = new Thread(timerUpdateTask);
 			timerUpdateThread.setDaemon(true);
 			timerUpdateThread.start();
+			isPaused = false;
+			WorkoutService.setIsPaused(false);
 		}
 
 		// If the timer should be disabled, but is enabled, disable it now.
@@ -882,6 +949,8 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 			} catch (InterruptedException e) {
 			}
 			timerUpdateThread = null;
+			isPaused = true;
+			WorkoutService.setIsPaused(true);
 		}
 
 	}
@@ -972,7 +1041,7 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 	private void showRoutePolyline(String routeId) {
 		try {
 
-			Route route = getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO().queryForId(routeId);
+			Route route = getDbHelper().getRoutesDAO().queryForId(routeId);
 			showRoutePolyline(route);
 
 		} catch (SQLException e) {

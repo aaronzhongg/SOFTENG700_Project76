@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    style="@style/RouteLayoutStyle"
+    tools:context="nz.ac.auckland.nihi.trainer.activities.RouteGeneratorActivity">
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rg_name_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtRouteName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/rg_name_hint" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rg_distance_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtRouteDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/rg_distance_hint"
+        android:inputType="number"/>
+
+    <nz.ac.auckland.nihi.trainer.views.FontableTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rg_elevation_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtRouteElevation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/rg_elevation_hint"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/newRouteBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/rg_button_label"/>
+</LinearLayout>

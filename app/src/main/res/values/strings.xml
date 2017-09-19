@@ -1,100 +1,100 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- Host Selection Dialog -->
-	<string name="hostdialog_label_selecthost">Select Host</string>
-	
-	<!-- Login Dialog -->
-	<string name="logindialog_button_login">Log In</string>
-	
-	<!-- Home Screen -->
-	<string name="homescreen_button_review">Review</string>
-	<string name="homescreen_button_routes">Routes</string>
-	<string name="homescreen_button_friends">Friends</string>
-	<string name="homescreen_button_profile">Profile</string>
-	<string name="homescreen_button_goals">Goals</string>
-	<string name="homescreen_button_workout">Workout</string>
-	<string name="homescreen_label_testharness">TEST HARNESS MODE</string>
-	<string name="homescreen_dialog_cantconnect">Can\'t Connect</string>
-	<string name="homescreen_dialog_cantconnect_message">Unfortunately we can\'t connect to the server right now. Please try again later.</string>
-	<string name="homescreen_dialog_invalidlogin">Invalid Login Details</string>
-	<string name="homescreen_dialog_invalidlogin_message">It seems you entered an incorrect username or password. Please try again.</string>
-	<string name="homescreen_dialog_goprofile">Your Profile</string>
-	<string name="homescreen_dialog_goprofile_message">Please enter your details in your profile.</string>
-	<string name="homescreen_dialog_nobluetooth">Bluetooth not supported</string>
-	<string name="homescreen_dialog_nobluetooth_message">Bluetooth support is required for this app to function, but is not supported on this device.</string>
-	
-	<!-- Review Screen -->
-	<string name="summaryscreen_label_thismonth">This Month</string>
-	<string name="summaryscreen_label_today">Today</string>
-	<string name="summaryscreen_label_symptoms">Symptoms</string>
-	<string name="summaryscreen_label_notifications">Notifications</string>
-	<string name="summaryscreen_label_map">Map</string>
-	<string name="summaryscreen_button_addtofavorites">Save to Favorites</string>
-	<string name="summaryscreen_button_removefromfavorites">Remove from Favorites</string>
-	<string name="summaryscreen_dialog_nodata">No data!</string>
-	<string name="summaryscreen_dialog_nodata_message">There doesn\'t appear to be any workout data available for review.</string>
-	
-	<!-- Collapsible Panel (part of review screen) -->
-	<string name="cpanel_button_more">More</string>
-	<string name="cpanel_button_less">Less</string>
-	
-	<!-- Date Picker (in review screen) -->
-	<string name="datepicker_selectdate">Select Date</string>
-	<string name="datepicker_yearlabel">Year:</string>
-	<string name="datepicker_monthlabel">Month:</string>
-	
-	<!-- Profile / Settings Screen -->
-	<string name="settingsscreen_label_userprofile">User Profile</string>
-	<string name="settingsscreen_label_personaldetails">Personal Details</string>
-	<string name="settingsscreen_label_bloodlactatewarning">(Leave blank if you have not completed a blood lactate exercise test)</string>
-	<string name="settingsscreen_label_bloodlactateconcentration">Blood Lactate Concentration</string>
-	<string name="settingsscreen_label_logfiles">Log Files</string>
-	<string name="settingsscreen_button_emaillogs">Email</string>
-	<string name="settingsscreen_button_clearlogs">Clear</string>
-	<string name="settingsscreen_label_logindetails">Login Details</string>
-	<string name="settingsscreen_button_switchuser">Switch User</string>
-	<string name="settingsscreen_label_odinsettings">Odin Settings</string>
-	<string name="settingsscreen_dialog_cantsave">There was a problem saving your profile to Odin. We\'ll try again later.</string>
-	<string name="settingsscreen_dialog_emaillogs">Email Logs</string>
-	<string name="settingsscreen_dialog_emaillogs_message">Are you sure you want to email the logs to the developer? Please only do this if directed as it may incur unnecessary bandwidth costs.</string>
-	<string name="settingsscreen_toast_nologfiles">Found no log files to send!</string>
-	<string name="settingsscreen_chooser_emaillogs">Email Logs…</string>
-	<string name="settingsscreen_dialog_clearlogs">Clear Logs</string>
-	<string name="settingsscreen_dialog_clearlogs_message">Are you sure you want to clear the logs? This operation cannot be undone and should only be performed when directed by your clinician or a program administrator.</string>
-	<string name="settingsscreen_toast_logscleared">Log files cleared!</string>
-	<string name="settingsscreen_dialog_switchuser">Switch User</string>
-	<string name="settingsscreen_dialog_switchuser_message">Are you sure you want to switch users? This should only be performed if directed by your clinician or program administrator.</string>
-	
-	<!-- Goal Picker Dialog (in workout screen) -->
-	<string name="goaldialog_label_selectgoal">Select Goal</string>
-	<string name="goaldialog_label_freeworkout">Free Workout</string>
-	<string name="goaldialog_label_durationgoal">Duration Goal</string>
-	<string name="goaldialog_label_distancegoal">Distance Goal</string>
-	<string name="goaldialog_label_loadgoal">Training Load Goal</string>
-	<string name="goaldialog_label_routegoal">Follow a Route</string>
-	<string name="goaldialog_label_load">Load: </string>
-	<string name="unit_hours">hh</string>
-	<string name="unit_minutes">mm</string>
-	<string name="unit_kilometers">kms</string>
-	
-	<!-- Workout Screen -->
-	<string name="workoutscreen_button_showmap">Show Map</string>
-	<string name="workoutscreen_button_hidemap">Hide Map</string>
-	<string name="workoutscreen_button_symptoms">Symptoms</string>
-	<string name="workoutscreen_button_notifications">Notifications</string>
-	<string name="workoutscreen_button_start">Start!</string>
-	<string name="workoutscreen_dialog_stopworkout">Stop workout?</string>
-	<string name="workoutscreen_dialog_stopworkout_message">Are you sure you wish to stop your workout?</string>
-	<string name="workoutscreen_dialog_stopworkout_nokeepgoing">No, keep going!</string>
-	<string name="workoutscreen_dialog_nobioharness">Could not connect to Bioharness</string>
-	<string name="workoutscreen_dialog_nobioharness_message">Could not connect to the Bioharness. Would you like to retry?</string>
-	<string name="workoutscreen_dialog_nobioharness_retry">Retry</string>
-	
-	<!-- Notification Viewer (in workout screen) -->
-	<string name="notificationdialog_label_receivedat">Received at: </string>
-	<string name="notificationdialog_label_notifications">Notifications</string>
-	
-	<!-- Bluetooth Devices dialog (in workout screen) -->
+    <!-- Host Selection Dialog -->
+    <string name="hostdialog_label_selecthost">Select Host</string>
+
+    <!-- Login Dialog -->
+    <string name="logindialog_button_login">Log In</string>
+
+    <!-- Home Screen -->
+    <string name="homescreen_button_review">Review</string>
+    <string name="homescreen_button_routes">Routes</string>
+    <string name="homescreen_button_friends">Friends</string>
+    <string name="homescreen_button_profile">Profile (disabled)</string>
+    <string name="homescreen_button_goals">Goals (disabled)</string>
+    <string name="homescreen_button_workout">Workout</string>
+    <string name="homescreen_label_testharness">TEST HARNESS MODE</string>
+    <string name="homescreen_dialog_cantconnect">Can\'t Connect</string>
+    <string name="homescreen_dialog_cantconnect_message">Unfortunately we can\'t connect to the server right now. Please try again later.</string>
+    <string name="homescreen_dialog_invalidlogin">Invalid Login Details</string>
+    <string name="homescreen_dialog_invalidlogin_message">It seems you entered an incorrect username or password. Please try again.</string>
+    <string name="homescreen_dialog_goprofile">Your Profile</string>
+    <string name="homescreen_dialog_goprofile_message">Please enter your details in your profile.</string>
+    <string name="homescreen_dialog_nobluetooth">Bluetooth not supported</string>
+    <string name="homescreen_dialog_nobluetooth_message">Bluetooth support is required for this app to function, but is not supported on this device.</string>
+
+    <!-- Review Screen -->
+    <string name="summaryscreen_label_thismonth">This Month</string>
+    <string name="summaryscreen_label_today">Today</string>
+    <string name="summaryscreen_label_symptoms">Symptoms</string>
+    <string name="summaryscreen_label_notifications">Notifications</string>
+    <string name="summaryscreen_label_map">Map</string>
+    <string name="summaryscreen_button_addtofavorites">Save to Favorites</string>
+    <string name="summaryscreen_button_removefromfavorites">Remove from Favorites</string>
+    <string name="summaryscreen_dialog_nodata">No data!</string>
+    <string name="summaryscreen_dialog_nodata_message">There doesn\'t appear to be any workout data available for review.</string>
+
+    <!-- Collapsible Panel (part of review screen) -->
+    <string name="cpanel_button_more">More</string>
+    <string name="cpanel_button_less">Less</string>
+
+    <!-- Date Picker (in review screen) -->
+    <string name="datepicker_selectdate">Select Date</string>
+    <string name="datepicker_yearlabel">Year:</string>
+    <string name="datepicker_monthlabel">Month:</string>
+
+    <!-- Profile / Settings Screen -->
+    <string name="settingsscreen_label_userprofile">User Profile</string>
+    <string name="settingsscreen_label_personaldetails">Personal Details</string>
+    <string name="settingsscreen_label_bloodlactatewarning">(Leave blank if you have not completed a blood lactate exercise test)</string>
+    <string name="settingsscreen_label_bloodlactateconcentration">Blood Lactate Concentration</string>
+    <string name="settingsscreen_label_logfiles">Log Files</string>
+    <string name="settingsscreen_button_emaillogs">Email</string>
+    <string name="settingsscreen_button_clearlogs">Clear</string>
+    <string name="settingsscreen_label_logindetails">Login Details</string>
+    <string name="settingsscreen_button_switchuser">Switch User</string>
+    <string name="settingsscreen_label_odinsettings">Odin Settings</string>
+    <string name="settingsscreen_dialog_cantsave">There was a problem saving your profile to Odin. We\'ll try again later.</string>
+    <string name="settingsscreen_dialog_emaillogs">Email Logs</string>
+    <string name="settingsscreen_dialog_emaillogs_message">Are you sure you want to email the logs to the developer? Please only do this if directed as it may incur unnecessary bandwidth costs.</string>
+    <string name="settingsscreen_toast_nologfiles">Found no log files to send!</string>
+    <string name="settingsscreen_chooser_emaillogs">Email Logs…</string>
+    <string name="settingsscreen_dialog_clearlogs">Clear Logs</string>
+    <string name="settingsscreen_dialog_clearlogs_message">Are you sure you want to clear the logs? This operation cannot be undone and should only be performed when directed by your clinician or a program administrator.</string>
+    <string name="settingsscreen_toast_logscleared">Log files cleared!</string>
+    <string name="settingsscreen_dialog_switchuser">Switch User</string>
+    <string name="settingsscreen_dialog_switchuser_message">Are you sure you want to switch users? This should only be performed if directed by your clinician or program administrator.</string>
+
+    <!-- Goal Picker Dialog (in workout screen) -->
+    <string name="goaldialog_label_selectgoal">Select Goal</string>
+    <string name="goaldialog_label_freeworkout">Free Workout</string>
+    <string name="goaldialog_label_durationgoal">Duration Goal</string>
+    <string name="goaldialog_label_distancegoal">Distance Goal</string>
+    <string name="goaldialog_label_loadgoal">Training Load Goal</string>
+    <string name="goaldialog_label_routegoal">Follow a Route</string>
+    <string name="goaldialog_label_load">Load: </string>
+    <string name="unit_hours">hh</string>
+    <string name="unit_minutes">mm</string>
+    <string name="unit_kilometers">kms</string>
+
+    <!-- Workout Screen -->
+    <string name="workoutscreen_button_showmap">Show Map</string>
+    <string name="workoutscreen_button_hidemap">Hide Map</string>
+    <string name="workoutscreen_button_symptoms">Symptoms</string>
+    <string name="workoutscreen_button_notifications">Notifications</string>
+    <string name="workoutscreen_button_start">Start!</string>
+    <string name="workoutscreen_dialog_stopworkout">Stop workout?</string>
+    <string name="workoutscreen_dialog_stopworkout_message">Are you sure you wish to stop your workout?</string>
+    <string name="workoutscreen_dialog_stopworkout_nokeepgoing">No, keep going!</string>
+    <string name="workoutscreen_dialog_nobioharness">Could not connect to Bioharness</string>
+    <string name="workoutscreen_dialog_nobioharness_message">Could not connect to the Bioharness. Would you like to retry?</string>
+    <string name="workoutscreen_dialog_nobioharness_retry">Retry</string>
+
+    <!-- Notification Viewer (in workout screen) -->
+    <string name="notificationdialog_label_receivedat">Received at: </string>
+    <string name="notificationdialog_label_notifications">Notifications</string>
+
+    <!-- Bluetooth Devices dialog (in workout screen) -->
     <string name="btdevices_label_paireddevices">PAIRED DEVICES</string>
     <string name="btdevices_label_newdevices">OTHER AVAILABLE DEVICES</string>
     <string name="btdevices_button_scan">Scan for devices</string>
@@ -102,7 +102,7 @@
     <string name="btdevices_none_found">No devices found</string>
     <string name="btdevices_scanning">Scanning for devices…</string>
     <string name="btdevices_select_device">Select the Bioharness from the list.</string>
-    
+
     <!-- Bioharness Service -->
     <string name="bioharness_disconnected">Disconnected from Bioharness</string>
     <string name="bioharness_disconnected_short">Disconnected</string>
@@ -113,64 +113,65 @@
     <string name="bioharness_disconnect">Disconnect from Bioharness</string>
     <string name="bioharness_connect">Connect to Bioharness</string>
     <string name="bioharness_notification_status">Bioharness Status</string>
-	
-	<!-- Symptom Picker (in workout screen) -->
-	<string name="symptompicker_label_selectsymptom">Select Symptom</string>
-	<string name="symptompicker_button_add">Add</string>
-	<string name="symptompicker_label_severity">Severity:</string>
-	<string name="symptompicker_label_newsymptom">New Symptom:</string>
-	<string name="symptompicker_label_priorsymptoms">Prior Symptoms:</string>
-	
-	<!-- Tile Picker (in workout screen) -->
-	<string name="tilepicker_label_selectinfo">Select Information</string>
-	
-	<!-- Connectivity Dialog (in workout screen) -->
-	<string name="connectivitydlg_label_connecting">Connecting…</string>
-	
-	<!-- Goals Screen -->
-	<string name="goalscreen_label_goaltype">Goal Type</string>
-	<string name="goalscreen_label_weeklytarget">Weekly Target</string>
-	<string name="goalscreen_button_addgoal">Add Goal</string>
-	<string name="goalscreen_dialog_removegoal">Remove Goal?</string>
-	<string name="goalscreen_dialog_areyousure">Are you sure you want to remove this goal?</string>
-	<string name="goalscreen_dialog_synch">Synchronizing</string>
-	<string name="goalscreen_dialog_synchwithodin">Synchronizing with Odin</string>
-	<string name="goalscreen_dialog_problemsynching">There was a problem saving your goals to Odin. We\'ll try again later.</string>
-	<string name="goalscreen_dialog_newgoal">New Goal</string>
-	
-	<!-- Routes Screen -->
-	<string name="routescreen_label_length">Length:</string>
-	<string name="routescreen_label_distancetoroute">Distance to route:</string>
-	<string name="routescreen_label_createdby">Created by:</string>
-	<string name="routescreen_button_startworkout">Start Workout</string>
-	<string name="routescreen_button_selectroute">Select Route</string>
-	<string name="routescreen_button_synchronize">Synchronize with Odin</string>
-	<string name="routescreen_tab_all">All</string>
-	<string name="routescreen_tab_favorites">Favorites</string>
-	<string name="routescreen_tab_nearby">Nearby</string>
-	
-	<!-- Location Service -->
-	<string name="locationservice_toast_connected">Connected to location services</string>
-	<string name="locationservice_toast_disconnected">Disconnected from location services</string>
-	<string name="locationservice_toast_failed">Failed to connect to locaiton services</string>
-	
-	<!-- Workout Service -->
-	<string name="workoutservice_notification_goalreached">You reached your goal! Congratulations!</string>
-	<string name="workoutservice_notification_goalreached_title">Goal Reached!</string>
-	<string name="workoutservice_notification_reachedgoalin">Congratulations! You achieved your goal in: </string>
-	<string name="workoutservice_utterance_reachedgoal">Congratulations! You achieved your goal in </string>
-	<string name="workoutservice_utterance_hours"> hours, </string>
-	<string name="workoutservice_utterance_minutes"> minutes, and </string>
-	<string name="workoutservice_utterance_seconds"> seconds.</string>
-	<string name="workoutservice_notification_receivedmessage">Received Message:</string>
-	<string name="workoutservice_notification_receivedmessage_title">Received Message</string>
-	
+
+    <!-- Symptom Picker (in workout screen) -->
+    <string name="symptompicker_label_selectsymptom">Select Symptom</string>
+    <string name="symptompicker_button_add">Add</string>
+    <string name="symptompicker_label_severity">Severity:</string>
+    <string name="symptompicker_label_newsymptom">New Symptom:</string>
+    <string name="symptompicker_label_priorsymptoms">Prior Symptoms:</string>
+
+    <!-- Tile Picker (in workout screen) -->
+    <string name="tilepicker_label_selectinfo">Select Information</string>
+
+    <!-- Connectivity Dialog (in workout screen) -->
+    <string name="connectivitydlg_label_connecting">Connecting…</string>
+
+    <!-- Goals Screen -->
+    <string name="goalscreen_label_goaltype">Goal Type</string>
+    <string name="goalscreen_label_weeklytarget">Weekly Target</string>
+    <string name="goalscreen_button_addgoal">Add Goal</string>
+    <string name="goalscreen_dialog_removegoal">Remove Goal?</string>
+    <string name="goalscreen_dialog_areyousure">Are you sure you want to remove this goal?</string>
+    <string name="goalscreen_dialog_synch">Synchronizing</string>
+    <string name="goalscreen_dialog_synchwithodin">Synchronizing with Odin</string>
+    <string name="goalscreen_dialog_problemsynching">There was a problem saving your goals to Odin. We\'ll try again later.</string>
+    <string name="goalscreen_dialog_newgoal">New Goal</string>
+
+    <!-- Routes Screen -->
+    <string name="routescreen_label_length">Length:</string>
+    <string name="routescreen_label_distancetoroute">Distance to route:</string>
+    <string name="routescreen_label_createdby">Created by:</string>
+    <string name="routescreen_button_startworkout">Start Workout</string>
+    <string name="routescreen_button_selectroute">Select Route</string>
+    <string name="routescreen_button_synchronize">Synchronize with Odin</string>
+    <string name="routescreen_tab_all">All</string>
+    <string name="routescreen_tab_favorites">Favorites</string>
+    <string name="routescreen_tab_nearby">Nearby</string>
+    <string name="routescreen_tab_sortbylength">Sort By Length</string>
+
+    <!-- Location Service -->
+    <string name="locationservice_toast_connected">Connected to location services</string>
+    <string name="locationservice_toast_disconnected">Disconnected from location services</string>
+    <string name="locationservice_toast_failed">Failed to connect to locaiton services</string>
+
+    <!-- Workout Service -->
+    <string name="workoutservice_notification_goalreached">You reached your goal! Congratulations!</string>
+    <string name="workoutservice_notification_goalreached_title">Goal Reached!</string>
+    <string name="workoutservice_notification_reachedgoalin">Congratulations! You achieved your goal in: </string>
+    <string name="workoutservice_utterance_reachedgoal">Congratulations! You achieved your goal in </string>
+    <string name="workoutservice_utterance_hours"> hours, </string>
+    <string name="workoutservice_utterance_minutes"> minutes, and </string>
+    <string name="workoutservice_utterance_seconds"> seconds.</string>
+    <string name="workoutservice_notification_receivedmessage">Received Message:</string>
+    <string name="workoutservice_notification_receivedmessage_title">Received Message</string>
+
     <!-- Odin Activity / Fragment -->
     <string name="odinactivity_button_connect">Connect</string>
     <string name="odinactivity_button_disconnect">Disconnect</string>
     <string name="odinactivity_button_exit">Exit</string>
     <string name="odinactivity_button_settings">Settings</string>
-    
+
     <!-- Odin Service -->
     <string name="odinservice_notification_connecting">Connecting to Odin…</string>
     <string name="odinservice_notification_connecting_short">Connecting…</string>
@@ -179,12 +180,12 @@
     <string name="odinservice_notification_disconnected">Disconnected from Odin</string>
     <string name="odinservice_notification_disconnected_short">Disconnected</string>
     <string name="odinservice_notification_status">Odin Status</string>
-	
-	<!-- Data Synchronization Task -->
-	<string name="datasync_dialog_cantsync">There was a problem synchronizing your data: </string>
-	
-	<!-- Preferences - Names -->
-	<string name="pref_name_label">Name</string>
+
+    <!-- Data Synchronization Task -->
+    <string name="datasync_dialog_cantsync">There was a problem synchronizing your data: </string>
+
+    <!-- Preferences - Names -->
+    <string name="pref_name_label">Name</string>
     <string name="pref_email_label">Email</string>
     <string name="pref_dob_label">Date of Birth</string>
     <string name="pref_height_label">Height (cm)</string>
@@ -200,15 +201,15 @@
     <string name="pref_surrogatename_label">Surrogate Name</string>
     <string name="pref_host_label">Host Address / Name</string>
     <string name="pref_port_label">Host Port</string>
-	
+
     <!-- Preferences - Units -->
     <string name="pref_height_unit">cm</string>
-	<string name="pref_weight_unit">kg</string>
+    <string name="pref_weight_unit">kg</string>
     <string name="pref_max_hr_unit">bpm</string>
     <string name="pref_rest_hr_unit">bpm</string>
-    
-	<!-- Exercise Stat Descriptions -->
-	<string name="stats_descr_duration">Duration</string>
+
+    <!-- Exercise Stat Descriptions -->
+    <string name="stats_descr_duration">Duration</string>
     <string name="stats_descr_distance">Distance</string>
     <string name="stats_descr_distance_short">Distance</string>
     <string name="stats_descr_distance_long">Distance (km)</string>
@@ -229,34 +230,34 @@
     <string name="stats_descr_load">Training Load</string>
     <string name="stats_descr_load_short">Load</string>
     <string name="stats_descr_load_long">Training Load</string>
-    
+
     <!-- Exercise Stat Units -->
     <string name="stats_unit_duration">min</string>
     <string name="stats_unit_distance">km</string>
     <string name="stats_unit_speed">km/h</string>
     <string name="stats_unit_heartrate">bpm</string>
     <string name="stats_unit_hrr">%HRR</string>
-	
+
     <!-- Symptom Names -->
     <string name="symptom_angina">Chest Pain</string>
     <string name="symptom_dyspnoea">Breathlessness</string>
     <string name="symptom_syncope">Dizziness</string>
-    
+
     <!-- Symptom Severities -->
-	<string name="symptom_strength_light">Light, barely noticeable</string>
+    <string name="symptom_strength_light">Light, barely noticeable</string>
     <string name="symptom_strength_moderate">Moderate, bothersome</string>
     <string name="symptom_strength_severe">Severe, very uncomfortable</string>
     <string name="symptom_strength_extreme">Most severe ever experienced</string>
     <string name="symptom_strength_dummy">-</string>
-    
-	<!-- Ordinals -->
-	<string name="ordinal_st">st</string>
-	<string name="ordinal_nd">nd</string>
-	<string name="ordinal_rd">rd</string>
-	<string name="ordinal_th">th</string>
-	
-	<!-- Misc. -->
-	<string name="lparen">(</string>
+
+    <!-- Ordinals -->
+    <string name="ordinal_st">st</string>
+    <string name="ordinal_nd">nd</string>
+    <string name="ordinal_rd">rd</string>
+    <string name="ordinal_th">th</string>
+
+    <!-- Misc. -->
+    <string name="lparen">(</string>
     <string name="rparen">)</string>
     <string name="min">Min</string>
     <string name="avg">Avg</string>
@@ -273,4 +274,18 @@
     <string name="gender_female">Female</string>
     <string name="not_set">[Not Set]</string>
     <string name="placeholder_novalue">(none)</string>
+
+    <!-- Running Coach -->
+    <string name="routes_generator">Route Generator</string>
+    <string name="rg_name_hint">Enter a route name</string>
+    <string name="rg_distance_hint">Enter a route distance</string>
+    <string name="rg_elevation_hint">Enter a route elevation gain</string>
+
+    <string name="rg_name_label">Route name</string>
+    <string name="rg_distance_label">Route distance (meters)</string>
+    <string name="rg_elevation_label">Total route elevation (meters)</string>
+
+    <string name="rg_button_label">Generate</string>
+    <string name="route_name">Name:</string>
+    <string name="route_name_placeholder">Test Route</string>
 </resources>

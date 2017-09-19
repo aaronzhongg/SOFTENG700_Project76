@@ -1,6 +1,7 @@
 package nz.ac.auckland.nihi.trainer.services.workout;
 
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Symptom;
 import nz.ac.auckland.nihi.trainer.data.SymptomStrength;
 import nz.ac.auckland.nihi.trainer.data.session.ExerciseSessionData;
@@ -16,13 +17,13 @@ public interface IWorkoutService {
 
 	ExerciseSessionData getCurrentSession();
 
-	void retryOdinConnection();
+//	void retryOdinConnection();
 
 	void retryBioharnessConnection();
 
 	ExerciseSessionData startWorkout(ExerciseSessionGoal goal);
 
-	ExerciseSummary endWorkout();
+	RCExerciseSummary endWorkout();
 
 	void replyToQuestion(AnswerData answer);
 

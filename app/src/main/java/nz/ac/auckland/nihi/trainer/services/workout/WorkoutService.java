@@ -2,6 +2,9 @@ package nz.ac.auckland.nihi.trainer.services.workout;
 
 import java.sql.SQLException;
 import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import nz.ac.auckland.cs.android.utils.NotificationUtils;
 import nz.ac.auckland.cs.odin.android.api.MessageHandler;
@@ -18,10 +21,13 @@ import nz.ac.auckland.cs.ormlite.LocalDatabaseHelper;
 import nz.ac.auckland.nihi.trainer.R;
 import nz.ac.auckland.nihi.trainer.R.string;
 import nz.ac.auckland.nihi.trainer.activities.NotificationViewerActivity;
+import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.ExerciseNotification;
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.Route;
+import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 import nz.ac.auckland.nihi.trainer.data.Symptom;
 import nz.ac.auckland.nihi.trainer.data.SymptomEntry;
 import nz.ac.auckland.nihi.trainer.data.SymptomStrength;
@@ -33,6 +39,8 @@ import nz.ac.auckland.nihi.trainer.messaging.ECGDataResponse;
 import nz.ac.auckland.nihi.trainer.messaging.MessageData;
 import nz.ac.auckland.nihi.trainer.messaging.QuestionData;
 import nz.ac.auckland.nihi.trainer.prefs.NihiPreferences;
+import nz.ac.auckland.nihi.trainer.rules.ExampleRules;
+import nz.ac.auckland.nihi.trainer.rules.RulesUtils;
 import nz.ac.auckland.nihi.trainer.services.location.DummyGPSServiceImpl;
 import nz.ac.auckland.nihi.trainer.services.location.GPSServiceImpl;
 import nz.ac.auckland.nihi.trainer.services.location.GPSServiceListener;
@@ -43,7 +51,12 @@ import nz.ac.auckland.nihi.trainer.services.workout.WorkoutServiceListener.Worko
 import nz.ac.auckland.nihi.trainer.util.AndroidTextUtils;
 
 import org.apache.log4j.Logger;
+import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
+import org.jeasy.rules.api.Rules;
+import org.jeasy.rules.api.RulesEngine;
 
+import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -55,6 +68,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.odin.android.bioharness.BHConnectivityStatus;
 import com.odin.android.bioharness.data.ECGWaveformData;
@@ -68,14 +83,16 @@ import com.odin.android.bioharness.service.IBioHarnessService.IBioHarnessService
 import com.odin.android.bioharness.service.dummy.DummyBioHarnessServiceImpl;
 import com.odin.android.services.LocalBinder;
 
+import static org.jeasy.rules.core.RulesEngineBuilder.aNewRulesEngine;
+
 /**
  * Yet another version of the workout service.
  * 
  * @author Andrew Meads
  * 
  */
-public class WorkoutService extends OdinAccessingService implements IWorkoutService, IBioHarnessServiceListener,
-		GPSServiceListener, ExerciseSessionGoalListener, MessageHandler {
+public class WorkoutService extends Service implements IWorkoutService, IBioHarnessServiceListener,
+		GPSServiceListener, ExerciseSessionGoalListener {
 
 	private static final Logger logger = Logger.getLogger(WorkoutService.class);
 
@@ -110,20 +127,37 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 
 	// Indicators for whether we're trying to connect to various services. If these are true when we receive a
 	// "disconnected" notification, its a good indicator of initial connection to a particular service failing.
-	private boolean connectingToBioharness = false, /* connectingToGPS = false, */connectingToOdin = false;
+	private boolean connectingToBioharness = false; /* connectingToGPS = false, */ /*connectingToOdin = false TODO: REMOVE ODIN CONNECTION*/
 
 	// Indicates whether we're deliberately trying to disconnect from the Bioharness (so we don't auto-retry connecting
 	// when this flag is true).
 	private boolean disconnectingFromBioharness = false;
 
 	// The database connection
-	private LocalDatabaseHelper dbHelper;
+	private DatabaseHelper dbHelper;
 
 	// The engine for text-to-speech.
-	private TextToSpeech tts;
+	public static TextToSpeech tts;
 
 	// True if tts initialization is complete, false otherwise.
-	private boolean ttsEnabled;
+	private boolean ttsEnabled = true;
+
+	//rule engine
+//	private RulesEngine rulesEngine = aNewRulesEngine()
+//			.withSkipOnFirstAppliedRule(true)
+//			.withSilentMode(true)
+//			.build();;
+//	private Rules rules = new Rules();
+//	private Facts facts = new Facts();
+//	private ExampleRules exampleRule = new ExampleRules();
+	private RulesUtils heartRateRulesUtils;
+	private RulesUtils speedRulesUtils;
+	private RulesUtils dataRulesUtils;
+	private static String feedback = "";
+	private static boolean isPaused = true;
+	private Location currentLocation;
+	private long startWorkoutTimestamp;
+    public static boolean shouldSaveSummaryChunk = false;
 
 	// ************************************************************************************************************
 
@@ -176,14 +210,15 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 	 * If we're disconnected from Odin, this method attempts to start connecting to it. If not, this method does
 	 * nothing.
 	 */
-	@Override
-	public void retryOdinConnection() {
-		if (getOdinService().getConnectionStatus() == EndpointConnectionStatus.DISCONNECTED) {
-			connectingToOdin = true;
-			// getOdinService().beginConnect();
-			this.beginOdinConnect();
-		}
-	}
+//	TODO: REMOVE ODIN CONNECTION
+//	@Override
+//	public void retryOdinConnection() {
+//		if (getOdinService().getConnectionStatus() == EndpointConnectionStatus.DISCONNECTED) {
+//			connectingToOdin = true;
+//			// getOdinService().beginConnect();
+//			this.beginOdinConnect();
+//		}
+//	}
 
 	/**
 	 * If we're not currently monitoring, and are connected to the Bioharness, Odin, and the GPS, starts a new
@@ -191,6 +226,15 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 	 */
 	@Override
 	public ExerciseSessionData startWorkout(ExerciseSessionGoal goal) {
+
+		//TODO do timing of feedback via rules instead of runnables
+//		Runnable ttsRunnable = new Runnable() {
+//			public void run() {
+//				speak(feedback);
+//			}
+//		};
+//		ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
+//		exec.scheduleAtFixedRate(ttsRunnable , 0, 1, TimeUnit.MINUTES);
 
 		// Verify that we're not currently in a monitoring session
 		if (currentSession.isMonitoring()) {
@@ -208,13 +252,15 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 			throw new UnsupportedOperationException("Must be connected to the Bioharness.");
 		}
 
-		// Verify that we're connected to Odin
-		if (getOdinService().getConnectionStatus() != EndpointConnectionStatus.CONNECTED) {
-			throw new UnsupportedOperationException("Must be connected to Odin.");
-		}
+		//	TODO: REMOVE ODIN CONNECTION
+//		// Verify that we're connected to Odin
+//		if (getOdinService().getConnectionStatus() != EndpointConnectionStatus.CONNECTED) {
+//			throw new UnsupportedOperationException("Must be connected to Odin.");
+//		}
 
+		//	TODO: REMOVE ODIN CONNECTION
 		// Send the start signal to Odin
-		OdinHelper.sendStartSessionPacket(getOdinService());
+//		OdinHelper.sendStartSessionPacket(getOdinService());
 
 		// Create the session object and notify listeners.
 		Location currentLocation = gpsService.getService().getLastKnownLocation();
@@ -223,6 +269,8 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 		uiHandler.obtainMessage(MSG_SESSION_CHANGE, currentSession).sendToTarget();
 		uiHandler.obtainMessage(MSG_STATUS_CHANGE, WorkoutServiceStatusChangeType.MonitoringStatus).sendToTarget();
 
+		startWorkoutTimestamp = System.currentTimeMillis();
+
 		return currentSession;
 	}
 
@@ -230,7 +278,7 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 	 * If we're currently monitoring, stop monitoring and generate a summary of the session. If not, throw an exception.
 	 */
 	@Override
-	public ExerciseSummary endWorkout() {
+	public RCExerciseSummary endWorkout() {
 		// Verify we're monitoring
 		if (!currentSession.isMonitoring()) {
 			throw new UnsupportedOperationException("Cannot stop a session that's not started!");
@@ -239,15 +287,13 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 		clearNotificationTrayIcon();
 		NotificationUtils.clearNotification(this, NOTIFICATION_REACH_GOAL);
 
-		// Create the summary
-		ExerciseSummary summary = null;
+//		// Create the summary
+		RCExerciseSummary summary = null;
 		try {
 			// Create summary, save to DB.
-			Dao<ExerciseSummary, String> summaryDao = getDbHelper().getSectionHelper(NihiDBHelper.class)
-					.getExerciseSummaryDAO();
-			Dao<Route, String> routeDao = getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO();
-			summary = currentSession.generateSummary(OdinPreferences.UserID.getLongValue(this, -1L),
-					NihiPreferences.Name.getStringValue(this, "Unknown"), summaryDao, routeDao);
+			Dao<RCExerciseSummary, String> summaryDao = getDbHelper().getExerciseSummaryDAO();
+			Dao<Route, String> routeDao = getDbHelper().getRoutesDAO();
+			summary = currentSession.generateSummary(OdinPreferences.UserID.getLongValue(this, -1L), NihiPreferences.Name.getStringValue(this, "Unknown"), summaryDao, routeDao);
 		} catch (SQLException e) {
 			// Won't happen, we can ignore this.
 			logger.error("endWorkout(): " + e.getMessage(), e);
@@ -255,13 +301,16 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 			throw new RuntimeException(e);
 		}
 
+		//	TODO: REMOVE ODIN CONNECTION - SEND SESSION SUMMARY TO ODIN
 		// Notify Odin that we're done.
-		OdinHelper.sendEndSessionPacket(getOdinService(), summary);
+//		OdinHelper.sendEndSessionPacket(getOdinService(), summary);
 
 		// Create a new session object in the "non-monitoring" state. Notify listeners.
 		currentSession = new ExerciseSessionData(this, null, null, false);
 		uiHandler.obtainMessage(MSG_SESSION_CHANGE, currentSession).sendToTarget();
 		uiHandler.obtainMessage(MSG_STATUS_CHANGE, WorkoutServiceStatusChangeType.MonitoringStatus).sendToTarget();
+
+		startWorkoutTimestamp = 0;
 
 		// Return the summary.
 		return summary;
@@ -282,9 +331,10 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 		// Add symptom to session data
 		SymptomEntry entry = currentSession.addSymptomEntry(symptom, strength);
 
+		//	TODO: REMOVE ODIN CONNECTION
 		// Notify Odin
-		OdinHelper.sendSymptomData(getOdinService(), entry, /* currentSession.getStartTimeInMillis(), */
-				currentSession.getCachedECGData());
+//		OdinHelper.sendSymptomData(getOdinService(), entry, /* currentSession.getStartTimeInMillis(), */
+//				currentSession.getCachedECGData());
 	}
 
 	/**
@@ -298,8 +348,9 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 			throw new UnsupportedOperationException("Can't reply to questions when there's no session!");
 		}
 
+		//	TODO: REMOVE ODIN CONNECTION - SEND ANSWER TO ODIN
 		// Notify Odin
-		OdinHelper.sendAnswer(getOdinService(), answer);
+//		OdinHelper.sendAnswer(getOdinService(), answer);
 
 	}
 
@@ -409,129 +460,133 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 	 * When we receive a message from Odin, if it is a message from the doctor, report it to the user and add it to the
 	 * session.
 	 */
-	@Override
-	public void asyncMessageReceived(Message asyncMessage) throws Exception {
-
-		// If the incoming async message is a question from the doctor to the participant, grab it and forward it to the
-		// listener on the UI thread.
-		QuestionData question = OdinHelper.getQuestionFromDoctor(asyncMessage);
-		if (question != null) {
-			uiHandler.obtainMessage(MSG_QUESTION, question).sendToTarget();
-		}
-
-		// DEPRECATED - Messages are now received as a Request, rather than an Async Message - so we can return a
-		// response indicating that the notification has arrived at the device.
-
-		// MessageData message = OdinHelper.getMessageFromDoctor(asyncMessage);
-		// if (message != null) {
-		//
-		// // If we receive a message outside of monitoring, warn in the logs but show it anyway.
-		// if (!currentSession.isMonitoring()) {
-		// logger.warn("asyncMessageReceived(): Received a message outside of monitoring!");
-		// }
-		//
-		// logger.info("asyncMessageReceived(): Received message from doctor: " + message.getMessage());
-		//
-		// // Add to the current exercise session for storage.
-		// ExerciseNotification notification = currentSession.addNotification(message.getMessage());
-		//
-		// showNotificationTrayIcon(notification);
-		// }
-
-	}
+	//	TODO: REMOVE ODIN CONNECTION
+//	@Override
+//	public void asyncMessageReceived(Message asyncMessage) throws Exception {
+//
+//		// If the incoming async message is a question from the doctor to the participant, grab it and forward it to the
+//		// listener on the UI thread.
+//		QuestionData question = OdinHelper.getQuestionFromDoctor(asyncMessage);
+//		if (question != null) {
+//			uiHandler.obtainMessage(MSG_QUESTION, question).sendToTarget();
+//		}
+//
+//		// DEPRECATED - Messages are now received as a Request, rather than an Async Message - so we can return a
+//		// response indicating that the notification has arrived at the device.
+//
+//		// MessageData message = OdinHelper.getMessageFromDoctor(asyncMessage);
+//		// if (message != null) {
+//		//
+//		// // If we receive a message outside of monitoring, warn in the logs but show it anyway.
+//		// if (!currentSession.isMonitoring()) {
+//		// logger.warn("asyncMessageReceived(): Received a message outside of monitoring!");
+//		// }
+//		//
+//		// logger.info("asyncMessageReceived(): Received message from doctor: " + message.getMessage());
+//		//
+//		// // Add to the current exercise session for storage.
+//		// ExerciseNotification notification = currentSession.addNotification(message.getMessage());
+//		//
+//		// showNotificationTrayIcon(notification);
+//		// }
+//
+//	}
 
 	/**
 	 * When we receive a request from Odin, if it is a request for ECG data, return the latest data available.
 	 */
-	@Override
-	public Message requestReceived(Message request) throws Exception {
-
-		if (request instanceof BasicStringMessage) {
-			String strRequest = ((BasicStringMessage) request).getString();
-			if (strRequest.equals("ECG")) {
-
-				logger.info("requestReceived(): Received a request for ECG data.");
-				ECGData data = currentSession.getCachedECGData();
-				Object[] processedData = OdinHelper.generateECGSampleArrays(data);
-
-				ECGDataResponse response = new ECGDataResponse();
-				response.setEcgData((int[]) processedData[0]);
-				response.setEcgTimeOffsets((long[]) processedData[1]);
-				response.setEcgStartTimeAsLong(data.getStartTimestamp());
-
-				return new JsonMessage(response);
-
-			}
-		}
-
-		else if (request instanceof JsonMessage) {
-
-			MessageData message = OdinHelper.getMessageFromDoctor(request);
-			if (message != null) {
-
-				// If we receive a message outside of monitoring, warn in the logs but show it anyway.
-				if (!currentSession.isMonitoring()) {
-					logger.warn("asyncMessageReceived(): Received a message outside of monitoring!");
-				}
-
-				logger.info("asyncMessageReceived(): Received message from doctor: " + message.getMessage());
-
-				// Add to the current exercise session for storage.
-				ExerciseNotification notification = currentSession.addNotification(message.getMessage());
-
-				showNotificationTrayIcon(notification);
-
-				return new BasicStringMessage("OK");
-			}
-
-		}
-
-		throw new UnsupportedOperationException("unknown request type or invalid content.");
-	}
+	//	TODO: REMOVE ODIN CONNECTION
+//	@Override
+//	public Message requestReceived(Message request) throws Exception {
+//
+//		if (request instanceof BasicStringMessage) {
+//			String strRequest = ((BasicStringMessage) request).getString();
+//			if (strRequest.equals("ECG")) {
+//
+//				logger.info("requestReceived(): Received a request for ECG data.");
+//				ECGData data = currentSession.getCachedECGData();
+//				Object[] processedData = OdinHelper.generateECGSampleArrays(data);
+//
+//				ECGDataResponse response = new ECGDataResponse();
+//				response.setEcgData((int[]) processedData[0]);
+//				response.setEcgTimeOffsets((long[]) processedData[1]);
+//				response.setEcgStartTimeAsLong(data.getStartTimestamp());
+//
+//				return new JsonMessage(response);
+//
+//			}
+//		}
+//
+//		else if (request instanceof JsonMessage) {
+//
+//			MessageData message = OdinHelper.getMessageFromDoctor(request);
+//			if (message != null) {
+//
+//				// If we receive a message outside of monitoring, warn in the logs but show it anyway.
+//				if (!currentSession.isMonitoring()) {
+//					logger.warn("asyncMessageReceived(): Received a message outside of monitoring!");
+//				}
+//
+//				logger.info("asyncMessageReceived(): Received message from doctor: " + message.getMessage());
+//
+//				// Add to the current exercise session for storage.
+//				ExerciseNotification notification = currentSession.addNotification(message.getMessage());
+//
+//				showNotificationTrayIcon(notification);
+//
+//				return new BasicStringMessage("OK");
+//			}
+//
+//		}
+//
+//		throw new UnsupportedOperationException("unknown request type or invalid content.");
+//	}
 
 	/**
 	 * When a connection to the {@link IOdinService} is obtained, notify listeners of this fact. Additionally, begin
 	 * attempting to connect if we're not already connecting / connected.
 	 */
-	@Override
-	protected void onOdinServiceConnectionObtained(IOdinService odinService) {
-
-		// If we're already connected or connecting, we're not going to start connecting here. So we'll need to notify
-		// listeners of the status change here.
-		if (odinService.getConnectionStatus() != EndpointConnectionStatus.DISCONNECTED) {
-
-			// If we're already connecting, set that flag
-			connectingToOdin = (odinService.getConnectionStatus() == EndpointConnectionStatus.ATTEMPTING_CONNECT);
-
-			uiHandler.obtainMessage(MSG_STATUS_CHANGE, WorkoutServiceStatusChangeType.OdinStatus).sendToTarget();
-		}
-
-		// If we're disconnected, then we'll attempt to connect. Doing this will be enough to eventually notify the
-		// listeners so we don't need to send an additional notification.
-		else {
-			connectingToOdin = true;
-			this.beginOdinConnect();
-		}
-	}
+	//	TODO: REMOVE ODIN CONNECTION
+//	@Override
+//	protected void onOdinServiceConnectionObtained(IOdinService odinService) {
+//
+//		// If we're already connected or connecting, we're not going to start connecting here. So we'll need to notify
+//		// listeners of the status change here.
+//		if (odinService.getConnectionStatus() != EndpointConnectionStatus.DISCONNECTED) {
+//
+//			// If we're already connecting, set that flag
+//			connectingToOdin = (odinService.getConnectionStatus() == EndpointConnectionStatus.ATTEMPTING_CONNECT);
+//
+//			uiHandler.obtainMessage(MSG_STATUS_CHANGE, WorkoutServiceStatusChangeType.OdinStatus).sendToTarget();
+//		}
+//
+//		// If we're disconnected, then we'll attempt to connect. Doing this will be enough to eventually notify the
+//		// listeners so we don't need to send an additional notification.
+//		else {
+//			connectingToOdin = true;
+//			this.beginOdinConnect();
+//		}
+//	}
 
 	/**
 	 * When our Odin connection status changes, we'll notify listeners of this change. Additionally, if we just became
 	 * Disconnected while we were trying to connect originally, notify users of an error.
 	 */
-	@Override
-	protected void onOdinConnectionStatusChanged(EndpointConnectionStatus status) {
-		uiHandler.obtainMessage(MSG_STATUS_CHANGE, WorkoutServiceStatusChangeType.OdinStatus).sendToTarget();
-
-		// If we disconnected while trying to connect, notify the user of an error.
-		if (connectingToOdin && status == EndpointConnectionStatus.DISCONNECTED) {
-			uiHandler.obtainMessage(MSG_ERROR, WorkoutServiceConnectionErrorType.OdinError).sendToTarget();
-		}
-
-		// Clear the "connecting" flag if we're not connecting.
-		if (status != EndpointConnectionStatus.ATTEMPTING_CONNECT) {
-			connectingToOdin = false;
-		}
-	}
+	//	TODO: REMOVE ODIN CONNECTION
+//	@Override
+//	protected void onOdinConnectionStatusChanged(EndpointConnectionStatus status) {
+//		uiHandler.obtainMessage(MSG_STATUS_CHANGE, WorkoutServiceStatusChangeType.OdinStatus).sendToTarget();
+//
+//		// If we disconnected while trying to connect, notify the user of an error.
+//		if (connectingToOdin && status == EndpointConnectionStatus.DISCONNECTED) {
+//			uiHandler.obtainMessage(MSG_ERROR, WorkoutServiceConnectionErrorType.OdinError).sendToTarget();
+//		}
+//
+//		// Clear the "connecting" flag if we're not connecting.
+//		if (status != EndpointConnectionStatus.ATTEMPTING_CONNECT) {
+//			connectingToOdin = false;
+//		}
+//	}
 
 	// ************************************************************************************************************
 
@@ -585,6 +640,7 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 	 */
 	@Override
 	public void onConnectedToBioharness() {
+		logger.info("WE CONNECTED WITH THE HARNESS");
 		connectingToBioharness = false;
 		uiHandler.obtainMessage(MSG_STATUS_CHANGE, WorkoutServiceStatusChangeType.BioharnessStatus).sendToTarget();
 
@@ -656,14 +712,34 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 		// Add HR data to session
 		this.currentSession.addHeartRateData(newData);
 
+		//TODO: example rule implementation
+//		rules.register(exampleRule);
+//		logger.info(newData.getHeartRate());
+//		facts.put("heartRate", newData.getHeartRate());
+//		rulesEngine.fire(rules, facts);
+
+		if(!isPaused){
+			heartRateRulesUtils.fireTimedHeartrateRules(newData.getHeartRate(), this.currentSession.getElapsedTimeInMillis());
+			speedRulesUtils.fireTimedSpeedRules(this.currentSession.getCurrentSpeed(), this.currentSession.getElapsedTimeInMillis());
+			dataRulesUtils.fireTimedDataRules(this.currentSession.getElapsedTimeInMillis());
+            if(shouldSaveSummaryChunk){
+				shouldSaveSummaryChunk = false;
+                try {
+                    saveSummaryChunk(this.currentSession.getCurrentSpeed(), this.currentSession.getHeartRate());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+		}
 		// logger.debug("onReceiveSummaryData(): before sendVitalSignData(newData)");
 
 		// If monitoring, send to Odin
 		if (this.currentSession.isMonitoring()) {
 			int restHR = NihiPreferences.RestHeartRate.getIntValue(WorkoutService.this, -1);
 			int maxHR = NihiPreferences.MaxHeartRate.getIntValue(WorkoutService.this, -1);
-			OdinHelper.sendVitalSignData(getOdinService(), newData, restHR, maxHR,
-					currentSession.getCumulativeTrainingLoad());
+			//	TODO: REMOVE ODIN CONNECTION - SENDING DATA TO ODIN
+//			OdinHelper.sendVitalSignData(getOdinService(), newData, restHR, maxHR,
+//					currentSession.getCumulativeTrainingLoad());
 		}
 
 		// logger.debug("onReceiveSummaryData(): after sendVitalSignData(newData)");
@@ -709,13 +785,15 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 
 		uiHandler.obtainMessage(MSG_LOCATION_CHANGE, location).sendToTarget();
 		currentSession.addGPSData(location);
+        currentLocation = location;
 		if (currentSession.isMonitoring()) {
 			// Location clone = location.hasSpeed() ? location : new Location(location);
 			// if (clone != location) {
 			// clone.setSpeed(currentSession.getCurrentSpeed() * 1000.0f / 3600.0f);
 			// }
-			OdinHelper.sendLocationData(getOdinService(), location, currentSession.getCurrentSpeed(),
-					currentSession.getDistance());
+			//	TODO: REMOVE ODIN CONNECTION - LOCATION CHANGE
+//			OdinHelper.sendLocationData(getOdinService(), location, currentSession.getCurrentSpeed(),
+//					currentSession.getDistance());
 		}
 	}
 
@@ -756,8 +834,17 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 
 		// Initialize text-to-speech
 		if (!TestHarnessUtils.isTestHarness()) {
-			this.tts = new TextToSpeech(this, this.ttsOnInitListener);
+			this.tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+				@Override
+				public void onInit(int status) {
+				}
+			});
 		}
+
+		heartRateRulesUtils = new RulesUtils(120000, this.tts); //2mins
+		speedRulesUtils = new RulesUtils(300000, this.tts);	//5mins
+		//speedRulesUtils = new RulesUtils(5000, this.tts);		//testing
+		dataRulesUtils = new RulesUtils(60000, this.tts);
 
 		// Bind to the Odin, Bluetooth and GPS services
 		bindService(bioharnessServiceIntent, bioharnessConn, BIND_AUTO_CREATE);
@@ -777,12 +864,13 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 	 */
 	@Override
 	public void onDestroy() {
+		//	TODO: REMOVE ODIN CONNECTION - DISCONNECT FROM ODIN
 		// Disconnect from Odin if we need to.
 		// TODO Really should refactor this so we can actually STOP the odin service.
-		if (getOdinService() != null) {
-			// getOdinService().disconnect();
-			getOdinService().scheduleDisconnect();
-		}
+//		if (getOdinService() != null) {
+//			// getOdinService().disconnect();
+//			getOdinService().scheduleDisconnect();
+//		}
 
 		if (bioharnessService != null) {
 			disconnectingFromBioharness = true;
@@ -835,11 +923,12 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 					WorkoutService.this, BioharnessDescription.class, null) != null;
 		}
 
-		@Override
-		public EndpointConnectionStatus getOdinConnectivityStatus() {
-			return getOdinService() == null ? EndpointConnectionStatus.DISCONNECTED : getOdinService()
-					.getConnectionStatus();
-		}
+		//	TODO: REMOVE ODIN CONNECTION - GET ODIN CONNECTIVITY STATUS
+//		@Override
+//		public EndpointConnectionStatus getOdinConnectivityStatus() {
+//			return getOdinService() == null ? EndpointConnectionStatus.DISCONNECTED : getOdinService()
+//					.getConnectionStatus();
+//		}
 
 		@Override
 		public BHConnectivityStatus getBioharnessConnectivityStatus() {
@@ -854,8 +943,9 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 		@Override
 		public boolean canStartNewWorkout() {
 			return !isMonitoring() && isConnectedToGPS()
-					&& getBioharnessConnectivityStatus() == BHConnectivityStatus.CONNECTED
-					&& getOdinConnectivityStatus() == EndpointConnectionStatus.CONNECTED;
+					&& getBioharnessConnectivityStatus() == BHConnectivityStatus.CONNECTED;
+			//	TODO: REMOVE ODIN CONNECTION
+//					&& getOdinConnectivityStatus() == EndpointConnectionStatus.CONNECTED;
 		}
 	};
 
@@ -915,9 +1005,7 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 	 * @param text
 	 */
 	private void speak(String text) {
-		if (ttsEnabled) {
 			this.tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-		}
 	}
 
 	private final TextToSpeech.OnInitListener ttsOnInitListener = new TextToSpeech.OnInitListener() {
@@ -952,11 +1040,30 @@ public class WorkoutService extends OdinAccessingService implements IWorkoutServ
 	 * 
 	 * @return
 	 */
-	private LocalDatabaseHelper getDbHelper() {
+	private DatabaseHelper getDbHelper() {
 		if (dbHelper == null) {
-			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(this);
-		}
+			dbHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);		}
 		return dbHelper;
+	}
+    private void saveSummaryChunk(float speed, int heartRate) throws SQLException {
+        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        SummaryDataChunk chunk = new SummaryDataChunk(this.currentSession.getElapsedTimeInMillis(), latLng, speed, heartRate);
+//        dbHelper = getDbHelper();
+//        Dao<SummaryDataChunk, String> summaryDao = dbHelper.getSummaryDataChunksDAO();
+//        summaryDao.create(chunk);
+		currentSession.addSummaryDataChunk(chunk);
+    }
+	public static String getFeedback(){
+		return feedback;
+	}
+	public static void setFeedback(String f){
+		feedback = f;
+	}
+	public static boolean isPaused() {
+		return isPaused;
+	}
+	public static void setIsPaused(boolean isPaused) {
+		WorkoutService.isPaused = isPaused;
 	}
 
 	// ************************************************************************************************************

@@ -1,0 +1,55 @@
+#
+# generated on 2017/07/09 04:24:32
+#
+# --table-start--
+dataClass=nz.ac.auckland.nihi.trainer.data.Route
+tableName=route
+# --table-fields-start--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=userId
+canBeNull=false
+uniqueCombo=true
+indexName=route_userId_idx
+# --field-end--
+# --field-start--
+fieldName=name
+canBeNull=false
+indexName=route_name_idx
+# --field-end--
+# --field-start--
+fieldName=isFavorite
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=length
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=elevation
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=thumbnailFileName
+# --field-end--
+# --field-start--
+fieldName=gpsCoordinates
+foreignCollection=true
+foreignCollectionEager=true
+foreignCollectionForeignFieldName=route
+# --field-end--
+# --field-start--
+fieldName=creatorName
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=createdTimestamp
+canBeNull=false
+uniqueCombo=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

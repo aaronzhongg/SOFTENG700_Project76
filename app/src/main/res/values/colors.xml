@@ -15,7 +15,8 @@
 ** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ** See the License for the specific language governing permissions and
 ** limitations under the License.
-*/
+*/
+
 -->
 <resources>
 
@@ -196,5 +197,9 @@
     <color name="nihi_button_background_color">#7f000000</color>
     <color name="nihi_button_background_highlight_color">#7fffffff</color>
     <color name="nihi_divider_color">#3fffffff</color>
-
+    
+    <!-- RUNNING COACH COLORS -->
+    <color name="rc_background">#f9f9f6</color>
+    <color name="rc_primary_color">#004866</color>
+    <color name="rc_secondary_color">#f05322</color>
 </resources>

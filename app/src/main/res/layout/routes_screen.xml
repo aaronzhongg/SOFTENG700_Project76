@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/RootLayoutStyle"
+    style="@style/RouteLayoutStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -9,28 +9,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="100" >
+        android:weightSum="100">
 
         <nz.ac.auckland.nihi.trainer.views.FontableButton
             android:id="@+id/btnAll"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="33"
             android:text="@string/routescreen_tab_all" />
 
         <nz.ac.auckland.nihi.trainer.views.FontableButton
             android:id="@+id/btnFavorites"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="34"
             android:text="@string/routescreen_tab_favorites" />
 
         <nz.ac.auckland.nihi.trainer.views.FontableButton
             android:id="@+id/btnNearby"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="33"
             android:text="@string/routescreen_tab_nearby" />
+
+        <nz.ac.auckland.nihi.trainer.views.FontableButton
+            android:id="@+id/btnSortByLength"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/routescreen_tab_sortbylength" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -39,29 +43,6 @@
         android:orientation="horizontal"
         android:weightSum="100" >
 
-        <View
-            android:id="@+id/underlineAll"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/nihi_thick_divider_size"
-            android:layout_weight="33"
-            android:background="@color/nihi_divider_color"
-            android:visibility="visible" />
-
-        <View
-            android:id="@+id/underlineFavorites"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/nihi_thick_divider_size"
-            android:layout_weight="34"
-            android:background="@color/nihi_divider_color"
-            android:visibility="invisible" />
-
-        <View
-            android:id="@+id/underlineNearby"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/nihi_thick_divider_size"
-            android:layout_weight="33"
-            android:background="@color/nihi_divider_color"
-            android:visibility="invisible" />
     </LinearLayout>
 
     <ExpandableListView

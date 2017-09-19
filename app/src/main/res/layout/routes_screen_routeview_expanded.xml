@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <ImageView
         android:id="@+id/imgMap"
@@ -44,5 +45,12 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/nihi_ic_home_workout"
         android:text="@string/routescreen_button_startworkout" />
+
+    <nz.ac.auckland.nihi.trainer.views.FontableButton
+        android:id="@+id/btnDeleteRoute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete Route"
+        android:drawableLeft="@drawable/nihi_ic_delete_route"/>
 
 </LinearLayout>

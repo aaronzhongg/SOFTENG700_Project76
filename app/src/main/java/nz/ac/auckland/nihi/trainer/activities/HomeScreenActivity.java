@@ -1,6 +1,8 @@
 package nz.ac.auckland.nihi.trainer.activities;
 
+import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.List;
 
 import nz.ac.auckland.cs.odin.android.api.activities.OdinFragmentActivity;
 import nz.ac.auckland.cs.odin.android.api.prefs.OdinPreferences;
@@ -13,7 +15,12 @@ import nz.ac.auckland.nihi.trainer.R;
 import nz.ac.auckland.nihi.trainer.R.anim;
 import nz.ac.auckland.nihi.trainer.R.id;
 import nz.ac.auckland.nihi.trainer.R.string;
+import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
+import nz.ac.auckland.nihi.trainer.data.DummyRouteCreator;
 import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
+import nz.ac.auckland.nihi.trainer.data.RCExerciseSummary;
+import nz.ac.auckland.nihi.trainer.data.Route;
+import nz.ac.auckland.nihi.trainer.data.SummaryDataChunk;
 import nz.ac.auckland.nihi.trainer.fragments.LoginDialogFragment;
 import nz.ac.auckland.nihi.trainer.fragments.LoginDialogFragment.LoginDialogFragmentListener;
 import nz.ac.auckland.nihi.trainer.prefs.NihiPreferences;
@@ -24,6 +31,7 @@ import nz.ac.auckland.nihi.trainer.util.OdinIDUtils;
 
 import org.apache.log4j.Logger;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -31,13 +39,20 @@ import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
 
 /**
  * Landing screen activity for the NIHI trainer app. Facilitates navigation to other areas of the app.
@@ -73,7 +88,8 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	/**
 	 * The helper allowing us to access the database.
 	 */
-	private LocalDatabaseHelper dbHelper;
+	private DatabaseHelper dbHelper = null;
+	private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 111;
 
 	// ************************************************************************************************************
 
@@ -92,6 +108,18 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
+//		CODE USED TO RESET DB
+//		dbHelper = getHelper();
+//		dbHelper.close();
+//		while (dbHelper.isOpen() == true)  {   // maybe you dont want to use while
+//			try {
+//				Thread.sleep(500);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		this.deleteDatabase("routes.db");
+//		dbHelper = null;
 		if (TestHarnessUtils.isTestHarness() || checkBluetoothAvailable()) {
 
 			super.onCreate(savedInstanceState);
@@ -123,11 +151,48 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 			btnWorkout = (Button) findViewById(id.btnWorkout);
 			btnWorkout.setOnClickListener(buttonClickListener);
 
-			startDailyDownloadTask();
+			//startDailyDownloadTask();
 
+			//For testing the db
+			//TextView tv = new TextView(this);
+			//tv.setMovementMethod(new ScrollingMovementMethod());
+			try {
+//				loadRoutesToDB("onCreate", tv);
+				loadRoutesToDB("onCreate");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			//For testing db, remove the textview and setContentView otherwise
+			//setContentView(tv);
+
+
+// ...
+
+// Check for permission
+			if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+			}
 		}
 	}
 
+	@Override
+	public void onRequestPermissionsResult(int requestCode,
+										   String permissions[], int[] grantResults) {
+		switch (requestCode) {
+			case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
+				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+					// permission was granted
+				} else {
+					// permission was denied
+					Intent intent = new Intent(Intent.ACTION_MAIN);
+					intent.addCategory(Intent.CATEGORY_HOME);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(intent);
+				}
+				return;
+			}
+		}
+	}
 	/**
 	 * Starts a task that will automatically synchronize route information and such every day.
 	 * 
@@ -192,21 +257,25 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 		// test harness script if we are in test mode).
 		else if (!isLoggingIn) {
 
-			// Check if someone's logged in previously.
-			boolean alreadyLoggedIn = OdinPreferences.UserName.getStringValue(this, null) != null;
+			//	TODO: REMOVE ODIN CONNECTION - remove login
+//			// Check if someone's logged in previously.
+//			boolean alreadyLoggedIn = OdinPreferences.UserName.getStringValue(this, null) != null;
+			boolean alreadyLoggedIn = true;
 
 			// If they have...
 			if (alreadyLoggedIn) {
 				// If they need to enter profile info, go to the profile screen now.
 				if (profileScreenRequired()) {
-					forceProfileScreen();
+					// TODO: REMOVE ODIN SERVICE - Remove profile screen (entering user details)
+//					forceProfileScreen();
 				}
 			}
 
+			//	TODO: REMOVE ODIN CONNECTION
 			// If they haven't, bring up the login dialog.
-			else {
-				showLoginDialog();
-			}
+//			else {
+//				showLoginDialog();
+//			}
 
 		}
 	}
@@ -227,15 +296,15 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	// ************************************************************************************************************
 	// Odin / Login handler methods
 	// ************************************************************************************************************
-
-	/**
-	 * Shows the login dialog.
-	 */
-	private void showLoginDialog() {
-		isLoggingIn = true;
-		LoginDialogFragment dialog = new LoginDialogFragment();
-		dialog.show(getSupportFragmentManager(), "LoginDialog");
-	}
+//	TODO: REMOVE ODIN CONNECTION - Remove login
+//	/**
+//	 * Shows the login dialog.
+//	 */
+//	private void showLoginDialog() {
+//		isLoggingIn = true;
+//		LoginDialogFragment dialog = new LoginDialogFragment();
+//		dialog.show(getSupportFragmentManager(), "LoginDialog");
+//	}
 
 	/**
 	 * Called when the user has finished with the login dialog. If they have cancelled, then exit. If not, then begin
@@ -246,25 +315,25 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	 */
 	public void onFinishLoginFragment(LoginDialogFragment dialog, boolean cancelled) {
 
-		if (cancelled) {
-			finish();
-		} else {
-
-			// Save variables
-			long id = OdinIDUtils.generateID(dialog.getUserName());
-			OdinPreferences.UserID.setValue(this, id);
-			String username = dialog.getUserName();
-			OdinPreferences.UserName.setValue(this, username);
-			String password = dialog.getPassword();
-			OdinPreferences.Password.setValue(this, password);
-
-			// Attempt to synchronize.
-			// DownloadAllDataTask downloadTask = new DownloadAllDataTask(this, getOdinService(), getDbHelper()
-			// .getSectionHelper(NihiDBHelper.class), this, true);
-			// downloadTask.execute();
-			beginOdinConnect();
-
-		}
+//		if (cancelled) {
+//			finish();
+//		} else {
+//
+//			// Save variables
+//			long id = OdinIDUtils.generateID(dialog.getUserName());
+//			OdinPreferences.UserID.setValue(this, id);
+//			String username = dialog.getUserName();
+//			OdinPreferences.UserName.setValue(this, username);
+//			String password = dialog.getPassword();
+//			OdinPreferences.Password.setValue(this, password);
+//
+//			// Attempt to synchronize.
+//			// DownloadAllDataTask downloadTask = new DownloadAllDataTask(this, getOdinService(), getDbHelper()
+//			// .getSectionHelper(NihiDBHelper.class), this, true);
+//			// downloadTask.execute();
+//			beginOdinConnect();
+//
+//		}
 
 	}
 
@@ -295,22 +364,23 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	 * Called when we try to connect to Odin, but can't due to incorrect login details. Prompts the user to enter their
 	 * login details again.
 	 */
-	@Override
-	protected void odinLoginFailed() {
-		isLoggingIn = false;
-		OdinPreferences.UserID.clearValue(this);
-		OdinPreferences.UserName.clearValue(this);
-		OdinPreferences.Password.clearValue(this);
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setCancelable(false).setTitle(string.homescreen_dialog_invalidlogin)
-				.setMessage(string.homescreen_dialog_invalidlogin_message)
-				.setPositiveButton(string.ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						showLoginDialog();
-					}
-				}).show();
-	}
+	//	TODO: REMOVE ODIN CONNECTION - remove login
+//	@Override
+//	protected void odinLoginFailed() {
+//		isLoggingIn = false;
+//		OdinPreferences.UserID.clearValue(this);
+//		OdinPreferences.UserName.clearValue(this);
+//		OdinPreferences.Password.clearValue(this);
+//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//		builder.setCancelable(false).setTitle(string.homescreen_dialog_invalidlogin)
+//				.setMessage(string.homescreen_dialog_invalidlogin_message)
+//				.setPositiveButton(string.ok, new DialogInterface.OnClickListener() {
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						showLoginDialog();
+//					}
+//				}).show();
+//	}
 
 	/**
 	 * Called when we try to connect to Odin, and succeed. Here we will download all user data and save it to the local
@@ -319,10 +389,10 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	@Override
 	protected void odinLoginSuccess() {
 
-		DownloadAllDataTask downloadTask = new DownloadAllDataTask(this, getOdinService(), getDbHelper()
-				.getSectionHelper(NihiDBHelper.class), this, true);
-
-		downloadTask.execute();
+//		DownloadAllDataTask downloadTask = new DownloadAllDataTask(this, getOdinService(), getDbHelper()
+//				.getSectionHelper(NihiDBHelper.class), this, true);
+//
+//		downloadTask.execute();
 
 	}
 
@@ -338,7 +408,8 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 		if (success) {
 			// If they need to enter profile info, go to the profile screen now.
 			if (profileScreenRequired()) {
-				forceProfileScreen();
+				// TODO: REMOVE ODIN SERVICE - Profile screen (adding user details)
+//				forceProfileScreen();
 			}
 		}
 
@@ -398,7 +469,7 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 			Intent intent = null;
 
 			if (v.getId() == id.btnReview) {
-				intent = new Intent(getApplicationContext(), ReviewActivity.class);
+				intent = new Intent(getApplicationContext(), WorkoutSummaryListActivity.class);
 
 			} else if (v.getId() == id.btnRoutes) {
 				intent = new Intent(getApplicationContext(), RoutesActivity.class);
@@ -406,13 +477,14 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 			} else if (v.getId() == id.btnFriends) {
 
 			} else if (v.getId() == id.btnProfile) {
-				intent = new Intent(getApplicationContext(), ProfileActivity.class);
+				//intent = new Intent(getApplicationContext(), ProfileActivity.class);
 
 			} else if (v.getId() == id.btnGoals) {
-				intent = new Intent(getApplicationContext(), GoalsActivity.class);
+				//intent = new Intent(getApplicationContext(), GoalsActivity.class);
 
 			} else if (v.getId() == id.btnWorkout) {
-				intent = new Intent(getApplicationContext(), WorkoutActivity.class);
+				//For now, go to route select to prevent errors
+				intent = new Intent(getApplicationContext(), RoutesActivity.class);
 			}
 
 			if (intent != null) {
@@ -472,16 +544,61 @@ public class HomeScreenActivity extends OdinFragmentActivity implements LoginDia
 	}
 
 	/**
-	 * Lazily creates the {@link #dbHelper} if required, then returns it.
-	 * 
-	 * @return
+	 * Destroy the helper when finished
 	 */
-	private LocalDatabaseHelper getDbHelper() {
+	@Override
+	protected void onDestroy(){
+		super.onDestroy();
+		if(dbHelper != null){
+			OpenHelperManager.releaseHelper();
+			dbHelper = null;
+		}
+	}
+
+	//Make a database helper
+	private DatabaseHelper getHelper() {
 		if (dbHelper == null) {
-			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(this);
+			dbHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
 		}
 		return dbHelper;
 	}
+
+	private void loadRoutesToDB(String action) throws SQLException {
+		getHelper().getWritableDatabase();
+		Dao<Route, String> routeDao = getHelper().getRoutesDAO();
+		Dao<RCExerciseSummary, String> summaryDao = getHelper().getExerciseSummaryDAO();
+		List<Route> routes = routeDao.queryForAll();
+		List<RCExerciseSummary> rcExerciseSummaries = summaryDao.queryForAll();
+		if(routes.size() == 0){
+			List<Route> newRoutes = DummyRouteCreator.createDummyRoutes(routeDao,"testmapimage.png", summaryDao);
+			StringBuilder sb = new StringBuilder();
+			for (Route r : newRoutes){
+				sb.append(r.toString());
+				sb.append("\n");
+			}
+			//tv.setText(sb.toString());
+		}else{
+			StringBuilder sb = new StringBuilder();
+			for (Route r : routes){
+				sb.append(r.toString());
+				sb.append("\n");
+			}
+			//tv.setText(sb.toString());
+		}
+
+	}
+
+//	/**
+//	 * Lazily creates the {@link #dbHelper} if required, then returns it.
+//	 *
+//	 * @return
+//	 */
+//	private LocalDatabaseHelper getDbHelper() {
+//		if (dbHelper == null) {
+//			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(this);
+//		}
+//		return dbHelper;
+//	}
 
 	// ************************************************************************************************************
 

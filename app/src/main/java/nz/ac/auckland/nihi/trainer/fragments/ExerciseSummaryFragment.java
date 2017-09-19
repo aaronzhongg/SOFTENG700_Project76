@@ -7,6 +7,7 @@ import nz.ac.auckland.cs.ormlite.LocalDatabaseHelper;
 import nz.ac.auckland.nihi.trainer.R;
 import nz.ac.auckland.nihi.trainer.R.drawable;
 import nz.ac.auckland.nihi.trainer.R.id;
+import nz.ac.auckland.nihi.trainer.data.DatabaseHelper;
 import nz.ac.auckland.nihi.trainer.data.ExerciseSummary;
 import nz.ac.auckland.nihi.trainer.data.NihiDBHelper;
 import nz.ac.auckland.nihi.trainer.data.Route;
@@ -27,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
 /**
@@ -81,7 +83,7 @@ public class ExerciseSummaryFragment extends Fragment {
 	/**
 	 * The helper class we can use to access the database.
 	 */
-	private LocalDatabaseHelper dbHelper;
+	private DatabaseHelper dbHelper;
 
 	/**
 	 * The {@link ExerciseSummary} this page views. Populated by a call to the database.
@@ -93,9 +95,9 @@ public class ExerciseSummaryFragment extends Fragment {
 	 * 
 	 * @return
 	 */
-	private LocalDatabaseHelper getDbHelper() {
+	private DatabaseHelper getDbHelper() {
 		if (dbHelper == null) {
-			dbHelper = DatabaseManager.getInstance().getDatabaseHelper(getActivity());
+			dbHelper = OpenHelperManager.getHelper(getActivity(), DatabaseHelper.class);
 		}
 		return dbHelper;
 	}
@@ -161,7 +163,7 @@ public class ExerciseSummaryFragment extends Fragment {
 			route.setFavorite(isChecked);
 
 			try {
-				getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO().update(route);
+				getDbHelper().getRoutesDAO().update(route);
 			} catch (SQLException e) {
 				logger.error(e);
 				throw new RuntimeException(e);
@@ -185,13 +187,13 @@ public class ExerciseSummaryFragment extends Fragment {
 		if (summary == null) {
 			Bundle args = getArguments();
 			String summaryId = args.getString(ARG_SUMMARY_ID);
-			try {
-				summary = getDbHelper().getSectionHelper(NihiDBHelper.class).getExerciseSummaryDAO()
-						.queryForId(summaryId);
-			} catch (SQLException e) {
-				logger.error("Error getting ExerciseSummary with id = " + summaryId + " from database", e);
-				throw new RuntimeException(e);
-			}
+//			try {
+//				summary = getDbHelper().getExerciseSummaryDAO()
+//						.queryForId(summaryId);
+//			} catch (SQLException e) {
+//				logger.error("Error getting ExerciseSummary with id = " + summaryId + " from database", e);
+//				throw new RuntimeException(e);
+//			}
 		}
 
 		// Inflate main layout
@@ -236,7 +238,7 @@ public class ExerciseSummaryFragment extends Fragment {
 			pnlMap.setVisibility(View.GONE);
 		} else {
 			try {
-				Dao<Route, String> routeDao = getDbHelper().getSectionHelper(NihiDBHelper.class).getRoutesDAO();
+				Dao<Route, String> routeDao = getDbHelper().getRoutesDAO();
 				routeDao.refresh(summary.getFollowedRoute());
 				// String fileName = summary.getFollowedRoute().getThumbnailFileName();
 				//

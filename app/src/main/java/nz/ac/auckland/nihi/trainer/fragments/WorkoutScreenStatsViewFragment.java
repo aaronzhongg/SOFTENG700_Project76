@@ -31,7 +31,7 @@ public abstract class WorkoutScreenStatsViewFragment extends Fragment {
 
 		// @formatter:off
 		ViewedStat[] viewedStatDefaults = new ViewedStat[] {
-				ViewedStat.PercentHeartRate,
+				ViewedStat.HeartRate,
 				ViewedStat.Speed,
 				ViewedStat.Distance,
 				ViewedStat.TrainingLoad
