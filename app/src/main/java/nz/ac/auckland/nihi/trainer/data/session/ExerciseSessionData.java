@@ -882,77 +882,79 @@ public class ExerciseSessionData {
 	 */
 	public RCExerciseSummary generateSummary(long userId, String creatorName, Dao<RCExerciseSummary, String> summaryDao,
 			Dao<Route, String> routeDao) throws SQLException {
-		RCExerciseSummary summary = new RCExerciseSummary();
 
-		summary.setDate(new Date(getStartTimeInMillis()));
-		summary.setDurationInSeconds((int) Math.round((double) getElapsedTimeInMillis() / 1000.0));
+		if (summaryDataChunks.isEmpty()) {
+			RCExerciseSummary summary = new RCExerciseSummary();
 
-		summary.setDistanceInMetres(Math.round(getDistance()));
+			summary.setDate(new Date(getStartTimeInMillis()));
+			summary.setDurationInSeconds((int) Math.round((double) getElapsedTimeInMillis() / 1000.0));
 
-		summary.setCumulativeImpulse(getCumulativeTrainingLoad());
+			summary.setDistanceInMetres(Math.round(getDistance()));
 
-		// If we followed a route, set the summary's route to that value.
-		if (this.goal instanceof RouteGoal) {
-			Route followedRoute = routeDao.queryForId(((RouteGoal) this.goal).getRouteId());
-			// Route followedRoute = routeDao.queryBuilder().selectColumns("id").where()
-			// .eq("id", ((RouteGoal) this.goal).getRouteId()).queryForFirst();
-			summary.setFollowedRoute(followedRoute);
-		}
+			summary.setCumulativeImpulse(getCumulativeTrainingLoad());
 
-		// Otherwise, if we travelled more than 30 meters, create a new route.
-		else if (getDistance() > 30) {
-
-			Route followedRoute = new Route();
-			followedRoute.setName("unused");
-			followedRoute.setCreatedTimestamp(System.currentTimeMillis());
-			followedRoute.setCreatorName(creatorName);
-			followedRoute.setUserId(userId);
-			// followedRoute.setName(Long.toHexString(System.currentTimeMillis()));
-			followedRoute.setFavorite(false);
-			followedRoute.setThumbnailFileName(null); // We will populate this in the review screen / routes screen upon
-														// browsing the route for the first time.
-
-			routeDao.assignEmptyForeignCollection(followedRoute, "gpsCoordinates");
-
-			// Save route to DB
-			routeDao.create(followedRoute);
-
-			// Now for the GPS coordinates
-			synchronized (this.gpsData) {
-				for (Location loc : this.gpsData) {
-					RouteCoordinate coord = new RouteCoordinate(loc.getLatitude(), loc.getLongitude());
-					coord.setRoute(followedRoute);
-					followedRoute.getGpsCoordinates().add(coord);
-				}
+			// If we followed a route, set the summary's route to that value.
+			if (this.goal instanceof RouteGoal) {
+				Route followedRoute = routeDao.queryForId(((RouteGoal) this.goal).getRouteId());
+				// Route followedRoute = routeDao.queryBuilder().selectColumns("id").where()
+				// .eq("id", ((RouteGoal) this.goal).getRouteId()).queryForFirst();
+				summary.setFollowedRoute(followedRoute);
 			}
 
-			summary.setFollowedRoute(followedRoute);
+			// Otherwise, if we travelled more than 30 meters, create a new route.
+			else if (getDistance() > 30) {
 
-		}
+				Route followedRoute = new Route();
+				followedRoute.setName("unused");
+				followedRoute.setCreatedTimestamp(System.currentTimeMillis());
+				followedRoute.setCreatorName(creatorName);
+				followedRoute.setUserId(userId);
+				// followedRoute.setName(Long.toHexString(System.currentTimeMillis()));
+				followedRoute.setFavorite(false);
+				followedRoute.setThumbnailFileName(null); // We will populate this in the review screen / routes screen upon
+				// browsing the route for the first time.
 
-		// Otherwise, no route for this summary.
-		else {
-			summary.setFollowedRoute(null);
-		}
+				routeDao.assignEmptyForeignCollection(followedRoute, "gpsCoordinates");
 
-		summary.setAvgHeartRate(getAvgHeartRate());
-		summary.setMinHeartRate(getMinHeartRate());
-		summary.setMaxHeartRate(getMaxHeartRate());
+				// Save route to DB
+				routeDao.create(followedRoute);
 
-		summary.setAvgSpeed(getAvgSpeed());
-		summary.setMinSpeed(getMinSpeed());
-		summary.setMaxSpeed(getMaxSpeed());
+				// Now for the GPS coordinates
+				synchronized (this.gpsData) {
+					for (Location loc : this.gpsData) {
+						RouteCoordinate coord = new RouteCoordinate(loc.getLatitude(), loc.getLongitude());
+						coord.setRoute(followedRoute);
+						followedRoute.getGpsCoordinates().add(coord);
+					}
+				}
 
-		summary.setUserId(userId);
+				summary.setFollowedRoute(followedRoute);
 
-		summaryDao.assignEmptyForeignCollection(summary, "summaryDataChunks");
+			}
+
+			// Otherwise, no route for this summary.
+			else {
+				summary.setFollowedRoute(null);
+			}
+
+			summary.setAvgHeartRate(getAvgHeartRate());
+			summary.setMinHeartRate(getMinHeartRate());
+			summary.setMaxHeartRate(getMaxHeartRate());
+
+			summary.setAvgSpeed(getAvgSpeed());
+			summary.setMinSpeed(getMinSpeed());
+			summary.setMaxSpeed(getMaxSpeed());
+
+			summary.setUserId(userId);
+
+			summaryDao.assignEmptyForeignCollection(summary, "summaryDataChunks");
 //		summaryDao.assignEmptyForeignCollection(summary, "symptoms");
 //		summaryDao.assignEmptyForeignCollection(summary, "notifications");
-		summaryDao.create(summary);
+			summaryDao.create(summary);
 
-		for (SummaryDataChunk s : summaryDataChunks) {
-			summary.getSummaryDataChunks().add(s);
-		}
+			for (SummaryDataChunk s : summaryDataChunks) {
+				summary.getSummaryDataChunks().add(s);
+			}
 
 //		for (SymptomEntry symptom : symptoms) {
 //			summary.getSymptoms().add(symptom);
@@ -962,7 +964,10 @@ public class ExerciseSessionData {
 //			summary.getNotifications().add(notification);
 //		}
 
-		return summary;
+			return summary;
+		}
+		return null;
+
 	}
 
 	private static class StoredHeartRateData {

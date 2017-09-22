@@ -506,12 +506,17 @@ public class WorkoutActivity extends FragmentActivity implements WorkoutServiceL
 		RCExerciseSummary summary = workoutService.getService().endWorkout();
 		//Navigate to the summary list page.
 		finish();
-		Intent summaryIntent = new Intent(getApplicationContext(), WorkoutSummaryActivity.class);
-		if (summaryIntent != null) {
-			summaryIntent.putExtra("workout_id", summary.getId());
-			startActivity(summaryIntent);
-			overridePendingTransition(anim.push_left_in, anim.push_left_out);
+		if (!summary.getSummaryDataChunks().isEmpty()) {
+			Intent summaryIntent = new Intent(getApplicationContext(), WorkoutSummaryActivity.class);
+			if (summaryIntent != null) {
+				summaryIntent.putExtra("workout_id", summary.getId());
+				startActivity(summaryIntent);
+				overridePendingTransition(anim.push_left_in, anim.push_left_out);
+			}
 		}
+//		else {
+//			overridePendingTransition(anim.push_right_in, anim.push_right_out);
+//		}
 		// TODO: Implement this bit with our app -> Display workout summary activity or finish activity, depending on value of variable.
 //		if (finishOnStop) {
 //			finish();
