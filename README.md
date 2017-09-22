@@ -10,3 +10,5 @@ To compile and run the app on a mobile device from the source code:
 -Ensure that odin2-api-1.0-SNAPSHOT.jar and remote-shared-components-1.0-SNAPSHOT.jar are present in the root folder
 
 -Connect mobile device, then run the app from Android Studios using the device. This will install the app apk onto the device for future use.
+
+-If the app crashes, ensure that permissions for the app are allowed in the device settings
